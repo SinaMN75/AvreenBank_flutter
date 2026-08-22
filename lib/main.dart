@@ -25,13 +25,13 @@ Future<void> main() async {
 }
 
 abstract class AppColors {
-  static const Color brand = Color(0xFF3B39E5);
+  static const Color brand = Color.fromRGBO(226, 111, 55, 1);
   static const Color info = Color(0xFF38EBFF);
   static const Color success = Color(0xFF16A34A);
   static const Color warning = Color(0xFFF59E0B);
-  static const Color danger = Color(0xFFDC2626);
+  static const Color danger = Colors.red;
   static const Color onGradient = Colors.white;
-  static const List<Color> gradient = <Color>[Color(0xFF3B39E5), Color(0xFF38EBFF)];
+  static const List<Color> gradient = <Color>[Color(0xFF3B39E5), Color.fromRGBO(226, 111, 55, 1)];
 }
 
 abstract class Core {
