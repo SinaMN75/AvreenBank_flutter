@@ -1,5 +1,4 @@
 import "package:avreen_bank/model/profile_model.dart";
-import "package:avreen_bank/view/widgets/letter_badge.dart";
 import "package:u/utilities.dart";
 
 class ProfileSheet extends StatelessWidget {
@@ -26,49 +25,24 @@ class ProfileSheet extends StatelessWidget {
           UTextBodySmall(U.s.profilesHint, color: scheme.onSurfaceVariant),
           const SizedBox(height: 14),
           ...profiles.map(
-            (ProfileModel profile) => Padding(
-              padding: const EdgeInsets.only(bottom: 8),
-              child: _row(context, profile),
-            ),
-          ),
-          const SizedBox(height: 6),
-          UButton(
-            title: U.s.close,
-            type: UButtonType.outlined,
-            width: double.infinity,
-            onTap: UNavigator.back,
+            (ProfileModel profile) {
+              final bool selected = profile.id == activeId;
+              return ListTile(
+                leading: ULetterBadge(profile.badge, background: scheme.primary.withValues(alpha: 0.12), foreground: scheme.primary),
+                title: UTextBodyMedium(profile.name, fontWeight: FontWeight.w600, maxLines: 1, overflow: TextOverflow.ellipsis),
+                subtitle: UTextLabelSmall(profile.meta, color: scheme.onSurfaceVariant),
+                trailing: selected ? Icon(Icons.check_circle, color: scheme.primary, size: 20) : null,
+                onTap: () => onSelect(profile),
+              ).container(
+                borderColor: selected ? scheme.primary : scheme.outlineVariant,
+                backgroundColor: selected ? scheme.primary.withValues(alpha: 0.08) : scheme.surface,
+                margin: const EdgeInsets.symmetric(vertical: 6),
+                radius: 16,
+              );
+            },
           ),
         ],
       ),
     );
-  }
-
-  Widget _row(BuildContext context, ProfileModel profile) {
-    final ColorScheme scheme = Theme.of(context).colorScheme;
-    final bool selected = profile.id == activeId;
-    return UContainer(
-      color: selected ? scheme.primary.withValues(alpha: 0.08) : scheme.surface,
-      radius: 17,
-      border: Border.all(color: selected ? scheme.primary : scheme.outlineVariant),
-      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 13),
-      child: Row(
-        children: <Widget>[
-          LetterBadge(profile.badge, background: scheme.primary.withValues(alpha: 0.12), foreground: scheme.primary),
-          const SizedBox(width: 11),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                UTextBodyMedium(profile.name, fontWeight: FontWeight.w600, maxLines: 1, overflow: TextOverflow.ellipsis),
-                const SizedBox(height: 3),
-                UTextLabelSmall(profile.meta, color: scheme.onSurfaceVariant),
-              ],
-            ),
-          ),
-          if (selected) Icon(Icons.check_circle, color: scheme.primary, size: 20),
-        ],
-      ),
-    ).onTap(() => onSelect(profile));
   }
 }

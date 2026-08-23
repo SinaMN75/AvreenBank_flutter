@@ -984,7 +984,7 @@ packages:
   u:
     dependency: "direct main"
     description:
-      path: u_flutter
+      path: U_flutter
       relative: true
     source: path
     version: "2.0.2"

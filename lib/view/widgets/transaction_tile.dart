@@ -1,6 +1,5 @@
 import "package:avreen_bank/main.dart";
 import "package:avreen_bank/model/transaction_model.dart";
-import "package:avreen_bank/utils/money_extension.dart";
 import "package:u/utilities.dart";
 
 class TransactionTile extends StatelessWidget {
@@ -35,7 +34,7 @@ class TransactionTile extends StatelessWidget {
           ),
           const SizedBox(width: 10),
           UTextBodyMedium(
-            "$sign${transaction.amount.money}",
+            "$sign${transaction.amount.separate3By3()}",
             color: isCredit ? AppColors.success : scheme.onSurface,
             fontWeight: FontWeight.bold,
             textDirection: TextDirection.ltr,

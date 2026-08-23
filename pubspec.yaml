@@ -12,7 +12,7 @@ dependencies:
     sdk: flutter
 
   u:
-    path: u_flutter
+    path: U_flutter
 
   flutter_native_splash: ^2.4.8
 

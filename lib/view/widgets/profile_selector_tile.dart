@@ -1,4 +1,3 @@
-import "package:avreen_bank/view/widgets/letter_badge.dart";
 import "package:u/utilities.dart";
 
 class ProfileSelectorTile extends StatelessWidget {
@@ -18,7 +17,7 @@ class ProfileSelectorTile extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 9),
       child: Row(
         children: <Widget>[
-          LetterBadge(badge, background: onPrimary.withValues(alpha: 0.18), foreground: onPrimary, size: 30, radius: 9),
+          ULetterBadge(badge, background: onPrimary.withValues(alpha: 0.18), foreground: onPrimary, size: 30, radius: 9),
           const SizedBox(width: 10),
           Expanded(
             child: Column(
