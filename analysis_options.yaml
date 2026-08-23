@@ -15,6 +15,7 @@ analyzer:
     - windows/**
     - macos/**
     - linux/**
+    - .dart_tool/**
 
   errors:
     curly_braces_in_flow_control_structures: ignore

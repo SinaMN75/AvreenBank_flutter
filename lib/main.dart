@@ -1,4 +1,4 @@
-import "package:avreen_bank/view/pages/splash/splash_page.dart";
+import "package:avreen_bank/view/pages/main/main_page.dart";
 import "package:u/utilities.dart";
 
 class MyHttpOverrides extends HttpOverrides {
@@ -15,12 +15,12 @@ Future<void> main() async {
     locale = "fa";
   }
   runApp(
-      UMaterialApp(
-        locale: Locale(locale),
-        lightThemeData: Core.lightThemeData,
-        darkThemeData: Core.darkThemeData,
-        home: const SplashPage(),
-      )
+    UMaterialApp(
+      locale: Locale(locale),
+      lightThemeData: Core.lightThemeData,
+      darkThemeData: Core.darkThemeData,
+      home: const MainPage(),
+    ),
   );
 }
 
