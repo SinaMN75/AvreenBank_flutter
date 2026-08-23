@@ -4,9 +4,6 @@ import "package:avreen_bank/model/profile_model.dart";
 import "package:avreen_bank/model/transaction_model.dart";
 import "package:u/utilities.dart";
 
-/// Fake API layer: every method waits, then returns canned data — mimicking a
-/// network round-trip. Swap the bodies for UServices.* calls once the backend
-/// endpoints exist; the controller and UI stay the same.
 class HomeApi {
   const HomeApi();
 
@@ -21,7 +18,7 @@ class HomeApi {
       badge: "م‌ر",
       name: "مریم رضایی — پروندهٔ شخصی",
       short: "شخصی",
-      meta: "۳ حساب · ۳ کارت",
+      meta: "۳ حساب · ۵ کارت",
       accounts: <AccountModel>[
         AccountModel(badge: "ج", title: "حساب جاری", number: "120-8145672-001", balance: 48250000, chips: <String>["حساب اصلی", "برداشت آزاد"]),
         AccountModel(badge: "ک", title: "سپرده کوتاه‌مدت", number: "120-9932104-002", balance: 132400000, chips: <String>["سود ماهانه"]),
@@ -31,8 +28,9 @@ class HomeApi {
         CardModel(
           id: "p-main",
           label: "کارت اصلی",
-          title: "کارت اصلی — مریم رضایی",
-          pan: "6104 •••• •••• 3419",
+          title: "کارت اصلی — بانک ملت",
+          number: "6104331234563419",
+          holder: "مریم رضایی",
           expiry: "07/29",
           balance: 48250000,
           connectedAccount: "حساب جاری ۱۲۰-۸۱۴۵۶۷۲-۰۰۱",
@@ -46,8 +44,9 @@ class HomeApi {
         CardModel(
           id: "p-save",
           label: "کارت پس‌انداز",
-          title: "کارت پس‌انداز",
-          pan: "6104 •••• •••• 8872",
+          title: "کارت پس‌انداز — بانک سامان",
+          number: "6219861234568872",
+          holder: "مریم رضایی",
           expiry: "02/28",
           balance: 132400000,
           connectedAccount: "سپرده کوتاه‌مدت ۱۲۰-۹۹۳۲۱۰۴-۰۰۲",
@@ -59,12 +58,40 @@ class HomeApi {
         CardModel(
           id: "p-gift",
           label: "کارت هدیه",
-          title: "کارت هدیه",
-          pan: "6104 •••• •••• 1250",
+          title: "کارت هدیه — بانک ملی",
+          number: "6037991234561250",
+          holder: "مریم رضایی",
           expiry: "11/26",
           balance: 2000000,
           connectedAccount: "بدون حساب متصل",
           status: CardStatus.expiringSoon,
+        ),
+        CardModel(
+          id: "p-visa",
+          label: "ویزا کارت ارزی",
+          title: "Visa — حساب ارزی",
+          number: "4111111111114242",
+          holder: "MARYAM REZAEI",
+          expiry: "09/27",
+          balance: 5200000,
+          connectedAccount: "حساب ارزی ۱۲۰-۵۵۴۴۳۳-۰۲۰",
+          transactions: <TransactionModel>[
+            TransactionModel(icon: Icons.point_of_sale, title: "App Store", subtitle: "امروز ۰۸:۱۰ · online", amount: 990000, direction: TransactionDirection.debit),
+            TransactionModel(icon: Icons.south_west, title: "شارژ حساب ارزی", subtitle: "دیروز ۱۲:۰۰", amount: 6000000, direction: TransactionDirection.credit),
+          ],
+        ),
+        CardModel(
+          id: "p-master",
+          label: "مسترکارت ارزی",
+          title: "Mastercard — حساب ارزی",
+          number: "5454545454545678",
+          holder: "MARYAM REZAEI",
+          expiry: "12/28",
+          balance: 3100000,
+          connectedAccount: "حساب ارزی ۱۲۰-۵۵۴۴۳۳-۰۲۰",
+          transactions: <TransactionModel>[
+            TransactionModel(icon: Icons.point_of_sale, title: "Spotify", subtitle: "۱۴۰۴/۰۵/۲۵ · online", amount: 350000, direction: TransactionDirection.debit),
+          ],
         ),
       ],
       transactions: <TransactionModel>[
@@ -80,7 +107,7 @@ class HomeApi {
       badge: "ک",
       name: "کافه ونک — پروندهٔ کسب‌وکار",
       short: "کسب‌وکار",
-      meta: "۲ حساب · ۱ کارت",
+      meta: "۲ حساب · ۲ کارت",
       accounts: <AccountModel>[
         AccountModel(badge: "ت", title: "حساب تجاری کافه ونک", number: "120-3311998-010", balance: 214700000, chips: <String>["درگاه پرداخت متصل", "تسویه روزانه"]),
         AccountModel(badge: "م", title: "حساب مالیات و بیمه", number: "120-7788221-011", balance: 36900000, chips: <String>["برداشت با تأیید دو نفره"]),
@@ -89,14 +116,28 @@ class HomeApi {
         CardModel(
           id: "b-main",
           label: "کارت تجاری",
-          title: "کارت تجاری کافه ونک",
-          pan: "6104 •••• •••• 5502",
+          title: "کارت تجاری — بانک تجارت",
+          number: "6273531234565502",
+          holder: "کافه ونک",
           expiry: "05/30",
           balance: 214700000,
           connectedAccount: "حساب تجاری ۱۲۰-۳۳۱۱۹۹۸-۰۱۰",
           transactions: <TransactionModel>[
             TransactionModel(icon: Icons.point_of_sale, title: "خرید لوازم مصرفی", subtitle: "امروز ۰۹:۵۰ · POS", amount: 2450000, direction: TransactionDirection.debit),
             TransactionModel(icon: Icons.south_west, title: "واریز از درگاه", subtitle: "دیروز ۲۳:۵۹", amount: 18420000, direction: TransactionDirection.credit),
+          ],
+        ),
+        CardModel(
+          id: "b-amex",
+          label: "امکس تجاری",
+          title: "American Express — Business",
+          number: "371449635398431",
+          holder: "VANAK CAFE",
+          expiry: "04/29",
+          balance: 12000000,
+          connectedAccount: "حساب تجاری ۱۲۰-۳۳۱۱۹۹۸-۰۱۰",
+          transactions: <TransactionModel>[
+            TransactionModel(icon: Icons.point_of_sale, title: "AWS", subtitle: "۱۴۰۴/۰۵/۲۰ · online", amount: 4200000, direction: TransactionDirection.debit),
           ],
         ),
       ],

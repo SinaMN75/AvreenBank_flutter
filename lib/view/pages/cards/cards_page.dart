@@ -45,7 +45,7 @@ class _CardsPageState extends State<CardsPage> {
             if (cards.isEmpty)
               UEmptyState(title: U.s.noCardsInThisProfile)
             else ...<Widget>[
-              _carousel(cards).pSymmetric(vertical: 8, horizontal: 16),
+              _carousel(cards).pSymmetric(vertical: 8),
               _cardDetail(context).pSymmetric(vertical: 8, horizontal: 16),
               _cardTransactions(context).pSymmetric(vertical: 8, horizontal: 16),
             ],
@@ -58,18 +58,12 @@ class _CardsPageState extends State<CardsPage> {
   Widget _carousel(List<CardModel> cards) => UCarousel<CardModel>(
     key: ValueKey<String?>(c.activeProfile.value?.id),
     items: cards,
-    height: 172,
     viewportFraction: 0.86,
-    itemSpacing: 10,
+    itemSpacing: 12,
     withIndicator: true,
     onPageChanged: (CardModel card, int index) => c.selectCard(card),
     itemBuilder: (BuildContext context, CardModel card, int index) => Obx(
-      () => BankCardView(
-        card,
-        selected: card.id == c.selectedCard.value?.id,
-        balanceHidden: c.balanceHidden.value,
-        statusLabel: _statusLabel(c.statusOf(card)),
-      ),
+      () => BankCardView(card, selected: card.id == c.selectedCard.value?.id),
     ),
   );
 
@@ -83,7 +77,7 @@ class _CardsPageState extends State<CardsPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          UTextTitleMedium(card.title, fontWeight: FontWeight.bold),
+          UTextTitleMedium(card.title, fontWeight: FontWeight.bold, maxLines: 1, overflow: TextOverflow.ellipsis),
           const SizedBox(height: 4),
           UTextLabelSmall("${U.s.connectedAccount}: ${card.connectedAccount}", color: scheme.onSurfaceVariant),
           const SizedBox(height: 14),
@@ -94,7 +88,6 @@ class _CardsPageState extends State<CardsPage> {
               UButton(
                 title: U.s.getPinBySms,
                 type: UButtonType.outlined,
-                borderColor: blocked ? scheme.primary : AppColors.danger,
                 onTap: () => UToast.success(message: U.s.pinSentBySms),
               ).expanded(),
             ],
@@ -144,17 +137,6 @@ class _CardsPageState extends State<CardsPage> {
       ],
     );
   });
-
-  String _statusLabel(CardStatus status) {
-    switch (status) {
-      case CardStatus.active:
-        return U.s.cardActive;
-      case CardStatus.expiringSoon:
-        return U.s.cardExpiringSoon;
-      case CardStatus.blocked:
-        return U.s.cardBlocked;
-    }
-  }
 
   void _openPinSheet() => UNavigator.bottomSheet<void>(const DynamicPinSheet());
 

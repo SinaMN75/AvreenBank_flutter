@@ -7,10 +7,11 @@ class CardModel {
     required this.id,
     required this.label,
     required this.title,
-    required this.pan,
+    required this.number,
+    required this.holder,
     required this.expiry,
-    required this.balance,
     required this.connectedAccount,
+    this.balance = 0,
     this.status = CardStatus.active,
     this.transactions = const <TransactionModel>[],
   });
@@ -18,10 +19,15 @@ class CardModel {
   final String id;
   final String label;
   final String title;
-  final String pan;
+  final String number;
+  final String holder;
   final String expiry;
-  final int balance;
   final String connectedAccount;
+  final int balance;
   final CardStatus status;
   final List<TransactionModel> transactions;
+
+  String get bin => number.length >= 6 ? number.substring(0, 6) : number;
+
+  String get last4 => number.length >= 4 ? number.substring(number.length - 4) : number;
 }
