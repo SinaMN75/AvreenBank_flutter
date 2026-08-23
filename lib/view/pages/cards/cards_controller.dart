@@ -10,6 +10,7 @@ class CardsController extends UBaseController {
   final Rxn<ProfileModel> activeProfile = Rxn<ProfileModel>();
   final Rxn<CardModel> selectedCard = Rxn<CardModel>();
   final RxBool balanceHidden = false.obs;
+  final RxBool autoPlay = false.obs;
   final RxSet<String> blockedCardIds = <String>{}.obs;
 
   List<CardModel> get cards => activeProfile.value?.cards ?? <CardModel>[];
@@ -31,6 +32,8 @@ class CardsController extends UBaseController {
   void selectCard(CardModel card) => selectedCard(card);
 
   void toggleBalance() => balanceHidden.toggle();
+
+  void toggleAutoPlay() => autoPlay.toggle();
 
   void toggleBlock(CardModel card) => isBlocked(card) ? blockedCardIds.remove(card.id) : blockedCardIds.add(card.id);
 

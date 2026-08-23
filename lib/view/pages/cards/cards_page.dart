@@ -31,26 +31,23 @@ class _CardsPageState extends State<CardsPage> {
     safeArea: false,
     body: Obx(() {
       if (c.state.isLoading()) return const Center(child: UProgressCircular());
+      final List<CardModel> cards = c.cards;
       return SingleChildScrollView(
         child: UColumn(
           crossAxisAlignment: CrossAxisAlignment.stretch,
-          padding: const EdgeInsets.fromLTRB(16, 12, 16, 24),
           children: <Widget>[
             ProfileSelectorTile(
               badge: c.activeProfile.value?.badge ?? "",
               name: c.activeProfile.value?.name ?? "",
               color: context.colorScheme.primary,
               onTap: () => _openProfileSheet(context),
-            ),
-            const SizedBox(height: 14),
-            if (c.cards.isEmpty)
+            ).pSymmetric(vertical: 8, horizontal: 16),
+            if (cards.isEmpty)
               UEmptyState(title: U.s.noCardsInThisProfile)
             else ...<Widget>[
-              _carousel(),
-              const SizedBox(height: 16),
-              _cardDetail(context),
-              const SizedBox(height: 20),
-              _cardTransactions(context),
+              _carousel(cards).pSymmetric(vertical: 8, horizontal: 16),
+              _cardDetail(context).pSymmetric(vertical: 8, horizontal: 16),
+              _cardTransactions(context).pSymmetric(vertical: 8, horizontal: 16),
             ],
           ],
         ),
@@ -58,47 +55,46 @@ class _CardsPageState extends State<CardsPage> {
     }),
   );
 
-  Widget _carousel() {
-    final CardModel? selected = c.selectedCard.value;
-    return USlider(
-      images: c.cards
-          .map(
-            (CardModel i) => BankCardView(
-              i,
-              selected: i.id == selected?.id,
-              balanceHidden: c.balanceHidden.value,
-              statusLabel: _statusLabel(c.statusOf(i)),
-              onTap: () => c.selectCard(i),
-            ),
-          )
-          .toList(),
-    );
-  }
+  Widget _carousel(List<CardModel> cards) => UCarousel<CardModel>(
+    key: ValueKey<String?>(c.activeProfile.value?.id),
+    items: cards,
+    height: 172,
+    viewportFraction: 0.86,
+    itemSpacing: 10,
+    withIndicator: true,
+    onPageChanged: (CardModel card, int index) => c.selectCard(card),
+    itemBuilder: (BuildContext context, CardModel card, int index) => Obx(
+      () => BankCardView(
+        card,
+        selected: card.id == c.selectedCard.value?.id,
+        balanceHidden: c.balanceHidden.value,
+        statusLabel: _statusLabel(c.statusOf(card)),
+      ),
+    ),
+  );
 
-  Widget _cardDetail(BuildContext context) {
+  Widget _cardDetail(BuildContext context) => Obx(() {
     final ColorScheme scheme = context.colorScheme;
     final CardModel? card = c.selectedCard.value;
     if (card == null) return const SizedBox();
     final bool blocked = c.isBlocked(card);
-    return UContainer(
+    return UCard(
       color: scheme.surface,
-      radius: 20,
-      border: Border.all(color: scheme.outlineVariant),
-      padding: const EdgeInsets.all(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          UTextTitleMedium(card.title, fontWeight: FontWeight.bold, maxLines: 1, overflow: TextOverflow.ellipsis),
+          UTextTitleMedium(card.title, fontWeight: FontWeight.bold),
           const SizedBox(height: 4),
           UTextLabelSmall("${U.s.connectedAccount}: ${card.connectedAccount}", color: scheme.onSurfaceVariant),
           const SizedBox(height: 14),
           Row(
             children: <Widget>[
-              UButton(title: U.s.showPinInApp, onTap: _openPinSheet).expanded(),
+              UButton(title: U.s.dynamicPin, onTap: _openPinSheet, foregroundColor: scheme.onPrimary).expanded(),
               const SizedBox(width: 8),
               UButton(
                 title: U.s.getPinBySms,
                 type: UButtonType.outlined,
+                borderColor: blocked ? scheme.primary : AppColors.danger,
                 onTap: () => UToast.success(message: U.s.pinSentBySms),
               ).expanded(),
             ],
@@ -121,15 +117,12 @@ class _CardsPageState extends State<CardsPage> {
               ).expanded(),
             ],
           ),
-          const SizedBox(height: 12),
-          UTextLabelSmall(U.s.dynamicPinHint, color: scheme.onSurfaceVariant),
         ],
-      ),
+      ).pAll(16),
     );
-  }
+  });
 
-  Widget _cardTransactions(BuildContext context) {
-    final ColorScheme scheme = context.colorScheme;
+  Widget _cardTransactions(BuildContext context) => Obx(() {
     final List<TransactionModel> items = c.selectedCard.value?.transactions ?? <TransactionModel>[];
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -139,11 +132,7 @@ class _CardsPageState extends State<CardsPage> {
         if (items.isEmpty)
           UEmptyState(title: U.s.noTransactions)
         else
-          UContainer(
-            clipBehavior: Clip.hardEdge,
-            color: scheme.surface,
-            radius: 18,
-            border: Border.all(color: scheme.outlineVariant),
+          UCard(
             child: ListView.separated(
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
@@ -154,7 +143,7 @@ class _CardsPageState extends State<CardsPage> {
           ),
       ],
     );
-  }
+  });
 
   String _statusLabel(CardStatus status) {
     switch (status) {

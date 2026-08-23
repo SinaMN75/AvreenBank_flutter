@@ -8,6 +8,7 @@ class BankCardView extends StatelessWidget {
     required this.statusLabel,
     required this.balanceHidden,
     this.onTap,
+    this.width,
     super.key,
   });
 
@@ -16,6 +17,7 @@ class BankCardView extends StatelessWidget {
   final String statusLabel;
   final bool balanceHidden;
   final VoidCallback? onTap;
+  final double? width;
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +25,7 @@ class BankCardView extends StatelessWidget {
     final Color fg = selected ? scheme.onPrimary : scheme.onSurface;
     final Color muted = selected ? scheme.onPrimary.withValues(alpha: 0.75) : scheme.onSurfaceVariant;
     return UContainer(
-      width: 260,
+      width: width,
       color: selected ? scheme.primary : scheme.surface,
       radius: 20,
       border: Border.all(color: selected ? scheme.primary : scheme.outlineVariant),
