@@ -64,6 +64,7 @@ class _HomePageState extends State<HomePage> {
           ProfileSelectorTile(
             badge: profile?.badge ?? "",
             name: profile?.name ?? "",
+            color: context.colorScheme.onPrimary,
             onTap: () => _openProfileSheet(context),
           ),
           _balanceBlock(scheme).pSymmetric(vertical: 12),
