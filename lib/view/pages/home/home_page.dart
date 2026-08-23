@@ -55,10 +55,13 @@ class _HomePageState extends State<HomePage> {
   Widget _header(BuildContext context) {
     final ColorScheme scheme = Theme.of(context).colorScheme;
     final ProfileModel? profile = c.activeProfile.value;
-    return UContainer(
-      padding: EdgeInsets.fromLTRB(20, context.padding.top + 16, 20, 24),
-      color: scheme.primary,
-      radius: 26,
+    final double topInset = MediaQuery.of(context).padding.top;
+    return Container(
+      padding: EdgeInsets.fromLTRB(20, topInset + 16, 20, 24),
+      decoration: BoxDecoration(
+        color: scheme.primary,
+        borderRadius: const BorderRadius.vertical(bottom: Radius.circular(26)),
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
@@ -68,53 +71,41 @@ class _HomePageState extends State<HomePage> {
             onTap: () => _openProfileSheet(context),
           ),
           _balanceBlock(scheme).pSymmetric(vertical: 12),
-          _quickActions().pSymmetric(vertical: 12),
+          _quickActions(),
         ],
       ),
     );
   }
 
-  Widget _balanceBlock(ColorScheme scheme) => Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    mainAxisSize: MainAxisSize.min,
-    children: <Widget>[
-      Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          UTextBodySmall(U.s.totalBalance, color: scheme.onPrimary.withValues(alpha: 0.70)),
-          _eyeToggle(scheme),
-        ],
-      ),
-      const SizedBox(height: 6),
-      Row(
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: <Widget>[
-          UTextDisplayMedium(c.balanceHidden.value ? "••••••••" : c.totalBalance.money, color: scheme.onPrimary, fontWeight: FontWeight.bold),
-          const SizedBox(width: 6),
-          Padding(
-            padding: const EdgeInsets.only(bottom: 4),
-            child: UTextBodySmall(U.s.toman, color: scheme.onPrimary.withValues(alpha: 0.72)),
-          ),
-        ],
-      ),
-    ],
-  );
-
-  Widget _eyeToggle(ColorScheme scheme) {
+  Widget _balanceBlock(ColorScheme scheme) {
     final bool hidden = c.balanceHidden.value;
-    return UContainer(
-      color: scheme.onPrimary.withValues(alpha: 0.10),
-      radius: 10,
-      padding: const EdgeInsets.symmetric(horizontal: 11, vertical: 6),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          Icon(hidden ? Icons.visibility_outlined : Icons.visibility_off_outlined, size: 15, color: scheme.onPrimary),
-          const SizedBox(width: 6),
-          UTextLabelSmall(hidden ? U.s.show : U.s.hide, color: scheme.onPrimary),
-        ],
-      ),
-    ).onTap(c.toggleBalance);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        UIconTextHorizontal(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisSize: MainAxisSize.max,
+          leading: UTextBodySmall(U.s.totalBalance, color: scheme.onPrimary.withValues(alpha: 0.70)),
+          trailing: UIconTextHorizontal(
+            leading: Icon(hidden ? Icons.visibility_outlined : Icons.visibility_off_outlined, size: 15, color: scheme.onPrimary),
+            trailing: UTextLabelSmall(hidden ? U.s.show : U.s.hide, color: scheme.onPrimary),
+          ).chip().onTapInk(c.toggleBalance),
+        ),
+        const SizedBox(height: 6),
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: <Widget>[
+            UTextDisplayMedium(c.balanceHidden.value ? "••••••••" : c.totalBalance.money, color: scheme.onPrimary, fontWeight: FontWeight.bold),
+            const SizedBox(width: 6),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 4),
+              child: UTextBodySmall(U.s.toman, color: scheme.onPrimary.withValues(alpha: 0.72)),
+            ),
+          ],
+        ),
+      ],
+    );
   }
 
   Widget _quickActions() {
