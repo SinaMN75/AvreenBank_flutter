@@ -1,10 +1,12 @@
+import "package:avreen_bank/data/data.dart";
 import "package:avreen_bank/main.dart";
-import "package:avreen_bank/view/pages/login/login_national_code/login_national_code_controller.dart";
-import "package:avreen_bank/view/pages/login/otp/login_otp_controller.dart";
+import "package:avreen_bank/view/pages/login/login_otp/login_otp_controller.dart";
 import "package:u/utilities.dart";
 
 class LoginOtpPage extends StatefulWidget {
-  const LoginOtpPage({super.key});
+  const LoginOtpPage({required this.preRegisterResponse, super.key});
+
+  final PreRegisterResponse preRegisterResponse;
 
   @override
   State<LoginOtpPage> createState() => _LoginOtpPageState();
@@ -12,6 +14,12 @@ class LoginOtpPage extends StatefulWidget {
 
 class _LoginOtpPageState extends State<LoginOtpPage> {
   final LoginOtpController c = LoginOtpController();
+
+  @override
+  void initState() {
+    c.init(preRegisterResponse: widget.preRegisterResponse);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) => UScaffold(
@@ -28,6 +36,7 @@ class _LoginOtpPageState extends State<LoginOtpPage> {
             maxLines: 2,
           ).pSymmetric(vertical: 8),
           UOtpField(
+            length: widget.preRegisterResponse.otpLength,
             controller: c.controllerOtp,
             keyboardMode: UOtpKeyboardMode.external,
             validator: UValidators.exactLength(length: 6, message: U.s.otpIsInvalid),

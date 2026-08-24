@@ -1,4 +1,5 @@
-import "package:avreen_bank/view/pages/main/main_page.dart";
+import "package:avreen_bank/data/data.dart";
+import "package:avreen_bank/view/pages/splash/splash_page.dart";
 import "package:u/utilities.dart";
 
 class MyHttpOverrides extends HttpOverrides {
@@ -19,7 +20,7 @@ Future<void> main() async {
       locale: Locale(locale),
       lightThemeData: Core.lightThemeData,
       darkThemeData: Core.darkThemeData,
-      home: const MainPage(),
+      home: const SplashPage(),
     ),
   );
 }
@@ -35,6 +36,7 @@ abstract class AppColors {
 }
 
 abstract class Core {
+  static RemoteDataSource dataSource = RemoteDataSource();
   static final ThemeData lightThemeData = _buildTheme(
     background: Colors.grey.shade100,
     scheme: ColorScheme.fromSeed(
@@ -80,7 +82,6 @@ abstract class Core {
     ),
     colorScheme: scheme,
     fontFamily: UFonts.vazir.fontFamily,
-    // Compact, uniform-weight type scale so titles are smaller and consistent across every screen.
     textTheme: TextTheme(
       displayLarge: TextStyle(fontSize: 40, fontWeight: FontWeight.bold, color: scheme.onSurface),
       displayMedium: TextStyle(fontSize: 32, fontWeight: FontWeight.bold, color: scheme.onSurface),
@@ -148,7 +149,7 @@ abstract class Core {
 }
 
 abstract class AppConstants {
-  static const String baseUrl = kDebugMode ? "https://localhost:7110/api/" : "https://localhost:7110/api/";
+  static const String baseUrl = kDebugMode ? "https://oa.avreenco.com:8080/api/credit/mo" : "https://oa.avreenco.com:8080/api/credit/mo";
 }
 
 abstract class AppImages {
