@@ -36,6 +36,9 @@ abstract class AppColors {
 }
 
 abstract class Core {
+  static late Rx<GetFileInfoResponse> fileInfo;
+  static late Rx<FileInfo> currentFile;
+
   static RemoteDataSource dataSource = RemoteDataSource();
   static final ThemeData lightThemeData = _buildTheme(
     background: Colors.grey.shade100,

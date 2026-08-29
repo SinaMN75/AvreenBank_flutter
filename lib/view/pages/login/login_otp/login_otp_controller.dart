@@ -24,6 +24,7 @@ class LoginOtpController extends UBaseController {
         personId: preRegisterResponse.personId,
       ),
       onOk: (RegisterResponse response) {
+        ULocalStorage.setToken(response.token!);
         ULoading.dismiss();
         UNavigator.offAll(const SplashPage());
       },

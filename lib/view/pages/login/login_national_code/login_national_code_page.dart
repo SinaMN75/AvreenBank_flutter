@@ -20,20 +20,24 @@ class _LoginNationalCodePageState extends State<LoginNationalCodePage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          const UImage(AppImages.avreen, width: 100, height: 100, borderRadius: 12).pSymmetric(vertical: 12),
-          const UTextHeadlineMedium("ورود به حساب کاربری", fontWeight: FontWeight.bold).pSymmetric(vertical: 8),
-          const UTextBodyMedium(
-            "کد ملی خود را وارد کنید. رمز یکبارمصرف به شمارهٔ موبایل ثبت‌شده به نامتان پیامک می‌شود.",
-            maxLines: 2,
-          ).pSymmetric(vertical: 8),
+          const ListTile(
+            dense: true,
+            leading: UImage(AppImages.avreen, borderRadius: 8),
+            title: Text("ورود به حساب کاربری"),
+            subtitle: Text("کد ملی خود را وارد کنید. رمز یکبارمصرف به شمارهٔ موبایل ثبت‌شده به نامتان پیامک می‌شود."),
+          ),
+          const Spacer(),
           UTextField(
             readOnly: true,
             controller: c.controllerNationalCode,
             labelText: U.s.nationalCode,
             validator: UValidators.iranianNationalCode(),
+            contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
+            fontSize: 18,
           ),
           const Spacer(),
           UNumericKeyboard(
+            fontSize: 32,
             actionsPosition: UNumericKeyboardActionsPosition.bottom,
             actions: <UNumericKeyboardAction>[UNumericKeyboardAction(label: "دریافت کد تایید", onTap: c.submit)],
             onBackspace: () => c.controllerNationalCode.dropLastCharacter(),

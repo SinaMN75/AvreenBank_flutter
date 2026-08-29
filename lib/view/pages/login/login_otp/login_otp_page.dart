@@ -23,18 +23,20 @@ class _LoginOtpPageState extends State<LoginOtpPage> {
 
   @override
   Widget build(BuildContext context) => UScaffold(
+    appBar: AppBar(),
     padding: const EdgeInsets.all(20),
     body: Form(
       key: c.formKey,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          const UImage(AppImages.avreen, width: 100, height: 100, borderRadius: 12).pSymmetric(vertical: 12),
-          const UTextHeadlineMedium("ورود به حساب کاربری", fontWeight: FontWeight.bold).pSymmetric(vertical: 8),
-          const UTextBodyMedium(
-            "کد ملی خود را وارد کنید. رمز یکبارمصرف به شمارهٔ موبایل ثبت‌شده به نامتان پیامک می‌شود.",
-            maxLines: 2,
-          ).pSymmetric(vertical: 8),
+          const ListTile(
+            dense: true,
+            leading: UImage(AppImages.avreen, borderRadius: 8),
+            title: Text("ورود به حساب کاربری"),
+            subtitle: Text("کد تایید به شماره ثبت شده در سامانه پیامک شد."),
+          ),
+          const Spacer(),
           UOtpField(
             length: widget.preRegisterResponse.otpLength,
             controller: c.controllerOtp,
@@ -44,6 +46,7 @@ class _LoginOtpPageState extends State<LoginOtpPage> {
           ),
           const Spacer(),
           UNumericKeyboard(
+            fontSize: 32,
             actionsPosition: UNumericKeyboardActionsPosition.bottom,
             actions: <UNumericKeyboardAction>[UNumericKeyboardAction(label: "دریافت کد تایید", onTap: c.submit)],
             onBackspace: () => c.controllerOtp.dropLastCharacter(),
