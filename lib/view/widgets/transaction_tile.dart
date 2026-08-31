@@ -5,13 +5,11 @@ import "package:u/utilities.dart";
 class TransactionTile extends StatelessWidget {
   const TransactionTile(
     this.info, {
-    this.showDivider = true,
     this.onTap,
     super.key,
   });
 
   final TransactionInfo info;
-  final bool showDivider;
   final VoidCallback? onTap;
 
   @override
@@ -23,13 +21,6 @@ class TransactionTile extends StatelessWidget {
 
     return UContainer(
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
-      border: showDivider
-          ? Border(
-              bottom: BorderSide(
-                color: scheme.outlineVariant.withValues(alpha: 0.6),
-              ),
-            )
-          : null,
       child: Row(
         children: <Widget>[
           UIconBackground(

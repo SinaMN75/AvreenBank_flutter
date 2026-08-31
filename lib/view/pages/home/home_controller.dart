@@ -29,41 +29,38 @@ class HomeController extends UBaseController {
 
   void init() {
     activeProfile(Core.currentFile.value);
-    _loadTransactions();
   }
 
-  Future<void> _loadTransactions() async {
-    state.loading();
-    final FileInfo? profile = activeProfile.value;
-    if (profile == null) return;
-
-    await Core.dataSource.viewTransaction(
-      p: TransactionParams(fileId: profile.fileId),
-      onOk: (TransactionResponse response) {
-        transactionResponse(response);
-        state.loaded();
-      },
-      onError: (ErrorResponse e) {
-        UToast.errorToast(message: e.errorMessage);
-        state.error();
-      },
-      onException: (String e) {
-        UToast.errorToast(message: e);
-        state.error();
-      },
-    );
-  }
+  // Future<void> _loadTransactions() async {
+  //   state.loading();
+  //   final FileInfo? profile = activeProfile.value;
+  //   if (profile == null) return;
+  //
+  //   await Core.dataSource.viewTransaction(
+  //     p: TransactionParams(fileId: profile.fileId),
+  //     onOk: (TransactionResponse response) {
+  //       transactionResponse(response);
+  //       state.loaded();
+  //     },
+  //     onError: (ErrorResponse e) {
+  //       UToast.errorToast(message: e.errorMessage);
+  //       state.error();
+  //     },
+  //     onException: (String e) {
+  //       UToast.errorToast(message: e);
+  //       state.error();
+  //     },
+  //   );
+  // }
 
   Future<void> selectProfile(FileInfo profile) async {
     activeProfile(profile);
     filter(TransactionFilter.all);
-    await _loadTransactions();
   }
 
   void toggleBalance() => balanceHidden.toggle();
 
   void setFilter(TransactionFilter value) {
-    _loadTransactions();
     filter(value);
   }
 }

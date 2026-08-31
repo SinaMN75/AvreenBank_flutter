@@ -4,7 +4,6 @@ import "package:avreen_bank/view/pages/home/home_controller.dart";
 import "package:avreen_bank/view/widgets/account_card.dart";
 import "package:avreen_bank/view/widgets/profile_selector_tile.dart";
 import "package:avreen_bank/view/widgets/profile_sheet.dart";
-import "package:avreen_bank/view/widgets/transaction_tile.dart";
 import "package:u/utilities.dart";
 
 class HomePage extends StatefulWidget {
@@ -28,21 +27,13 @@ class _HomePageState extends UState<HomePage> {
     safeArea: false,
     body: Obx(() {
       if (c.state.isLoading()) return const Center(child: UProgressCircular());
-      return SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            _header(context),
-            UColumn(
-              padding: const EdgeInsets.all(20),
-              children: <Widget>[
-                _accountsSection(context),
-                const SizedBox(height: 24),
-                _transactionsSection(context),
-              ],
-            ),
-          ],
-        ),
+      return UColumn(
+        scrollable: Axis.vertical,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          _header(context),
+          _accountsSection(context).pAll(16),
+        ],
       );
     }),
   );
@@ -83,54 +74,6 @@ class _HomePageState extends UState<HomePage> {
         ),
     ],
   );
-
-  Widget _transactionsSection(BuildContext context) {
-    final ColorScheme scheme = Theme.of(context).colorScheme;
-    final List<TransactionInfo> items = c.visibleTransactions;
-    final Map<TransactionFilter, String> filterLabels = <TransactionFilter, String>{
-      TransactionFilter.all: U.s.all,
-      TransactionFilter.credit: U.s.credit,
-      TransactionFilter.debit: U.s.debit,
-    };
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        UKeyValue(
-          leading: Text(U.s.recentTransactions),
-          trailing: UChipChoice<TransactionFilter>(
-            options: filterLabels.keys.toList(),
-            selected: c.filter.value,
-            spacing: 6,
-            onChanged: (int index, bool isSelected, TransactionFilter item) => c.setFilter(item),
-            chipBuilder: (TransactionFilter item, bool isSelected, int index) => UContainer(
-              color: isSelected ? scheme.primary : scheme.surface,
-              radius: 9,
-              border: Border.all(color: isSelected ? scheme.primary : scheme.outlineVariant),
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-              child: UTextLabelSmall(filterLabels[item]!, color: isSelected ? scheme.onPrimary : scheme.onSurfaceVariant),
-            ),
-          ),
-        ),
-        const SizedBox(height: 10),
-        if (items.isEmpty)
-          UEmptyState(title: U.s.noTransactions)
-        else
-          UContainer(
-            clipBehavior: Clip.hardEdge,
-            color: scheme.surface,
-            radius: 18,
-            border: Border.all(color: scheme.outlineVariant),
-            child: ListView.separated(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemBuilder: (BuildContext _, int index) => TransactionTile(items[index], showDivider: index != items.length - 1),
-              separatorBuilder: (BuildContext _, int _) => const Divider(),
-              itemCount: items.length,
-            ),
-          ),
-      ],
-    );
-  }
 
   void _openProfileSheet(BuildContext context) => UNavigator.bottomSheet<void>(
     ProfileSheet(
