@@ -20,35 +20,11 @@ class CardsController extends UBaseController {
     _loadTransactions();
   }
 
-  // Future<void> fetchData() async {
-  //   state.loading();
-  //   await Core.dataSource.getFileInfo(
-  //     onOk: (GetFileInfoResponse response) async {
-  //       profiles.assignAll(response.fileInfoList ?? <FileInfo>[]);
-  //       if (profiles.isNotEmpty) {
-  //         _applyProfile(profiles.first);
-  //       }
-  //     },
-  //     onError: (ErrorResponse e) {
-  //       UToast.errorToast(message: e.errorMessage);
-  //       state.error();
-  //     },
-  //     onException: (String e) {
-  //       UToast.errorToast(message: e);
-  //       state.error();
-  //     },
-  //   );
-  //   state.loaded();
-  // }
-
   Future<void> _loadTransactions() async {
     final FileInfo? profile = activeProfile.value;
     if (profile == null) return;
-
-    final TransactionParams params = TransactionParams(fileId: profile.fileId);
-
     await Core.dataSource.viewTransaction(
-      p: params,
+      p: TransactionParams(fileId: profile.fileId),
       onOk: (TransactionResponse response) {
         transactionResponse(response);
       },

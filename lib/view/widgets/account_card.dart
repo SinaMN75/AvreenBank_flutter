@@ -1,11 +1,14 @@
 import "package:avreen_bank/data/data.dart";
+import "package:avreen_bank/main.dart";
+import "package:avreen_bank/view/pages/statements/statement_page.dart";
 import "package:u/utilities.dart";
 
 class AccountCard extends StatelessWidget {
-  const AccountCard(this.account, {required this.balanceHidden, super.key});
+  const AccountCard({required this.account, required this.index, required this.balanceHidden, super.key});
 
   final AccountInfo account;
   final bool balanceHidden;
+  final int index;
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +24,7 @@ class AccountCard extends StatelessWidget {
           ListTile(
             dense: true,
             contentPadding: EdgeInsets.zero,
-            leading: ULetterBadge(account.accountTypeName ?? "---", background: scheme.primary.withValues(alpha: 0.12), foreground: scheme.primary),
+            leading: ULetterBadge((index + 1).toString(), background: scheme.primary.withValues(alpha: 0.12), foreground: scheme.primary),
             title: UIconTextVertical(
               spaceBetween: 0,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -29,6 +32,16 @@ class AccountCard extends StatelessWidget {
               trailing: UTextLabelSmall(account.debitExpireDate ?? "---", color: scheme.onSurfaceVariant, textDirection: TextDirection.ltr),
             ),
             trailing: UTextTitleMedium(balanceHidden ? "••••••" : account.availableBalance.rial(), fontWeight: FontWeight.bold),
+          ),
+          Row(
+            children: <Widget>[
+              UButton(
+                title: U.s.statement,
+                type: UButtonType.text,
+                icon: const Icon(Icons.show_chart, color: AppColors.brand),
+                onTap: () => UNavigator.push(TransactionsPage(accountInfo: account)),
+              ),
+            ],
           ),
         ],
       ),

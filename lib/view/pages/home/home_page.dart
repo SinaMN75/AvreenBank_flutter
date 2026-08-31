@@ -1,7 +1,6 @@
 import "package:avreen_bank/data/data.dart";
 import "package:avreen_bank/main.dart";
 import "package:avreen_bank/view/pages/home/home_controller.dart";
-import "package:avreen_bank/view/pages/statements/statement_page.dart";
 import "package:avreen_bank/view/widgets/account_card.dart";
 import "package:avreen_bank/view/widgets/profile_selector_tile.dart";
 import "package:avreen_bank/view/widgets/profile_sheet.dart";
@@ -15,7 +14,7 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends UState<HomePage> {
   final HomeController c = HomeController();
 
   @override
@@ -49,62 +48,19 @@ class _HomePageState extends State<HomePage> {
   );
 
   Widget _header(BuildContext context) {
-    final ColorScheme scheme = Theme.of(context).colorScheme;
     final FileInfo? profile = c.activeProfile.value;
-    final double topInset = MediaQuery.of(context).padding.top;
     return Container(
-      padding: EdgeInsets.fromLTRB(20, topInset + 16, 20, 24),
+      padding: EdgeInsets.fromLTRB(20, MediaQuery.of(context).padding.top + 16, 20, 24),
       decoration: BoxDecoration(
         color: scheme.primary,
         borderRadius: const BorderRadius.vertical(bottom: Radius.circular(26)),
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-          ProfileSelectorTile(
-            badge: profile?.fileTitle.isNotEmpty == true ? profile!.fileTitle[0] : "",
-            name: profile?.fileTitle ?? "",
-            color: context.colorScheme.onPrimary,
-            onTap: () => _openProfileSheet(context),
-          ),
-          _balanceBlock(scheme).pSymmetric(vertical: 12),
-          _quickActions(),
-        ],
+      child: ProfileSelectorTile(
+        badge: profile?.fileTitle.isNotEmpty == true ? profile!.fileTitle[0] : "",
+        name: profile?.fileTitle ?? "",
+        color: context.colorScheme.onPrimary,
+        onTap: () => _openProfileSheet(context),
       ),
-    );
-  }
-
-  Widget _balanceBlock(ColorScheme scheme) {
-    final bool hidden = c.balanceHidden.value;
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisSize: MainAxisSize.min,
-      children: <Widget>[
-        UKeyValue(
-          leading: UTextBodySmall(U.s.totalBalance, color: scheme.onPrimary.withValues(alpha: 0.70)),
-          trailing: UIconTextHorizontal(
-            leading: Icon(hidden ? Icons.visibility_outlined : Icons.visibility_off_outlined, size: 15, color: scheme.onPrimary),
-            trailing: UTextLabelSmall(hidden ? U.s.show : U.s.hide, color: scheme.onPrimary),
-          ).chip(backgroundColor: context.colorScheme.onPrimary.withValues(alpha: 0.10)).onTapInk(c.toggleBalance),
-        ),
-        const SizedBox(height: 6),
-        UIconTextHorizontal(
-          leading: UTextDisplayMedium(c.balanceHidden.value ? "••••••••" : c.totalBalance.separate3By3(), color: scheme.onPrimary, fontWeight: FontWeight.bold),
-          trailing: UTextBodySmall(U.s.toman, color: scheme.onPrimary.withValues(alpha: 0.72)),
-        ),
-      ],
-    );
-  }
-
-  Widget _quickActions() {
-    final ColorScheme scheme = Theme.of(context).colorScheme;
-    return Row(
-      children: <Widget>[
-        UIconTextVertical(
-          leading: Icon(Icons.description_outlined, color: scheme.onPrimary),
-          trailing: UTextBodySmall(U.s.statement, color: scheme.onPrimary),
-        ).chip(backgroundColor: scheme.onPrimary.withValues(alpha: 0.10), margin: const EdgeInsets.symmetric(horizontal: 8)).onTap(() => UNavigator.push(const TransactionsPage())).expanded(),
-      ],
     );
   }
 
@@ -122,10 +78,7 @@ class _HomePageState extends State<HomePage> {
         Column(
           children: List<Widget>.generate(
             c.accounts.length,
-            (int index) {
-              final AccountInfo account = c.accounts[index];
-              return AccountCard(account, balanceHidden: c.balanceHidden.value).pSymmetric(vertical: 2);
-            },
+            (int index) => AccountCard(account: c.accounts[index], balanceHidden: c.balanceHidden.value, index: index).pSymmetric(vertical: 2),
           ),
         ),
     ],
