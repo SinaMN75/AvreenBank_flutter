@@ -1,5 +1,14 @@
 part of "../data.dart";
 
+extension TransactionResponseExtension on TransactionInfo {
+  IconData terminalTypeIconData() {
+    if (terminalType == "08") return Icons.mobile_friendly;
+    if (terminalType == "03") return Icons.credit_card;
+    if (terminalType == "12") return Icons.online_prediction;
+    return Icons.shopping_cart;
+  }
+}
+
 class TransactionResponse {
   TransactionResponse({
     required this.transactionInfoList,

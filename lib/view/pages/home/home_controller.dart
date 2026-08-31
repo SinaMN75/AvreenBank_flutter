@@ -1,49 +1,69 @@
-import "package:avreen_bank/data/home_api.dart";
-import "package:avreen_bank/model/account_model.dart";
-import "package:avreen_bank/model/profile_model.dart";
-import "package:avreen_bank/model/transaction_model.dart";
+import "package:avreen_bank/data/data.dart";
+import "package:avreen_bank/main.dart";
 import "package:u/utilities.dart";
 
 enum TransactionFilter { all, credit, debit }
 
 class HomeController extends UBaseController {
-  final HomeApi _api = const HomeApi();
-
-  final RxList<ProfileModel> profiles = RxList<ProfileModel>();
-  final Rxn<ProfileModel> activeProfile = Rxn<ProfileModel>();
+  final Rxn<FileInfo> activeProfile = Rxn<FileInfo>();
   final RxBool balanceHidden = false.obs;
   final Rx<TransactionFilter> filter = TransactionFilter.all.obs;
+  final Rxn<GetFileInfoResponse> fileInfoResponse = Rxn<GetFileInfoResponse>();
+  final Rxn<TransactionResponse> transactionResponse = Rxn<TransactionResponse>();
 
-  List<AccountModel> get accounts => activeProfile.value?.accounts ?? <AccountModel>[];
+  List<AccountInfo> get accounts => activeProfile.value?.accountInfoList ?? <AccountInfo>[];
 
-  int get totalBalance => activeProfile.value?.totalBalance ?? 0;
+  int get totalBalance => accounts.fold<int>(0, (int sum, AccountInfo account) => sum + (account.availableBalance ?? 0));
 
-  List<TransactionModel> get visibleTransactions {
-    final List<TransactionModel> all = activeProfile.value?.transactions ?? <TransactionModel>[];
+  List<TransactionInfo> get visibleTransactions {
+    final List<TransactionInfo> all = transactionResponse.value?.transactionInfoList ?? <TransactionInfo>[];
     switch (filter.value) {
       case TransactionFilter.all:
         return all;
       case TransactionFilter.credit:
-        return all.where((TransactionModel transaction) => transaction.direction == TransactionDirection.credit).toList();
+        return all.where((TransactionInfo tx) => (tx.debitType ?? 0) == 0).toList();
       case TransactionFilter.debit:
-        return all.where((TransactionModel transaction) => transaction.direction == TransactionDirection.debit).toList();
+        return all.where((TransactionInfo tx) => (tx.debitType ?? 0) != 0).toList();
     }
   }
 
-  Future<void> fetchData() async {
-    state.loading();
-    final List<ProfileModel> result = await _api.getProfiles();
-    profiles.assignAll(result);
-    activeProfile(result.isEmpty ? null : result.first);
-    state.loaded();
+  void init() {
+    activeProfile(Core.currentFile.value);
+    _loadTransactions();
   }
 
-  void selectProfile(ProfileModel profile) {
+  Future<void> _loadTransactions() async {
+    state.loading();
+    final FileInfo? profile = activeProfile.value;
+    if (profile == null) return;
+
+    await Core.dataSource.viewTransaction(
+      p: TransactionParams(fileId: profile.fileId),
+      onOk: (TransactionResponse response) {
+        transactionResponse(response);
+        state.loaded();
+      },
+      onError: (ErrorResponse e) {
+        UToast.errorToast(message: e.errorMessage);
+        state.error();
+      },
+      onException: (String e) {
+        UToast.errorToast(message: e);
+        state.error();
+      },
+    );
+  }
+
+  Future<void> selectProfile(FileInfo profile) async {
     activeProfile(profile);
     filter(TransactionFilter.all);
+    await _loadTransactions();
   }
 
   void toggleBalance() => balanceHidden.toggle();
 
-  void setFilter(TransactionFilter value) => filter(value);
+  void setFilter(TransactionFilter value) {
+    _loadTransactions();
+    filter(value);
+  }
 }

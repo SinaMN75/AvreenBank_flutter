@@ -22,6 +22,6 @@ class _SplashPageState extends State<SplashPage> {
   Widget build(BuildContext context) => UScaffold(
     color: Theme.of(context).colorScheme.scrim,
     alignment: Alignment.center,
-    body: UImage(AppImages.logo, width: context.width - 40),
+    body: const UImage(AppImages.logo, width: 200, height: 200),
   );
 }

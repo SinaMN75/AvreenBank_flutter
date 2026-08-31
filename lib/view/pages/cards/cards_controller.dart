@@ -1,45 +1,82 @@
-import "package:avreen_bank/data/home_api.dart";
-import "package:avreen_bank/model/card_model.dart";
-import "package:avreen_bank/model/profile_model.dart";
+import "package:avreen_bank/data/data.dart";
+import "package:avreen_bank/main.dart";
 import "package:u/utilities.dart";
 
 class CardsController extends UBaseController {
-  final HomeApi _api = const HomeApi();
-
-  final RxList<ProfileModel> profiles = RxList<ProfileModel>();
-  final Rxn<ProfileModel> activeProfile = Rxn<ProfileModel>();
-  final Rxn<CardModel> selectedCard = Rxn<CardModel>();
+  final RxList<FileInfo> profiles = RxList<FileInfo>();
+  final Rxn<FileInfo> activeProfile = Rxn<FileInfo>();
+  final Rxn<PanInfo> selectedCard = Rxn<PanInfo>();
   final RxBool balanceHidden = false.obs;
   final RxBool autoPlay = false.obs;
   final RxSet<String> blockedCardIds = <String>{}.obs;
+  final Rxn<TransactionResponse> transactionResponse = Rxn<TransactionResponse>();
 
-  List<CardModel> get cards => activeProfile.value?.cards ?? <CardModel>[];
+  List<PanInfo> get cards => activeProfile.value?.panInfoList ?? <PanInfo>[];
 
-  bool isBlocked(CardModel card) => blockedCardIds.contains(card.id);
+  bool isBlocked(PanInfo card) => blockedCardIds.contains(card.panId);
 
-  CardStatus statusOf(CardModel card) => isBlocked(card) ? CardStatus.blocked : card.status;
-
-  Future<void> fetchData() async {
-    state.loading();
-    final List<ProfileModel> result = await _api.getProfiles();
-    profiles.assignAll(result);
-    _applyProfile(result.isEmpty ? null : result.first);
-    state.loaded();
+  void init() {
+    activeProfile(Core.currentFile.value);
+    _loadTransactions();
   }
 
-  void selectProfile(ProfileModel profile) => _applyProfile(profile);
+  // Future<void> fetchData() async {
+  //   state.loading();
+  //   await Core.dataSource.getFileInfo(
+  //     onOk: (GetFileInfoResponse response) async {
+  //       profiles.assignAll(response.fileInfoList ?? <FileInfo>[]);
+  //       if (profiles.isNotEmpty) {
+  //         _applyProfile(profiles.first);
+  //       }
+  //     },
+  //     onError: (ErrorResponse e) {
+  //       UToast.errorToast(message: e.errorMessage);
+  //       state.error();
+  //     },
+  //     onException: (String e) {
+  //       UToast.errorToast(message: e);
+  //       state.error();
+  //     },
+  //   );
+  //   state.loaded();
+  // }
 
-  void selectCard(CardModel card) => selectedCard(card);
+  Future<void> _loadTransactions() async {
+    final FileInfo? profile = activeProfile.value;
+    if (profile == null) return;
+
+    final TransactionParams params = TransactionParams(fileId: profile.fileId);
+
+    await Core.dataSource.viewTransaction(
+      p: params,
+      onOk: (TransactionResponse response) {
+        transactionResponse(response);
+      },
+      onError: (ErrorResponse e) {
+        UToast.errorToast(message: e.errorMessage);
+      },
+      onException: (String e) {
+        UToast.errorToast(message: e);
+      },
+    );
+  }
+
+  Future<void> selectProfile(FileInfo profile) async {
+    _applyProfile(profile);
+    await _loadTransactions();
+  }
+
+  void selectCard(PanInfo card) => selectedCard(card);
 
   void toggleBalance() => balanceHidden.toggle();
 
   void toggleAutoPlay() => autoPlay.toggle();
 
-  void toggleBlock(CardModel card) => isBlocked(card) ? blockedCardIds.remove(card.id) : blockedCardIds.add(card.id);
+  void toggleBlock(PanInfo card) => isBlocked(card) ? blockedCardIds.remove(card.panId) : blockedCardIds.add(card.panId);
 
-  void _applyProfile(ProfileModel? profile) {
+  void _applyProfile(FileInfo? profile) {
     activeProfile(profile);
-    final List<CardModel> list = profile?.cards ?? <CardModel>[];
+    final List<PanInfo> list = profile?.panInfoList ?? <PanInfo>[];
     selectedCard(list.isEmpty ? null : list.first);
   }
 }

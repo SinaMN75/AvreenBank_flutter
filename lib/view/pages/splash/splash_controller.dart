@@ -21,8 +21,6 @@ class SplashController extends UBaseController {
             UToast.error(message: response);
           },
         );
-
-        UNavigator.offAll(const MainPage());
       } else {
         UNavigator.offAll(const LoginNationalCodePage());
       }

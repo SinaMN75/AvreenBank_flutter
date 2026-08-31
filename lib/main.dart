@@ -69,7 +69,7 @@ abstract class Core {
       scrolledUnderElevation: 0,
       centerTitle: true,
       iconTheme: IconThemeData(color: scheme.onSurface),
-      titleTextStyle: TextStyle(fontFamily: UFonts.vazir.fontFamily, color: scheme.onSurface, fontSize: 18, fontWeight: FontWeight.bold),
+      titleTextStyle: TextStyle(fontFamily: UFonts.iranSansFaNum.fontFamily, color: scheme.onSurface, fontSize: 18, fontWeight: FontWeight.bold),
     ),
     dividerTheme: DividerThemeData(color: scheme.outlineVariant, space: 0, thickness: 1),
     cardTheme: CardThemeData(
@@ -84,7 +84,7 @@ abstract class Core {
       ),
     ),
     colorScheme: scheme,
-    fontFamily: UFonts.vazir.fontFamily,
+    fontFamily: UFonts.iranSansFaNum.fontFamily,
     textTheme: TextTheme(
       displayLarge: TextStyle(fontSize: 40, fontWeight: FontWeight.bold, color: scheme.onSurface),
       displayMedium: TextStyle(fontSize: 32, fontWeight: FontWeight.bold, color: scheme.onSurface),
@@ -111,7 +111,6 @@ abstract class Core {
         borderRadius: BorderRadius.circular(14),
         borderSide: const BorderSide(color: Colors.grey, width: 0.3),
       ),
-      // Thin (1px) selected/error strokes so focused fields don't show Material's default thick border.
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(14),
         borderSide: BorderSide(color: scheme.primary, width: 0.7),
@@ -125,14 +124,14 @@ abstract class Core {
         borderSide: BorderSide(color: scheme.error, width: 0.7),
       ),
       outlineBorder: const BorderSide(color: Colors.transparent, width: 0.7),
-      labelStyle: TextStyle(fontFamily: UFonts.vazir.fontFamily, color: scheme.onSurfaceVariant, fontSize: 12),
+      labelStyle: TextStyle(fontFamily: UFonts.iranSansFaNum.fontFamily, color: scheme.onSurfaceVariant, fontSize: 12),
       filled: true,
       fillColor: scheme.surface,
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
         foregroundColor: scheme.onPrimary,
-        textStyle: TextStyle(fontFamily: UFonts.vazir.fontFamily, color: scheme.primary, fontSize: 16, fontWeight: FontWeight.w600),
+        textStyle: TextStyle(fontFamily: UFonts.iranSansFaNum.fontFamily, color: scheme.primary, fontSize: 16, fontWeight: FontWeight.w600),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
         backgroundColor: scheme.primary,
         elevation: 0,
@@ -157,8 +156,8 @@ abstract class AppConstants {
 
 abstract class AppImages {
   static const String _base = "lib/assets/images";
-  static const String logo = "$_base/logo.png";
-  static const String avreen = "$_base/avreen.png";
+  static const String logo = "$_base/logo.jpeg";
+  static const String avreen = "$_base/avreen.jpeg";
 }
 
 abstract class AppIcons {

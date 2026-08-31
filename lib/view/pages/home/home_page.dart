@@ -1,7 +1,7 @@
-import "package:avreen_bank/model/profile_model.dart";
-import "package:avreen_bank/model/quick_action.dart";
-import "package:avreen_bank/model/transaction_model.dart";
+import "package:avreen_bank/data/data.dart";
+import "package:avreen_bank/main.dart";
 import "package:avreen_bank/view/pages/home/home_controller.dart";
+import "package:avreen_bank/view/pages/statements/statement_page.dart";
 import "package:avreen_bank/view/widgets/account_card.dart";
 import "package:avreen_bank/view/widgets/profile_selector_tile.dart";
 import "package:avreen_bank/view/widgets/profile_sheet.dart";
@@ -20,7 +20,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
-    c.fetchData();
+    c.init();
     super.initState();
   }
 
@@ -50,7 +50,7 @@ class _HomePageState extends State<HomePage> {
 
   Widget _header(BuildContext context) {
     final ColorScheme scheme = Theme.of(context).colorScheme;
-    final ProfileModel? profile = c.activeProfile.value;
+    final FileInfo? profile = c.activeProfile.value;
     final double topInset = MediaQuery.of(context).padding.top;
     return Container(
       padding: EdgeInsets.fromLTRB(20, topInset + 16, 20, 24),
@@ -62,8 +62,8 @@ class _HomePageState extends State<HomePage> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
           ProfileSelectorTile(
-            badge: profile?.badge ?? "",
-            name: profile?.name ?? "",
+            badge: profile?.fileTitle.isNotEmpty == true ? profile!.fileTitle[0] : "",
+            name: profile?.fileTitle ?? "",
             color: context.colorScheme.onPrimary,
             onTap: () => _openProfileSheet(context),
           ),
@@ -98,19 +98,13 @@ class _HomePageState extends State<HomePage> {
 
   Widget _quickActions() {
     final ColorScheme scheme = Theme.of(context).colorScheme;
-    final List<QuickAction> actions = <QuickAction>[
-      QuickAction(icon: Icons.description_outlined, label: U.s.statement, onTap: () {}),
-      QuickAction(icon: Icons.smartphone_outlined, label: U.s.chargeAndPackage, onTap: () {}),
-    ];
     return Row(
-      children: actions
-          .map(
-            (QuickAction action) => UIconTextVertical(
-              leading: Icon(action.icon, color: scheme.onPrimary),
-              trailing: UTextBodySmall(action.label, color: scheme.onPrimary),
-            ).chip(backgroundColor: scheme.onPrimary.withValues(alpha: 0.10), margin: const EdgeInsets.symmetric(horizontal: 8)).onTap(action.onTap).expanded(),
-          )
-          .toList(),
+      children: <Widget>[
+        UIconTextVertical(
+          leading: Icon(Icons.description_outlined, color: scheme.onPrimary),
+          trailing: UTextBodySmall(U.s.statement, color: scheme.onPrimary),
+        ).chip(backgroundColor: scheme.onPrimary.withValues(alpha: 0.10), margin: const EdgeInsets.symmetric(horizontal: 8)).onTap(() => UNavigator.push(const TransactionsPage())).expanded(),
+      ],
     );
   }
 
@@ -128,7 +122,10 @@ class _HomePageState extends State<HomePage> {
         Column(
           children: List<Widget>.generate(
             c.accounts.length,
-            (int index) => AccountCard(c.accounts[index], balanceHidden: c.balanceHidden.value).pSymmetric(vertical: 2),
+            (int index) {
+              final AccountInfo account = c.accounts[index];
+              return AccountCard(account, balanceHidden: c.balanceHidden.value).pSymmetric(vertical: 2);
+            },
           ),
         ),
     ],
@@ -136,7 +133,7 @@ class _HomePageState extends State<HomePage> {
 
   Widget _transactionsSection(BuildContext context) {
     final ColorScheme scheme = Theme.of(context).colorScheme;
-    final List<TransactionModel> items = c.visibleTransactions;
+    final List<TransactionInfo> items = c.visibleTransactions;
     final Map<TransactionFilter, String> filterLabels = <TransactionFilter, String>{
       TransactionFilter.all: U.s.all,
       TransactionFilter.credit: U.s.credit,
@@ -184,9 +181,9 @@ class _HomePageState extends State<HomePage> {
 
   void _openProfileSheet(BuildContext context) => UNavigator.bottomSheet<void>(
     ProfileSheet(
-      profiles: c.profiles,
-      activeId: c.activeProfile.value?.id,
-      onSelect: (ProfileModel profile) {
+      profiles: Core.fileInfo.value.fileInfoList,
+      activeId: c.activeProfile.value?.fileId,
+      onSelect: (FileInfo profile) {
         c.selectProfile(profile);
         UNavigator.back();
       },

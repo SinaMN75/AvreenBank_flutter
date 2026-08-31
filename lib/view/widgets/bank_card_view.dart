@@ -1,21 +1,21 @@
+import "package:avreen_bank/data/data.dart";
 import "package:avreen_bank/data/iran_banks.dart";
 import "package:avreen_bank/main.dart";
-import "package:avreen_bank/model/card_model.dart";
 import "package:u/utilities.dart";
 
 class BankCardView extends StatelessWidget {
   const BankCardView(this.card, {required this.selected, this.height = 190, super.key});
 
-  final CardModel card;
+  final PanInfo card;
   final bool selected;
   final double height;
 
   @override
   Widget build(BuildContext context) {
-    final bool isIran = IranBanks.isIranianCard(card.number);
-    final CardBrand brand = CardBrandDetector.detect(card.number);
-    final List<Color> colors = isIran ? IranBanks.gradientOf(card.bin) : CardBrandDetector.gradientColors(brand);
-    final String? asset = isIran ? IranBanks.assetOf(card.bin) : null;
+    final bool isIran = IranBanks.isIranianCard(card.pan);
+    final CardBrand brand = CardBrandDetector.detect(card.pan);
+    final List<Color> colors = isIran ? IranBanks.gradientOf(card.pan) : CardBrandDetector.gradientColors(brand);
+    final String? asset = isIran ? IranBanks.assetOf(card.pan) : null;
     final Widget? logo = asset == null
         ? null
         : UContainer(
@@ -35,14 +35,14 @@ class BankCardView extends StatelessWidget {
           builder: (BuildContext context, BoxConstraints constraints) => CreditCardWidget(
             width: constraints.maxWidth,
             height: height,
-            cardNumber: _mask(card.number),
-            expiryDate: card.expiry,
-            cardHolderName: card.holder,
+            cardNumber: _mask(card.pan),
+            expiryDate: card.expiredDate ?? "--/--",
+            cardHolderName: "${Core.fileInfo.value.firstName ?? "---"} ${Core.fileInfo.value.lastName ?? "---"}",
             cvvCode: "",
             showBackView: false,
             obscureCardNumber: false,
             gradient: LinearGradient(colors: colors, begin: Alignment.topRight, end: Alignment.bottomLeft),
-            title: isIran ? IranBanks.nameOf(card.number) : null,
+            title: isIran ? IranBanks.nameOf(card.pan) : null,
             logo: logo,
             brandLabel: isIran ? null : CardBrandDetector.label(brand),
           ),

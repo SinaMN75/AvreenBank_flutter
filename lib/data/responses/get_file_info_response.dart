@@ -2,7 +2,7 @@ part of "../data.dart";
 
 extension GetFileInfoResponseExtension on GetFileInfoResponse {
   AccountInfo getMainAccount({required String fileId}) {
-    final AccountInfo? i = fileInfoList!
+    final AccountInfo? i = fileInfoList
         .singleWhere(
           (FileInfo e) => e.fileId == fileId,
         )
@@ -10,20 +10,20 @@ extension GetFileInfoResponseExtension on GetFileInfoResponse {
         .firstOrNull;
 
     if (i == null) {
-      return fileInfoList!.singleWhere((FileInfo e) => e.fileId == fileId).accountInfoList.first;
+      return fileInfoList.singleWhere((FileInfo e) => e.fileId == fileId).accountInfoList.first;
     } else {
       return i;
     }
   }
 
-  List<AccountInfo> getAllAccounts({required String fileId}) => fileInfoList!
+  List<AccountInfo> getAllAccounts({required String fileId}) => fileInfoList
       .singleWhere(
         (FileInfo e) => e.fileId == fileId,
       )
       .accountInfoList
       .toList();
 
-  List<AccountInfo> getAccounts({required String fileId}) => fileInfoList!
+  List<AccountInfo> getAccounts({required String fileId}) => fileInfoList
       .singleWhere(
         (FileInfo e) => e.fileId == fileId,
       )
@@ -43,11 +43,11 @@ class GetFileInfoResponse {
   factory GetFileInfoResponse.fromMap(dynamic json) => GetFileInfoResponse(
     firstName: json["firstName"],
     lastName: json["lastName"],
-    fileInfoList: json["fileInfoList"] == null ? null : List<FileInfo>.from(json["fileInfoList"].map(FileInfo.fromMap)),
+    fileInfoList: json["fileInfoList"] == null ? <FileInfo>[] : List<FileInfo>.from(json["fileInfoList"].map(FileInfo.fromMap)),
   );
   final String? firstName;
   final String? lastName;
-  final List<FileInfo>? fileInfoList;
+  final List<FileInfo> fileInfoList;
 }
 
 class FileInfo {
