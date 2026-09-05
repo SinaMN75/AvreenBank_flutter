@@ -22,7 +22,7 @@ class ProfileSheet extends StatelessWidget {
           const SizedBox(height: 15),
           UTextTitleLarge(U.s.selectProfile, fontWeight: FontWeight.bold),
           const SizedBox(height: 5),
-          UTextBodySmall(U.s.profilesHint, color: scheme.onSurfaceVariant),
+          UTextBodySmall(U.s.accountsCardsAndTransactionsAreShownBasedOnTheActiveProfile, color: scheme.onSurfaceVariant),
           const SizedBox(height: 14),
           ...profiles.map(
             (FileInfo profile) {

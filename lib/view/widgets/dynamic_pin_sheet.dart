@@ -47,7 +47,7 @@ class _DynamicPinSheetState extends State<DynamicPinSheet> {
           const SizedBox(height: 15),
           UTextTitleLarge(U.s.dynamicPin, fontWeight: FontWeight.bold),
           const SizedBox(height: 5),
-          UTextBodySmall(U.s.dynamicPinHint, color: scheme.onSurfaceVariant),
+          UTextBodySmall(U.s.theDynamicPinIsUsedForOnlinePurchases, color: scheme.onSurfaceVariant),
           const SizedBox(height: 16),
           UContainer(
             color: scheme.surface,
@@ -74,7 +74,7 @@ class _DynamicPinSheetState extends State<DynamicPinSheet> {
                   ),
                 ),
                 const SizedBox(height: 10),
-                UTextLabelSmall("$_seconds ${U.s.secondsWord}", color: scheme.onSurfaceVariant),
+                UTextLabelSmall("$_seconds ${U.s.seconds}", color: scheme.onSurfaceVariant),
               ],
             ),
           ),

@@ -41,7 +41,7 @@ class _CardsPageState extends UState<CardsPage> {
               onTap: () => _openProfileSheet(context),
             ).pSymmetric(vertical: 8, horizontal: 16),
             if (cards.isEmpty)
-              UEmptyState(title: U.s.noCardsInThisProfile)
+              UEmptyState(title: U.s.noCardIssuedForThisProfile)
             else ...<Widget>[
               _carousel(cards).pSymmetric(vertical: 8),
               _cardDetail(context).pSymmetric(vertical: 8, horizontal: 16),
@@ -78,9 +78,9 @@ class _CardsPageState extends UState<CardsPage> {
               UButton(title: U.s.dynamicPin, onTap: _openPinSheet, foregroundColor: scheme.onPrimary, expanded: 1),
               const SizedBox(width: 8),
               UButton(
-                title: U.s.getPinBySms,
+                title: U.s.getPinViaSms,
                 type: UButtonType.outlined,
-                onTap: () => UToast.success(message: U.s.pinSentBySms),
+                onTap: () => UToast.success(message: U.s.theDynamicPinWasSentViaSms),
                 expanded: 1,
               ),
             ],
@@ -89,7 +89,7 @@ class _CardsPageState extends UState<CardsPage> {
           Row(
             children: <Widget>[
               UButton(
-                title: U.s.blockCardTemp,
+                title: U.s.temporarilyBlock,
                 type: UButtonType.outlined,
                 foregroundColor: AppColors.danger,
                 borderColor: AppColors.danger,
