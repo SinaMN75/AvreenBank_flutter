@@ -1,5 +1,6 @@
 import "package:avreen_bank/view/pages/cards/cards_page.dart";
 import "package:avreen_bank/view/pages/home/home_page.dart";
+import "package:avreen_bank/view/pages/profile/profile_page.dart";
 import "package:u/utilities.dart";
 
 class MainPage extends StatefulWidget {
@@ -23,7 +24,7 @@ class _MainPageState extends State<MainPage> {
           children: const <Widget>[
             HomePage(),
             CardsPage(),
-            SizedBox(),
+            ProfilePage(),
           ],
         ),
         bottomNavigationBar: BottomNavigationBar(
@@ -40,7 +41,7 @@ class _MainPageState extends State<MainPage> {
             BottomNavigationBarItem(
               icon: Icon(Icons.account_balance_outlined, color: scheme.onSurfaceVariant),
               activeIcon: Icon(Icons.account_balance, color: scheme.primary),
-              label: U.s.account,
+              label: U.s.accounts,
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.credit_card_outlined, color: scheme.onSurfaceVariant),

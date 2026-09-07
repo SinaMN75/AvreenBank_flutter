@@ -160,35 +160,4 @@ class RemoteDataSource {
     );
     return result;
   }
-
-  Future<(GetAccountFunctionCodesResponse?, ErrorResponse?, String?)> getAccountFunctionCodes({
-    required GetAccountFunctionCodesParams p,
-    required Function(GetAccountFunctionCodesResponse r)? onOk,
-    required Function(ErrorResponse e)? onError,
-    required Function(String e)? onException,
-  }) async {
-    (GetAccountFunctionCodesResponse?, ErrorResponse?, String?) result = (null, null, null);
-    await UHttpClient.send(
-      method: "POST",
-      body: p.toMap(),
-      headers: <String, String>{"clientType": "1", "Authorization": ?ULocalStorage.getToken()},
-      endpoint: "${AppConstants.baseUrl}/getAccountFunctionCodes",
-      onSuccess: (Response r) {
-        final GetAccountFunctionCodesResponse ok = GetAccountFunctionCodesResponse.fromJson(r.body);
-        result = (ok, null, null);
-        onOk?.call(ok);
-      },
-      onError: (Response r) {
-        final ErrorResponse err = ErrorResponse.fromJson(r.body);
-        result = (null, err, null);
-        onError?.call(err);
-        onAuthorized(r);
-      },
-      onException: (String e) {
-        result = (null, null, e);
-        onException?.call(e);
-      },
-    );
-    return result;
-  }
 }

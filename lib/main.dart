@@ -16,11 +16,16 @@ Future<void> main() async {
     locale = "fa";
   }
   runApp(
-    UMaterialApp(
-      locale: Locale(locale),
-      lightThemeData: Core.lightThemeData,
-      darkThemeData: Core.darkThemeData,
-      home: const SplashPage(),
+    Center(
+      child: Container(
+        constraints: const BoxConstraints(maxWidth: 700),
+        child: UMaterialApp(
+          locale: Locale(locale),
+          lightThemeData: Core.lightThemeData,
+          darkThemeData: Core.darkThemeData,
+          home: const SplashPage(),
+        ),
+      ),
     ),
   );
 }
@@ -69,7 +74,7 @@ abstract class Core {
       scrolledUnderElevation: 0,
       centerTitle: true,
       iconTheme: IconThemeData(color: scheme.onSurface),
-      titleTextStyle: TextStyle(fontFamily: UFonts.iranSansFaNum.fontFamily, color: scheme.onSurface, fontSize: 18, fontWeight: FontWeight.bold),
+      titleTextStyle: TextStyle(fontFamily: U.vazir.fontFamily, color: scheme.onSurface, fontSize: 18, fontWeight: FontWeight.bold),
     ),
     dividerTheme: DividerThemeData(color: scheme.outlineVariant, space: 0, thickness: 1),
     cardTheme: CardThemeData(
@@ -84,7 +89,7 @@ abstract class Core {
       ),
     ),
     colorScheme: scheme,
-    fontFamily: UFonts.iranSansFaNum.fontFamily,
+    fontFamily: U.vazir.fontFamily,
     textTheme: TextTheme(
       displayLarge: TextStyle(fontSize: 40, fontWeight: FontWeight.bold, color: scheme.onSurface),
       displayMedium: TextStyle(fontSize: 32, fontWeight: FontWeight.bold, color: scheme.onSurface),
@@ -124,14 +129,14 @@ abstract class Core {
         borderSide: BorderSide(color: scheme.error, width: 0.7),
       ),
       outlineBorder: const BorderSide(color: Colors.transparent, width: 0.7),
-      labelStyle: TextStyle(fontFamily: UFonts.iranSansFaNum.fontFamily, color: scheme.onSurfaceVariant, fontSize: 12),
+      labelStyle: TextStyle(fontFamily: U.vazir.fontFamily, color: scheme.onSurfaceVariant, fontSize: 12),
       filled: true,
       fillColor: scheme.surface,
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
         foregroundColor: scheme.onPrimary,
-        textStyle: TextStyle(fontFamily: UFonts.iranSansFaNum.fontFamily, color: scheme.primary, fontSize: 16, fontWeight: FontWeight.w600),
+        textStyle: TextStyle(fontFamily: U.vazir.fontFamily, color: scheme.primary, fontSize: 16, fontWeight: FontWeight.w600),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
         backgroundColor: scheme.primary,
         elevation: 0,
@@ -151,13 +156,13 @@ abstract class Core {
 }
 
 abstract class AppConstants {
-  static const String baseUrl = kDebugMode ? "https://oa.avreenco.com:8080/api/credit/mo" : "https://oa.avreenco.com:8080/api/credit/mo";
+  static const String baseUrl = kIsWeb ? "api/credit/mo" : "https://oa.avreenco.com:8080/api/credit/mo";
 }
 
 abstract class AppImages {
   static const String _base = "lib/assets/images";
   static const String logo = "$_base/logo.jpeg";
-  static const String avreen = "$_base/avreen.jpeg";
+  static const String avreen = "$_base/avreen.png";
 }
 
 abstract class AppIcons {

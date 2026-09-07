@@ -45,13 +45,15 @@ class _LoginOtpPageState extends State<LoginOtpPage> {
             onCompleted: (String _) => c.submit(),
           ),
           const Spacer(),
-          UNumericKeyboard(
-            fontSize: 32,
-            actionsPosition: UNumericKeyboardActionsPosition.bottom,
-            actions: <UNumericKeyboardAction>[UNumericKeyboardAction(label: "دریافت کد تایید", onTap: c.submit)],
-            onBackspace: () => c.controllerOtp.dropLastCharacter(),
-            onBackspaceLongPress: () => c.controllerOtp.clear(),
-            onKeyTap: (String value) => c.controllerOtp.appendCharacter(value, maxLength: 11),
+          UContainer(
+            constraints: const BoxConstraints(maxWidth: 700),
+            child: UNumericKeyboard(
+              actionsPosition: UNumericKeyboardActionsPosition.bottom,
+              actions: <UNumericKeyboardAction>[UNumericKeyboardAction(label: "دریافت کد تایید", onTap: c.submit)],
+              onBackspace: () => c.controllerOtp.dropLastCharacter(),
+              onBackspaceLongPress: () => c.controllerOtp.clear(),
+              onKeyTap: (String value) => c.controllerOtp.appendCharacter(value, maxLength: 11),
+            ),
           ),
         ],
       ),

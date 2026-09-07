@@ -37,7 +37,6 @@ class _LoginNationalCodePageState extends State<LoginNationalCodePage> {
           ),
           const Spacer(),
           UNumericKeyboard(
-            fontSize: 32,
             actionsPosition: UNumericKeyboardActionsPosition.bottom,
             actions: <UNumericKeyboardAction>[UNumericKeyboardAction(label: "دریافت کد تایید", onTap: c.submit)],
             onBackspace: () => c.controllerNationalCode.dropLastCharacter(),

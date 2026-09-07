@@ -25,12 +25,7 @@ class AccountCard extends StatelessWidget {
             dense: true,
             contentPadding: EdgeInsets.zero,
             leading: ULetterBadge((index + 1).toString(), background: scheme.primary.withValues(alpha: 0.12), foreground: scheme.primary),
-            title: UIconTextVertical(
-              spaceBetween: 0,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              leading: UTextBodyMedium(account.accountTypeName ?? "---", fontWeight: FontWeight.w600, maxLines: 1, overflow: TextOverflow.ellipsis),
-              trailing: UTextLabelSmall(account.debitExpireDate ?? "---", color: scheme.onSurfaceVariant, textDirection: TextDirection.ltr),
-            ),
+            title: UTextBodyMedium(account.accountTypeName ?? "---", fontWeight: FontWeight.w600, maxLines: 1, overflow: TextOverflow.ellipsis),
             trailing: UTextTitleMedium(balanceHidden ? "••••••" : account.availableBalance.rial(), fontWeight: FontWeight.bold),
           ),
           Row(

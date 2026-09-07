@@ -3,7 +3,6 @@ import "package:avreen_bank/main.dart";
 import "package:avreen_bank/view/pages/cards/cards_controller.dart";
 import "package:avreen_bank/view/pages/transactions/transactions_page.dart";
 import "package:avreen_bank/view/widgets/bank_card_view.dart";
-import "package:avreen_bank/view/widgets/dynamic_pin_sheet.dart";
 import "package:avreen_bank/view/widgets/profile_selector_tile.dart";
 import "package:avreen_bank/view/widgets/profile_sheet.dart";
 import "package:u/utilities.dart";
@@ -64,7 +63,8 @@ class _CardsPageState extends UState<CardsPage> {
     ),
   );
 
-  Widget _cardDetail(BuildContext context) => Obx(() => UCard(
+  Widget _cardDetail(BuildContext context) => Obx(
+    () => UCard(
       color: scheme.surface,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -75,12 +75,42 @@ class _CardsPageState extends UState<CardsPage> {
           const SizedBox(height: 14),
           Row(
             children: <Widget>[
-              UButton(title: U.s.dynamicPin, onTap: _openPinSheet, foregroundColor: scheme.onPrimary, expanded: 1),
+              UButton(
+                title: U.s.dynamicPin,
+                onTap: () => UToast.snackBar(message: U.s.comingSoon),
+                foregroundColor: scheme.onPrimary,
+                expanded: 1,
+              ),
               const SizedBox(width: 8),
               UButton(
-                title: U.s.getPinViaSms,
+                title: "پرداخت با QR",
                 type: UButtonType.outlined,
-                onTap: () => UToast.success(message: U.s.theDynamicPinWasSentViaSms),
+                onTap: () {
+                  if (c.selectedCard.value?.tokenizePanInfo?.track2 == null) {
+                    UToast.snackBar(message: U.s.errorReadingData);
+                  } else {
+                    UNavigator.bottomSheet(
+                      UColumn(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        height: context.height / 2,
+                        margin: const EdgeInsets.all(20),
+                        mainAxisSize: MainAxisSize.min,
+                        spacing: 16,
+                        children: <Widget>[
+                          UBarcode(
+                            value: c.selectedCard.value!.tokenizePanInfo!.track2!,
+                            barColor: Colors.black,
+                            width: 200,
+                            height: 200,
+                          ),
+                          Text((c.selectedCard.value?.pan ?? "").separateCharacters(4, "  ")).ltr(),
+                          const Text("QR-CODE کارت خود را در مقابل دوربین دستگاه کارتخان قرار دهید", textAlign: TextAlign.center),
+                        ],
+                      ),
+                      showDragHandle: true,
+                    );
+                  }
+                },
                 expanded: 1,
               ),
             ],
@@ -93,7 +123,7 @@ class _CardsPageState extends UState<CardsPage> {
                 type: UButtonType.outlined,
                 foregroundColor: AppColors.danger,
                 borderColor: AppColors.danger,
-                onTap: () {},
+                onTap: () => UToast.snackBar(message: U.s.comingSoon),
                 expanded: 1,
               ),
               const SizedBox(width: 8),
@@ -107,9 +137,8 @@ class _CardsPageState extends UState<CardsPage> {
           ),
         ],
       ).pAll(16),
-    ));
-
-  void _openPinSheet() => UNavigator.bottomSheet<void>(const DynamicPinSheet());
+    ),
+  );
 
   void _openProfileSheet(BuildContext context) => UNavigator.bottomSheet<void>(
     ProfileSheet(
