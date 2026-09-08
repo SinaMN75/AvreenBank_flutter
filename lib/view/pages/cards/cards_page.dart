@@ -104,7 +104,7 @@ class _CardsPageState extends UState<CardsPage> {
                             height: 200,
                           ),
                           Text((c.selectedCard.value?.pan ?? "").separateCharacters(4, "  ")).ltr(),
-                          const Text("QR-CODE کارت خود را در مقابل دوربین دستگاه کارتخان قرار دهید", textAlign: TextAlign.center),
+                          const Text("QR-CODE کارت خود را در مقابل دوربین دستگاه کارتخوان قرار دهید", textAlign: TextAlign.center),
                         ],
                       ),
                       showDragHandle: true,
