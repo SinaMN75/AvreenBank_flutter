@@ -14,18 +14,21 @@ class _LoginNationalCodePageState extends State<LoginNationalCodePage> {
 
   @override
   Widget build(BuildContext context) => UScaffold(
+    appBar: AppBar(
+      leadingWidth: 28,
+      title: const ListTile(
+        dense: true,
+        leading: UImage(AppImages.avreen, borderRadius: 8),
+        title: Text("ورود به حساب کاربری"),
+        subtitle: Text("کد ملی خود را وارد کنید. رمز یکبارمصرف به شمارهٔ موبایل ثبت‌شده به نامتان پیامک می‌شود."),
+      ),
+    ),
     padding: const EdgeInsets.all(20),
     body: Form(
       key: c.formKey,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          const ListTile(
-            dense: true,
-            leading: UImage(AppImages.avreen, borderRadius: 8),
-            title: Text("ورود به حساب کاربری"),
-            subtitle: Text("کد ملی خود را وارد کنید. رمز یکبارمصرف به شمارهٔ موبایل ثبت‌شده به نامتان پیامک می‌شود."),
-          ),
           const Spacer(),
           UTextField(
             readOnly: true,

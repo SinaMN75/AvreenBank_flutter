@@ -15,7 +15,7 @@ class LoginNationalcodeController extends UBaseController {
           p: PreRegisterParams(loginMode: 1, nationalId: controllerNationalCode.numString()),
           onOk: (PreRegisterResponse response) {
             ULoading.dismiss();
-            UNavigator.push(LoginOtpPage(preRegisterResponse: response));
+            UNavigator.push(LoginOtpPage(preRegisterResponse: response, nationalCode: controllerNationalCode.text));
           },
           onError: (ErrorResponse response) {
             ULoading.dismiss();
