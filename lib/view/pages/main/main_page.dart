@@ -1,5 +1,6 @@
 import "package:avreen_bank/view/pages/cards/cards_page.dart";
 import "package:avreen_bank/view/pages/home/home_page.dart";
+import "package:avreen_bank/view/pages/loans/loans_page.dart";
 import "package:avreen_bank/view/pages/profile/profile_page.dart";
 import "package:u/utilities.dart";
 
@@ -24,6 +25,7 @@ class _MainPageState extends State<MainPage> {
           children: const <Widget>[
             HomePage(),
             CardsPage(),
+            LoansPage(),
             ProfilePage(),
           ],
         ),
@@ -47,6 +49,11 @@ class _MainPageState extends State<MainPage> {
               icon: Icon(Icons.credit_card_outlined, color: scheme.onSurfaceVariant),
               activeIcon: Icon(Icons.credit_card, color: scheme.primary),
               label: U.s.cards,
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.credit_card_outlined, color: scheme.onSurfaceVariant),
+              activeIcon: Icon(Icons.credit_card, color: scheme.primary),
+              label: "اقساط",
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.person_outline, color: scheme.onSurfaceVariant),

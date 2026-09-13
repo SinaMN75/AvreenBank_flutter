@@ -160,4 +160,35 @@ class RemoteDataSource {
     );
     return result;
   }
+
+  Future<(InquiryLoanResponse?, ErrorResponse?, String?)> inquiryLoan({
+    required InquiryLoanParams p,
+    required Function(InquiryLoanResponse r)? onOk,
+    required Function(ErrorResponse e)? onError,
+    required Function(String e)? onException,
+  }) async {
+    (InquiryLoanResponse?, ErrorResponse?, String?) result = (null, null, null);
+    await UHttpClient.send(
+      method: "POST",
+      body: p.toMap(),
+      headers: <String, String>{"clientType": "1", "Authorization": ?ULocalStorage.getToken()},
+      endpoint: "${AppConstants.baseUrl}/inquiryLoan",
+      onSuccess: (Response r) {
+        final InquiryLoanResponse ok = InquiryLoanResponse.fromJson(r.body);
+        result = (ok, null, null);
+        onOk?.call(ok);
+      },
+      onError: (Response r) {
+        final ErrorResponse err = ErrorResponse.fromJson(r.body);
+        result = (null, err, null);
+        onError?.call(err);
+        onAuthorized(r);
+      },
+      onException: (String e) {
+        result = (null, null, e);
+        onException?.call(e);
+      },
+    );
+    return result;
+  }
 }

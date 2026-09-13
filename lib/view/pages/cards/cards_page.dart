@@ -3,8 +3,7 @@ import "package:avreen_bank/main.dart";
 import "package:avreen_bank/view/pages/cards/cards_controller.dart";
 import "package:avreen_bank/view/pages/transactions/transactions_page.dart";
 import "package:avreen_bank/view/widgets/bank_card_view.dart";
-import "package:avreen_bank/view/widgets/profile_selector_tile.dart";
-import "package:avreen_bank/view/widgets/profile_sheet.dart";
+import "package:avreen_bank/view/widgets/profile_selector_header.dart";
 import "package:u/utilities.dart";
 
 class CardsPage extends StatefulWidget {
@@ -18,12 +17,6 @@ class _CardsPageState extends UState<CardsPage> {
   final CardsController c = CardsController();
 
   @override
-  void initState() {
-    c.init();
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) => UScaffold(
     safeArea: false,
     body: Obx(() {
@@ -33,14 +26,9 @@ class _CardsPageState extends UState<CardsPage> {
         child: UColumn(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            ProfileSelectorTile(
-              badge: c.activeProfile.value?.fileTitle ?? "",
-              name: c.activeProfile.value?.fileTitle ?? "",
-              color: context.colorScheme.primary,
-              onTap: () => _openProfileSheet(context),
-            ).pSymmetric(vertical: 8, horizontal: 16),
+            ProfileSelectorHeader(onProfileChanged: () {}),
             if (cards.isEmpty)
-              UEmptyState(title: U.s.noCardIssuedForThisProfile)
+              UEmptyState(title: U.s.noCardIssuedForThisProfile).pOnly(top: height / 2.8)
             else ...<Widget>[
               _carousel(cards).pSymmetric(vertical: 8),
               _cardDetail(context).pSymmetric(vertical: 8, horizontal: 16),
@@ -52,7 +40,7 @@ class _CardsPageState extends UState<CardsPage> {
   );
 
   Widget _carousel(List<PanInfo> cards) => UCarousel<PanInfo>(
-    key: ValueKey<String?>(c.activeProfile.value?.fileId),
+    key: ValueKey<String?>(Core.currentFile.value.fileId),
     items: cards,
     viewportFraction: 0.86,
     itemSpacing: 12,
@@ -137,17 +125,6 @@ class _CardsPageState extends UState<CardsPage> {
           ),
         ],
       ).pAll(16),
-    ),
-  );
-
-  void _openProfileSheet(BuildContext context) => UNavigator.bottomSheet<void>(
-    ProfileSheet(
-      profiles: c.profiles,
-      activeId: c.activeProfile.value?.fileId,
-      onSelect: (FileInfo profile) {
-        c.selectProfile(profile);
-        UNavigator.back();
-      },
     ),
   );
 }
