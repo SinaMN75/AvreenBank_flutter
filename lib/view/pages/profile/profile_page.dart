@@ -15,45 +15,38 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) => UScaffold(
-    color: Theme.of(context).scaffoldBackgroundColor,
-    body: SingleChildScrollView(
-      child: UColumn(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-          _header(context),
-          const SizedBox(height: 24),
-          UColumn(
-            margin: const EdgeInsets.symmetric(horizontal: 16),
-            children: <Widget>[
-              UListTile(
-                icon: Icons.edit_outlined,
-                title: U.s.editItem(U.s.userInformation),
-                color: AppColors.brand,
-                onTap: () => UToast.snackBar(message: U.s.comingSoon),
-              ).pSymmetric(vertical: 4),
-              UListTile(
-                icon: Icons.description_outlined,
-                title: U.s.termsAndConditions,
-                color: AppColors.warning,
-                onTap: () => UToast.snackBar(message: U.s.comingSoon),
-              ).pSymmetric(vertical: 4),
-              UListTile(
-                icon: Icons.language,
-                title: U.s.visitWebsite,
-                color: AppColors.success,
-                onTap: () => UToast.snackBar(message: U.s.comingSoon),
-              ).pSymmetric(vertical: 4),
-              UListTile(
-                icon: Icons.logout,
-                title: U.s.logout,
-                color: Theme.of(context).colorScheme.error,
-                textColor: Theme.of(context).colorScheme.error,
-                onTap: () => logout(immediate: false),
-              ).pSymmetric(vertical: 4),
-            ],
-          ),
-        ],
-      ),
+    body: UColumn(
+      children: <Widget>[
+        _header(context),
+        const SizedBox(height: 24),
+        UListTile(
+          icon: Icons.edit_outlined,
+          title: U.s.editItem(U.s.userInformation),
+          color: AppColors.brand,
+          onTap: () => UToast.snackBar(message: U.s.comingSoon),
+        ).pSymmetric(vertical: 4),
+        UListTile(
+          icon: Icons.description_outlined,
+          title: U.s.termsAndConditions,
+          color: AppColors.warning,
+          onTap: () => UToast.snackBar(message: U.s.comingSoon),
+        ).pSymmetric(vertical: 4),
+        UListTile(
+          icon: Icons.language,
+          title: U.s.visitWebsite,
+          color: AppColors.success,
+          onTap: () => UToast.snackBar(message: U.s.comingSoon),
+        ).pSymmetric(vertical: 4),
+        UListTile(
+          icon: Icons.logout,
+          title: U.s.logout,
+          color: Theme.of(context).colorScheme.error,
+          textColor: Theme.of(context).colorScheme.error,
+          onTap: () => logout(immediate: false),
+        ).pSymmetric(vertical: 4),
+        const Spacer(),
+        UTextBodyMedium("${U.s.version} ${UApp.version}", margin: const EdgeInsets.symmetric(vertical: 8)),
+      ],
     ),
   );
 

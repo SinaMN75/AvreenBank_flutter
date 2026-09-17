@@ -20,8 +20,15 @@ class _SplashPageState extends State<SplashPage> {
 
   @override
   Widget build(BuildContext context) => UScaffold(
-    color: Theme.of(context).colorScheme.scrim,
     alignment: Alignment.center,
-    body: const UImage(AppImages.logo, width: 200, height: 200),
+    body: Column(
+      children: <Widget>[
+        const Spacer(),
+        const UImage(AppImages.logo, width: 200, height: 200),
+        const Spacer(),
+        UTextBodyMedium("${U.s.version} ${UApp.version}", fontWeight: FontWeight.bold),
+        const Spacer(),
+      ],
+    ),
   );
 }

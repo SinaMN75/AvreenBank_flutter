@@ -77,6 +77,7 @@ class RemoteDataSource {
   }) async {
     (GetFileInfoResponse?, ErrorResponse?, String?) result = (null, null, null);
     await UHttpClient.send(
+      body: <String, dynamic>{},
       method: "POST",
       headers: <String, String>{"clientType": "1", "Authorization": ?ULocalStorage.getToken()},
       endpoint: "${AppConstants.baseUrl}/getFileInfo",
