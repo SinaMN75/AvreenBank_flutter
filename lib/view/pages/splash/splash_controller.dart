@@ -6,24 +6,22 @@ import "package:u/utilities.dart";
 
 class SplashController extends UBaseController {
   Future<void> init() async {
-    await delay(1000, () {
-      if (ULocalStorage.hasToken()) {
-        Core.dataSource.getFileInfo(
-          onOk: (GetFileInfoResponse response) {
-            Core.fileInfo = response.obs;
-            Core.currentFile = response.fileInfoList![0].obs;
-            UNavigator.offAll(const MainPage());
-          },
-          onError: (ErrorResponse response) {
-            UToast.error(message: response.errorMessage);
-          },
-          onException: (String response) {
-            UToast.error(message: response);
-          },
-        );
-      } else {
-        UNavigator.offAll(const LoginNationalCodePage());
-      }
-    });
+    if (!ULocalStorage.hasToken()) {
+      WidgetsBinding.instance.addPostFrameCallback((Duration _) => UNavigator.offAll(const LoginNationalCodePage()));
+      return;
+    }
+    await Core.dataSource.getFileInfo(
+      onOk: (GetFileInfoResponse response) {
+        Core.fileInfo = response.obs;
+        Core.currentFile = response.fileInfoList[0].obs;
+        UNavigator.offAll(const MainPage());
+      },
+      onError: (ErrorResponse response) {
+        UToast.error(message: response.errorMessage);
+      },
+      onException: (String response) {
+        UToast.error(message: response);
+      },
+    );
   }
 }
