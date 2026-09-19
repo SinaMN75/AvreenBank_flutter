@@ -7,6 +7,40 @@ extension TransactionResponseExtension on TransactionInfo {
     if (terminalType == "12") return Icons.online_prediction;
     return Icons.shopping_cart;
   }
+
+  String terminalTypeName() {
+    if (terminalType == "08") return U.s.mobileBank;
+    if (terminalType == "03") return U.s.posDevice;
+    if (terminalType == "12") return U.s.internetPayment;
+    return U.s.other;
+  }
+
+  bool isCredit() => debitType == 0;
+
+  bool isSuccessful() => transactionStatus == 0;
+
+  String statusName() => isSuccessful() ? U.s.successful : U.s.failed;
+
+  String? pan() => Core.currentFile.value.panInfoList.where((PanInfo e) => e.panId == panId).firstOrDefault()?.pan;
+
+  String receiptText() {
+    final String? cardNumber = pan();
+    return <String>[
+      U.s.transactionReceipt,
+      "${U.s.amount}: ${transactionAmount.rial()}",
+      if (logDate.isNotNullOrEmpty()) "${U.s.date}: ${logDate.formatJalaliDateTime()}",
+      if (merchantName.isNotNullOrEmpty()) "${U.s.merchant}: $merchantName",
+      if (merchantAddress.isNotNullOrEmpty()) "${U.s.address}: $merchantAddress",
+      if (cardNumber.isNotNullOrEmpty()) "${U.s.cardNumber}: $cardNumber",
+      "${U.s.terminalType}: ${terminalTypeName()}",
+      if (transactionType.isNotNullOrEmpty()) "${U.s.transactionType}: $transactionType",
+      if (rrn.isNotNullOrEmpty()) "${U.s.referenceNumber}: $rrn",
+      if (stan.isNotNullOrEmpty()) "${U.s.traceNumber}: $stan",
+      if (docId.isNotNullOrEmpty()) "${U.s.documentNumber}: $docId",
+      if (logMessage.isNotNullOrEmpty()) "${U.s.description}: $logMessage",
+      "${U.s.status}: ${statusName()}",
+    ].join("\n");
+  }
 }
 
 class TransactionResponse {

@@ -2,7 +2,7 @@ part of "data.dart";
 
 class RemoteDataSource {
   Future<void> onAuthorized(Response response) async {
-    if (response.statusCode == 401) {
+    if (response.statusCode == 401 || response.statusCode == 412) {
       await ULocalStorage.clear();
       await UNavigator.offAll(const SplashPage());
     }

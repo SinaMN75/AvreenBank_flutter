@@ -1,3 +1,4 @@
+import "package:avreen_bank/view/pages/receipt/receipt_page.dart";
 import "package:avreen_bank/view/pages/transactions/transactions_controller.dart";
 import "package:avreen_bank/view/widgets/transaction_tile.dart";
 import "package:u/utilities.dart";
@@ -26,7 +27,10 @@ class _TransactionsPageState extends State<TransactionsPage> {
         return ListView.separated(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
-          itemBuilder: (BuildContext _, int index) => TransactionTile(c.transactions[index]),
+          itemBuilder: (BuildContext _, int index) => TransactionTile(
+            c.transactions[index],
+            onTap: () => UNavigator.push(ReceiptPage(c.transactions[index])),
+          ),
           separatorBuilder: (BuildContext _, int _) => const Divider(),
           itemCount: c.transactions.length,
         );

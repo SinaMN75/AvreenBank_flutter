@@ -113,21 +113,14 @@ class _TransactionsPageState extends State<TransactionsPage> {
   Widget statementItem(StatementElement i) => UCard(
     margin: const EdgeInsets.symmetric(vertical: 4),
     color: i.type == "L" ? Colors.yellow.shade50 : null,
-    child: UColumn(
-      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
-      children: <Widget>[
-        UKeyValue(
-          leading: UTextBodyLarge(i.transactionAmount.rial(), color: i.transactionAmount!.isNegative ? Colors.red : Colors.green),
-          trailing: UTextBodyMedium(i.voucherDate.formatJalaliDateTime()),
-        ),
-        const SizedBox(height: 8),
-        UKeyValue(
-          leading: UTextBodySmall("مانده قبل: ${i.preBalance.toString().separateNumbers3By3()}"),
-          trailing: UTextBodySmall("مانده بعد: ${i.balance.toString().separateNumbers3By3()}"),
-        ),
-        const SizedBox(height: 12),
-        UTextBodySmall(i.description.toString()),
-      ],
+    child: ListTile(
+      contentPadding: const EdgeInsets.all(12),
+      title: UTextBodyLarge(i.transactionAmount.rial(), color: i.transactionAmount!.isNegative ? Colors.red : Colors.green),
+      subtitle: UTextBodySmall(i.description.toString(), maxLines: 3),
+      trailing: UIconTextVertical(
+        leading: UTextBodyMedium(i.voucherDate.formatJalaliDateTime()),
+        trailing: UTextBodySmall("مانده بعد: ${i.balance.toString().separateNumbers3By3()}"),
+      ),
     ),
   );
 }

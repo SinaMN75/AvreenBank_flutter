@@ -55,16 +55,6 @@ class _LoansPageState extends UState<LoansPage> {
           margin: const EdgeInsets.symmetric(vertical: 6),
         ),
         UKeyValue(
-          leading: UTextBodyMedium("مبلغ خرید", color: theme.disabledColor),
-          trailing: Text(info.purchaseAmount.rial()),
-          margin: const EdgeInsets.symmetric(vertical: 6),
-        ),
-        UKeyValue(
-          leading: UTextBodyMedium("نوع خرید", color: theme.disabledColor),
-          trailing: Text(info.loanType == 1 ? "اقساطی" : "لیزینگ"),
-          margin: const EdgeInsets.symmetric(vertical: 6),
-        ),
-        UKeyValue(
           leading: UTextBodyMedium("تعداد اقساط", color: theme.disabledColor),
           trailing: Text(info.installmentCount.toString()),
           margin: const EdgeInsets.symmetric(vertical: 6),
@@ -94,21 +84,10 @@ class _LoansPageState extends UState<LoansPage> {
           trailing: Text(info.endDate.formatJalaliDateTime()),
           margin: const EdgeInsets.symmetric(vertical: 6),
         ),
-        URow(
-          spacing: 20,
-          margin: const EdgeInsets.symmetric(vertical: 6),
-          children: <Widget>[
-            UButton(
-              title: U.s.details,
-              expanded: 1,
-              onTap: () => showDetails(list: info.installmentsStatus ?? <InstallmentsStatus>[]),
-            ),
-            UButton(
-              title: U.s.statement,
-              expanded: 1,
-              onTap: () => statementBottomSheet(info: info),
-            ),
-          ],
+        UButton(
+          title: U.s.details,
+          fullWidth: true,
+          onTap: () => showDetails(list: info.installmentsStatus ?? <InstallmentsStatus>[]),
         ),
       ],
     ),
@@ -125,8 +104,8 @@ class _LoansPageState extends UState<LoansPage> {
             items: <LoanState, String>{
               LoanState.all: U.s.all,
               LoanState.dueDate: U.s.dueDate,
-              LoanState.notPayed: U.s.unpaid,
               LoanState.payed: U.s.paid,
+              LoanState.notPayed: U.s.unpaid,
             },
             selectedValue: loanState.value,
             onValueChanged: (LoanState? i) {

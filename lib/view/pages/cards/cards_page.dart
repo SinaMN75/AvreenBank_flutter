@@ -54,7 +54,8 @@ class _CardsPageState extends UState<CardsPage> {
   Widget _cardDetail(BuildContext context) => Obx(
     () => UCard(
       color: scheme.surface,
-      child: Column(
+      child: UColumn(
+        margin: const EdgeInsets.all(16),
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Row(
@@ -135,7 +136,7 @@ class _CardsPageState extends UState<CardsPage> {
             ],
           ),
         ],
-      ).pAll(16),
+      ),
     ),
   );
 }
