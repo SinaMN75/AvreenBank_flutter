@@ -62,7 +62,7 @@ class _LoginOtpPageState extends State<LoginOtpPage> {
               UButton(
                 expanded: 1,
                 height: 60,
-                type: UButtonType.text,
+                type: UButtonType.outlined,
                 counter: 60,
                 onTap: c.sendAgain,
                 title: U.s.resend,

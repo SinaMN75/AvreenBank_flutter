@@ -9,7 +9,7 @@ class MyHttpOverrides extends HttpOverrides {
 
 Future<void> main() async {
   if (kDebugMode) HttpOverrides.global = MyHttpOverrides();
-  await initU();
+  await initU(snackBarDuration: 6);
   String? locale = ULocalStorage.getString(UConstants.locale);
   if (locale == null) {
     ULocalStorage.setLocale("fa");
@@ -91,21 +91,21 @@ abstract class Core {
     colorScheme: scheme,
     fontFamily: U.vazir.fontFamily,
     textTheme: TextTheme(
-      displayLarge: TextStyle(fontSize: 40, fontWeight: FontWeight.bold, color: scheme.onSurface),
-      displayMedium: TextStyle(fontSize: 32, fontWeight: FontWeight.bold, color: scheme.onSurface),
-      displaySmall: TextStyle(fontSize: 26, fontWeight: FontWeight.bold, color: scheme.onSurface),
-      headlineLarge: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: scheme.onSurface),
-      headlineMedium: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: scheme.onSurface),
-      headlineSmall: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: scheme.onSurface),
-      titleLarge: TextStyle(fontSize: 16, fontWeight: FontWeight.w700, color: scheme.onSurface),
-      titleMedium: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: scheme.onSurface),
-      titleSmall: TextStyle(fontSize: 13, fontWeight: FontWeight.w700, color: scheme.onSurface),
-      bodyLarge: TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: scheme.onSurface),
-      bodyMedium: TextStyle(fontSize: 13, fontWeight: FontWeight.w400, color: scheme.onSurface),
-      bodySmall: TextStyle(fontSize: 11, fontWeight: FontWeight.w400, color: scheme.onSurfaceVariant),
-      labelLarge: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: scheme.onSurface),
-      labelMedium: TextStyle(fontSize: 11, fontWeight: FontWeight.w500, color: scheme.onSurface),
-      labelSmall: TextStyle(fontSize: 10, fontWeight: FontWeight.w500, color: scheme.onSurfaceVariant),
+      displayLarge: TextStyle(fontSize: 42, fontWeight: FontWeight.bold, color: scheme.onSurface),
+      displayMedium: TextStyle(fontSize: 34, fontWeight: FontWeight.bold, color: scheme.onSurface),
+      displaySmall: TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: scheme.onSurface),
+      headlineLarge: TextStyle(fontSize: 26, fontWeight: FontWeight.bold, color: scheme.onSurface),
+      headlineMedium: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: scheme.onSurface),
+      headlineSmall: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: scheme.onSurface),
+      titleLarge: TextStyle(fontSize: 18, fontWeight: FontWeight.w700, color: scheme.onSurface),
+      titleMedium: TextStyle(fontSize: 16, fontWeight: FontWeight.w700, color: scheme.onSurface),
+      titleSmall: TextStyle(fontSize: 15, fontWeight: FontWeight.w700, color: scheme.onSurface),
+      bodyLarge: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: scheme.onSurface),
+      bodyMedium: TextStyle(fontSize: 15, fontWeight: FontWeight.w400, color: scheme.onSurface),
+      bodySmall: TextStyle(fontSize: 13, fontWeight: FontWeight.w400, color: scheme.onSurfaceVariant),
+      labelLarge: TextStyle(fontSize: 15, fontWeight: FontWeight.w600, color: scheme.onSurface),
+      labelMedium: TextStyle(fontSize: 13, fontWeight: FontWeight.w500, color: scheme.onSurface),
+      labelSmall: TextStyle(fontSize: 12, fontWeight: FontWeight.w500, color: scheme.onSurfaceVariant),
     ),
     inputDecorationTheme: InputDecorationTheme(
       border: OutlineInputBorder(
@@ -157,6 +157,7 @@ abstract class Core {
 
 abstract class AppConstants {
   static const String baseUrl = kIsWeb ? "api/credit/mo" : "https://oa.avreenco.com:8080/api/credit/mo";
+  static const String personId = "personId";
 }
 
 abstract class AppImages {

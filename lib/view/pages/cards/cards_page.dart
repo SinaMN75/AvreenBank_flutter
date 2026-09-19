@@ -57,10 +57,6 @@ class _CardsPageState extends UState<CardsPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          UTextTitleMedium(c.selectedCard.value?.pan ?? "---", fontWeight: FontWeight.bold, maxLines: 1, overflow: TextOverflow.ellipsis),
-          const SizedBox(height: 4),
-          UTextLabelSmall("${U.s.expires}: ${c.selectedCard.value?.expiredDate ?? "**/**"}", color: scheme.onSurfaceVariant),
-          const SizedBox(height: 14),
           Row(
             children: <Widget>[
               UButton(
@@ -107,11 +103,26 @@ class _CardsPageState extends UState<CardsPage> {
           Row(
             children: <Widget>[
               UButton(
-                title: U.s.temporarilyBlock,
+                title: U.s.cardDetails,
                 type: UButtonType.outlined,
-                foregroundColor: AppColors.danger,
-                borderColor: AppColors.danger,
-                onTap: () => UToast.snackBar(message: U.s.comingSoon),
+                foregroundColor: AppColors.success,
+                borderColor: AppColors.success,
+                onTap: () => UNavigator.bottomSheet(
+                  UColumn(
+                    mainAxisSize: MainAxisSize.min,
+                    padding: const EdgeInsets.all(16),
+                    margin: const EdgeInsets.all(16),
+                    children: <Widget>[
+                      UListTile(
+                        icon: Icons.credit_card,
+                        title: U.s.cardNumber,
+                        subtitle: (c.selectedCard.value?.pan ?? "---").separateCharacters(4, " "),
+                        trailingIcon: Icons.copy,
+                        onTap: () => UClipboard.set(c.selectedCard.value?.pan ?? "---", snackBar: true),
+                      ),
+                    ],
+                  ),
+                ),
                 expanded: 1,
               ),
               const SizedBox(width: 8),

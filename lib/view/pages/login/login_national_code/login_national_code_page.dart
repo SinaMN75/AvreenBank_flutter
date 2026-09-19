@@ -29,12 +29,13 @@ class _LoginNationalCodePageState extends State<LoginNationalCodePage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          const Spacer(),
+          const SizedBox(height: 32),
           UTextField(
             readOnly: true,
             controller: c.controllerNationalCode,
             labelText: U.s.nationalCode,
             validator: UValidators.iranianNationalCode(),
+            maxLength: 10,
             contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
             fontSize: 18,
           ),

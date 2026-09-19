@@ -34,7 +34,7 @@ class _HomePageState extends UState<HomePage> {
     children: <Widget>[
       UKeyValue(
         leading: UTextTitleMedium(U.s.accountsInThisProfile),
-        trailing: UTextLabelSmall(c.accounts.isEmpty ? U.s.empty : "${c.accounts.length} ${U.s.accounts}"),
+        trailing: UTextLabelSmall(c.accounts.isEmpty ? U.s.empty : "${c.accounts.length} ${U.s.account}"),
       ),
       const SizedBox(height: 12),
       if (c.accounts.isEmpty)

@@ -79,7 +79,7 @@ class RemoteDataSource {
     await UHttpClient.send(
       body: <String, dynamic>{},
       method: "POST",
-      headers: <String, String>{"clientType": "1", "Authorization": ?ULocalStorage.getToken()},
+      headers: <String, String>{"clientType": "1", "X-Person": ULocalStorage.getString(AppConstants.personId) ?? "", "Authorization": ?ULocalStorage.getToken()},
       endpoint: "${AppConstants.baseUrl}/getFileInfo",
       onSuccess: (Response r) {
         final GetFileInfoResponse ok = GetFileInfoResponse.fromJson(r.body);
@@ -110,7 +110,7 @@ class RemoteDataSource {
     await UHttpClient.send(
       method: "POST",
       body: p.toMap(),
-      headers: <String, String>{"clientType": "1", "Authorization": ?ULocalStorage.getToken()},
+      headers: <String, String>{"clientType": "1", "X-Person": ULocalStorage.getString(AppConstants.personId) ?? "", "Authorization": ?ULocalStorage.getToken()},
       endpoint: "${AppConstants.baseUrl}/viewTransaction",
       onSuccess: (Response r) {
         final TransactionResponse ok = TransactionResponse.fromJson(r.body);
@@ -141,7 +141,7 @@ class RemoteDataSource {
     await UHttpClient.send(
       method: "POST",
       body: p.toMap(),
-      headers: <String, String>{"clientType": "1", "Authorization": ?ULocalStorage.getToken()},
+      headers: <String, String>{"clientType": "1", "X-Person": ULocalStorage.getString(AppConstants.personId) ?? "", "Authorization": ?ULocalStorage.getToken()},
       endpoint: "${AppConstants.baseUrl}/accountStatement",
       onSuccess: (Response r) {
         final AccountStatementResponse ok = AccountStatementResponse.fromJson(r.body);
@@ -172,7 +172,7 @@ class RemoteDataSource {
     await UHttpClient.send(
       method: "POST",
       body: p.toMap(),
-      headers: <String, String>{"clientType": "1", "Authorization": ?ULocalStorage.getToken()},
+      headers: <String, String>{"clientType": "1", "X-Person": ULocalStorage.getString(AppConstants.personId) ?? "", "Authorization": ?ULocalStorage.getToken()},
       endpoint: "${AppConstants.baseUrl}/inquiryLoan",
       onSuccess: (Response r) {
         final InquiryLoanResponse ok = InquiryLoanResponse.fromJson(r.body);

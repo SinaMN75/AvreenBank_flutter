@@ -843,7 +843,7 @@ packages:
       path: U_flutter
       relative: true
     source: path
-    version: "2.0.2"
+    version: "2.0.3"
   unicode:
     dependency: transitive
     description:

@@ -22,9 +22,10 @@ class LoginOtpController extends UBaseController {
     ULoading.show();
     Core.dataSource.preRegister(
       p: PreRegisterParams(loginMode: 1, nationalId: nationalCode),
-      onOk: (PreRegisterResponse response) {
+      onOk: (PreRegisterResponse response) async {
         ULoading.dismiss();
-        UNavigator.off(LoginOtpPage(nationalCode: nationalCode, preRegisterResponse: response));
+        ULocalStorage.set(AppConstants.personId, response.personId);
+        await UNavigator.off(LoginOtpPage(nationalCode: nationalCode, preRegisterResponse: response));
       },
       onError: (ErrorResponse response) {
         ULoading.dismiss();

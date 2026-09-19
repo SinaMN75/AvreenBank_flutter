@@ -63,13 +63,15 @@ class _TransactionsPageState extends State<TransactionsPage> {
 
   Widget byDate() => Obx(
     () => UColumn(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       mainAxisSize: MainAxisSize.min,
       scrollable: Axis.vertical,
       children: <Widget>[
         Row(
           children: <Widget>[
             UTextFieldDatePicker(
-              readOnly: true,
+              jalali: true,
+              jalaliType: UJalaliDatePickerType.spinner,
               controller: c.controllerStartDate,
               text: U.s.startDate,
               onChange: (DateTime d, Jalali j) async {
@@ -78,7 +80,8 @@ class _TransactionsPageState extends State<TransactionsPage> {
               },
             ).pSymmetric(horizontal: 12).expanded(),
             UTextFieldDatePicker(
-              readOnly: true,
+              jalali: true,
+              jalaliType: UJalaliDatePickerType.spinner,
               controller: c.controllerEndDate,
               text: U.s.endDate,
               onChange: (DateTime d, Jalali j) async {

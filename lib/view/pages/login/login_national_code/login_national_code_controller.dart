@@ -13,9 +13,10 @@ class LoginNationalcodeController extends UBaseController {
         ULoading.show();
         Core.dataSource.preRegister(
           p: PreRegisterParams(loginMode: 1, nationalId: controllerNationalCode.numString()),
-          onOk: (PreRegisterResponse response) {
+          onOk: (PreRegisterResponse response) async {
             ULoading.dismiss();
-            UNavigator.push(LoginOtpPage(preRegisterResponse: response, nationalCode: controllerNationalCode.text));
+            ULocalStorage.set(AppConstants.personId, response.personId);
+            await UNavigator.push(LoginOtpPage(preRegisterResponse: response, nationalCode: controllerNationalCode.text));
           },
           onError: (ErrorResponse response) {
             ULoading.dismiss();
