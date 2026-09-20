@@ -16,11 +16,15 @@ class SplashController extends UBaseController {
         Core.currentFile = response.fileInfoList[0].obs;
         UNavigator.offAll(const MainPage());
       },
-      onError: (ErrorResponse response) {
+      onError: (ErrorResponse response) async {
         UToast.error(message: response.errorMessage);
+        await ULocalStorage.clear();
+        await UFileStorage.clear();
       },
-      onException: (String response) {
+      onException: (String response) async {
         UToast.error(message: response);
+        await ULocalStorage.clear();
+        await UFileStorage.clear();
       },
     );
   }

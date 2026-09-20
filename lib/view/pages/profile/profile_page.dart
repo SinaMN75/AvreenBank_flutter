@@ -10,7 +10,7 @@ class ProfilePage extends StatefulWidget {
   State<ProfilePage> createState() => _ProfilePageState();
 }
 
-class _ProfilePageState extends State<ProfilePage> {
+class _ProfilePageState extends UState<ProfilePage> {
   final ProfileController c = ProfileController();
 
   @override
@@ -45,7 +45,7 @@ class _ProfilePageState extends State<ProfilePage> {
           onTap: () => logout(immediate: false),
         ).pSymmetric(vertical: 4),
         const Spacer(),
-        UTextBodyMedium("${U.s.version} ${UApp.version}", margin: const EdgeInsets.symmetric(vertical: 8)),
+        UTextBodyMedium("${U.s.version} ${UApp.version}", margin: const EdgeInsets.symmetric(vertical: 8), color: scheme.primary),
       ],
     ),
   );
