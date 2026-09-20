@@ -2,24 +2,104 @@ part of "../data.dart";
 
 extension TransactionResponseExtension on TransactionInfo {
   IconData terminalTypeIconData() {
-    if (terminalType == "08") return Icons.mobile_friendly;
-    if (terminalType == "03") return Icons.credit_card;
-    if (terminalType == "12") return Icons.online_prediction;
-    return Icons.shopping_cart;
+    switch (terminalType) {
+      case "01":
+        return Icons.account_balance;
+      case "03":
+        return Icons.credit_card;
+      case "43":
+        return Icons.store;
+      case "60":
+        return Icons.phone_android;
+      case "07":
+        return Icons.computer;
+      case "08":
+        return Icons.mobile_friendly;
+      case "09":
+        return Icons.phone;
+      case "12":
+        return Icons.online_prediction;
+      case "14":
+        return Icons.business;
+      case "16":
+        return Icons.tv;
+      case "23":
+        return Icons.point_of_sale;
+      default:
+        return Icons.shopping_cart;
+    }
   }
 
   String terminalTypeName() {
-    if (terminalType == "08") return U.s.mobileBank;
-    if (terminalType == "03") return U.s.posDevice;
-    if (terminalType == "12") return U.s.internetPayment;
-    return U.s.other;
+    switch (terminalType) {
+      case "01":
+        return U.s.atm;
+      case "03":
+        return U.s.posDevice;
+      case "43":
+        return U.s.kiosk;
+      case "60":
+        return U.s.mobileApp;
+      case "07":
+        return U.s.pc;
+      case "08":
+        return U.s.mobileBank;
+      case "09":
+        return U.s.landline;
+      case "12":
+        return U.s.internetPayment;
+      case "14":
+        return U.s.merchantSystem;
+      case "16":
+        return U.s.setTopBox;
+      case "23":
+        return U.s.mPos;
+      default:
+        return terminalType ?? U.s.other;
+    }
   }
 
-  bool isCredit() => debitType == 0;
+  bool isSuccessful() => transactionStatus == 2 || transactionStatus == 7;
 
-  bool isSuccessful() => transactionStatus == 0;
+  String statusName() {
+    switch (transactionStatus) {
+      case 1:
+        return U.s.request;
+      case 2:
+        return U.s.successful;
+      case 3:
+        return U.s.insufficientAmount;
+      case 4:
+        return U.s.accountClosed;
+      case 5:
+        return U.s.failed;
+      case 6:
+        return U.s.reverse;
+      case 7:
+        return U.s.confirm;
+      case 8:
+        return U.s.manualRefund;
+      default:
+        return U.s.other;
+    }
+  }
 
-  String statusName() => isSuccessful() ? U.s.successful : U.s.failed;
+  String debitTypeName() {
+    switch (debitType) {
+      case 1:
+        return U.s.cash;
+      case 2:
+        return U.s.credit;
+      case 3:
+        return "بن کارت";
+      case 4:
+        return "برگشت از خرید";
+      case 5:
+        return "لیزینگ";
+      default:
+        return debitType.toString();
+    }
+  }
 
   String? pan() => Core.currentFile.value.panInfoList.where((PanInfo e) => e.panId == panId).firstOrDefault()?.pan;
 

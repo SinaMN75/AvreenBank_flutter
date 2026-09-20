@@ -25,13 +25,12 @@ class _TransactionsPageState extends State<TransactionsPage> {
     body: Obx(() {
       if (c.state.isLoaded())
         return ListView.separated(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
+          padding: const EdgeInsets.symmetric(horizontal: 16),
           itemBuilder: (BuildContext _, int index) => TransactionTile(
             c.transactions[index],
             onTap: () => UNavigator.push(ReceiptPage(c.transactions[index])),
           ),
-          separatorBuilder: (BuildContext _, int _) => const Divider(),
+          separatorBuilder: (BuildContext _, int _) => const SizedBox(height: 4),
           itemCount: c.transactions.length,
         );
       else if (c.state.isLoading())

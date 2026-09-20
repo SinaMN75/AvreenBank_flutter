@@ -15,14 +15,15 @@ class TransactionTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ColorScheme scheme = Theme.of(context).colorScheme;
-    final bool isCredit = info.isCredit();
-
     return UContainer(
+      color: scheme.surface,
+      radius: 18,
+      border: Border.all(color: scheme.outlineVariant),
       onTap: onTap,
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
       child: Row(
         children: <Widget>[
-          UIconBackground(info.terminalTypeIconData(), color: isCredit ? AppColors.success : scheme.primary, size: 34),
+          UIconBackground(info.terminalTypeIconData(), color: info.isSuccessful() ? AppColors.success : scheme.primary, size: 34),
           const SizedBox(width: 11),
           Expanded(
             child: Column(
@@ -36,11 +37,19 @@ class TransactionTile extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 10),
-          UTextBodyMedium(
-            info.transactionAmount?.rial() ?? "0",
-            color: isCredit ? AppColors.success : scheme.error,
-            maxLines: 2,
-            fontWeight: FontWeight.bold,
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              UTextBodyMedium(
+                info.transactionAmount?.rial() ?? "0",
+                color: info.isSuccessful() ? AppColors.success : scheme.error,
+                maxLines: 2,
+                fontWeight: FontWeight.bold,
+              ),
+              const SizedBox(height: 3),
+              UTextLabelSmall(info.debitTypeName(), color: scheme.onSurfaceVariant),
+            ],
           ),
         ],
       ),

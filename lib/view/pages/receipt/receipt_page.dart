@@ -11,15 +11,13 @@ class ReceiptPage extends StatefulWidget {
   State<ReceiptPage> createState() => _ReceiptPageState();
 }
 
-class _ReceiptPageState extends State<ReceiptPage> {
+class _ReceiptPageState extends UState<ReceiptPage> {
   final WidgetToImageController controller = WidgetToImageController();
 
   TransactionInfo get info => widget.info;
 
   @override
-  Widget build(BuildContext context) {
-    final ColorScheme scheme = Theme.of(context).colorScheme;
-    return UScaffold(
+  Widget build(BuildContext context) => UScaffold(
       appBar: AppBar(title: Text(U.s.transactionReceipt)),
       body: UColumn(
         scrollable: Axis.vertical,
@@ -33,7 +31,6 @@ class _ReceiptPageState extends State<ReceiptPage> {
         ],
       ),
     );
-  }
 
   Widget _receipt(ColorScheme scheme) => UContainer(
     color: scheme.surface,
@@ -66,7 +63,7 @@ class _ReceiptPageState extends State<ReceiptPage> {
       children: <Widget>[
         UIconBackground(info.isSuccessful() ? Icons.check_rounded : Icons.close_rounded, color: color, size: 58),
         UTextTitleMedium(info.statusName(), color: color),
-        UTextHeadlineSmall(info.transactionAmount.rial(), color: info.isCredit() ? AppColors.success : scheme.onSurface),
+        UTextHeadlineSmall(info.transactionAmount.rial(), color: info.isSuccessful() ? AppColors.success : scheme.onSurface),
         UTextLabelSmall(info.logDate?.formatJalaliDateTime() ?? "", color: scheme.onSurfaceVariant),
       ],
     );
@@ -79,7 +76,7 @@ class _ReceiptPageState extends State<ReceiptPage> {
       if (info.merchantAddress.isNotNullOrEmpty()) _row(scheme, U.s.address, info.merchantAddress!),
       if (pan.isNotNullOrEmpty()) _row(scheme, U.s.cardNumber, pan!.separateCharacters(4, " ")),
       _row(scheme, U.s.terminalType, info.terminalTypeName()),
-      if (info.transactionType.isNotNullOrEmpty()) _row(scheme, U.s.transactionType, info.transactionType!),
+      if (info.transactionType.isNotNullOrEmpty()) _row(scheme, U.s.transactionType, info.debitTypeName()),
       if (info.rrn.isNotNullOrEmpty()) _row(scheme, U.s.referenceNumber, info.rrn!),
       if (info.stan.isNotNullOrEmpty()) _row(scheme, U.s.traceNumber, info.stan!),
       if (info.docId.isNotNullOrEmpty()) _row(scheme, U.s.documentNumber, info.docId!),
