@@ -12,7 +12,7 @@ class ReceiptPage extends StatefulWidget {
 }
 
 class _ReceiptPageState extends UState<ReceiptPage> {
-  final WidgetToImageController controller = WidgetToImageController();
+  final UWidgetToImageController controller = UWidgetToImageController();
 
   TransactionInfo get info => widget.info;
 
@@ -26,7 +26,7 @@ class _ReceiptPageState extends UState<ReceiptPage> {
         padding: const EdgeInsets.all(16),
         spacing: 16,
         children: <Widget>[
-          WidgetToImage(controller: controller, child: _receipt(scheme)),
+          UWidgetToImage(controller: controller, child: _receipt(scheme)),
           _actions(scheme),
         ],
       ),

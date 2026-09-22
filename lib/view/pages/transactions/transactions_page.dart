@@ -22,7 +22,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
   @override
   Widget build(BuildContext context) => UScaffold(
     appBar: AppBar(title: Text(U.s.transactions)),
-    body: Obx(() {
+    body: UObx(() {
       if (c.state.isLoaded())
         return ListView.separated(
           padding: const EdgeInsets.symmetric(horizontal: 16),

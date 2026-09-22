@@ -21,7 +21,7 @@ class _ProfileSelectorHeaderState extends UState<ProfileSelectorHeader> {
         color: scheme.primary,
         borderRadius: const BorderRadius.vertical(bottom: Radius.circular(26)),
       ),
-      child: Obx(
+      child: UObx(
         () => ProfileSelectorTile(
           badge: Core.currentFile.value.fileTitle.isNotEmpty == true ? Core.currentFile.value.fileTitle[0] : "",
           name: Core.currentFile.value.fileTitle,

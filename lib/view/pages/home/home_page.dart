@@ -16,7 +16,7 @@ class _HomePageState extends UState<HomePage> {
   @override
   Widget build(BuildContext context) => UScaffold(
     safeArea: false,
-    body: Obx(() {
+    body: UObx(() {
       if (c.state.isLoading()) return const Center(child: UProgressCircular());
       return UColumn(
         scrollable: Axis.vertical,

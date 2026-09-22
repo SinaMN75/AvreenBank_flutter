@@ -6,14 +6,14 @@ class StatementController {
   late AccountInfo selectedAccount;
   final GlobalKey<FormState> byCountKey = GlobalKey<FormState>();
   final GlobalKey<FormState> byDateKey = GlobalKey<FormState>();
-  final Rx<Jalali> startDate = Jalali(1400).obs;
-  final Rx<Jalali> endDate = Jalali.now().obs;
+  final URx<UJalali> startDate = UJalali(1400).obs;
+  final URx<UJalali> endDate = UJalali.now().obs;
   final TextEditingController controllerCount = TextEditingController(text: "10");
-  final TextEditingController controllerStartDate = TextEditingController(text: Jalali(1400).formatCompactDate());
-  final TextEditingController controllerEndDate = TextEditingController(text: Jalali.now().formatCompactDate());
-  final RxList<StatementElement> byCountList = <StatementElement>[].obs;
-  final RxList<StatementElement> byDateList = <StatementElement>[].obs;
-  final RxState state = RxState();
+  final TextEditingController controllerStartDate = TextEditingController(text: UJalali(1400).formatCompactDate());
+  final TextEditingController controllerEndDate = TextEditingController(text: UJalali.now().formatCompactDate());
+  final URxList<StatementElement> byCountList = <StatementElement>[].obs;
+  final URxList<StatementElement> byDateList = <StatementElement>[].obs;
+  final URxState state = URxState();
 
   void getTransactionsByCount() => UValidators.validateForm(
     key: byCountKey,

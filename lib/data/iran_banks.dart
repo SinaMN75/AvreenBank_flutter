@@ -44,9 +44,9 @@ abstract class IranBanks {
     "636949": <Color>[Color(0xFF0F766E), Color(0xFF0A443F)],
   };
 
-  static bool isIranianCard(String number) => number.length == 16 && PersianTools.getBankNameFromCard(number) != null;
+  static bool isIranianCard(String number) => number.length == 16 && UPersianTools.getBankNameFromCard(number) != null;
 
-  static String? nameOf(String number) => number.length == 16 ? PersianTools.getBankNameFromCard(number) : null;
+  static String? nameOf(String number) => number.length == 16 ? UPersianTools.getBankNameFromCard(number) : null;
 
   static List<Color> gradientOf(String bin) => _gradients[bin] ?? _fallback;
 

@@ -7,10 +7,10 @@ enum LoanState { all, payed, notPayed, dueDate }
 enum PayLoanType { dueDate, notPayed, payAll, custom }
 
 class LoansController extends UBaseController {
-  final Rxn<FileInfo> activeProfile = Rxn<FileInfo>();
+  final URxn<FileInfo> activeProfile = URxn<FileInfo>();
   List<LoanInfo> list = <LoanInfo>[];
 
-  Rx<PayLoanType> payLoanType = PayLoanType.notPayed.obs;
+  URx<PayLoanType> payLoanType = PayLoanType.notPayed.obs;
 
   void init() {
     read();

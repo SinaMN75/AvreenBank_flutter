@@ -5,9 +5,9 @@ import "package:u/utilities.dart";
 enum TransactionFilter { all, credit, debit }
 
 class HomeController extends UBaseController {
-  final RxBool balanceHidden = false.obs;
-  final Rxn<GetFileInfoResponse> fileInfoResponse = Rxn<GetFileInfoResponse>();
-  final Rxn<TransactionResponse> transactionResponse = Rxn<TransactionResponse>();
+  final URxBool balanceHidden = false.obs;
+  final URxn<GetFileInfoResponse> fileInfoResponse = URxn<GetFileInfoResponse>();
+  final URxn<TransactionResponse> transactionResponse = URxn<TransactionResponse>();
 
   List<AccountInfo> get accounts => Core.currentFile.value.accountInfoList;
 

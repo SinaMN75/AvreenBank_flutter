@@ -20,8 +20,8 @@ class _BankCardViewState extends State<BankCardView> {
   @override
   Widget build(BuildContext context) {
     final bool isIran = IranBanks.isIranianCard(widget.card.pan);
-    final CardBrand brand = CardBrandDetector.detect(widget.card.pan);
-    final List<Color> colors = isIran ? IranBanks.gradientOf(widget.card.pan) : CardBrandDetector.gradientColors(brand);
+    final UCardBrand brand = UCardBrandDetector.detect(widget.card.pan);
+    final List<Color> colors = isIran ? IranBanks.gradientOf(widget.card.pan) : UCardBrandDetector.gradientColors(brand);
     final String? asset = isIran ? IranBanks.assetOf(widget.card.pan) : null;
     final Widget? logo = asset == null
         ? null
@@ -39,7 +39,7 @@ class _BankCardViewState extends State<BankCardView> {
         opacity: widget.selected ? 1 : 0.7,
         duration: const Duration(milliseconds: 250),
         child: LayoutBuilder(
-          builder: (BuildContext context, BoxConstraints constraints) => CreditCardWidget(
+          builder: (BuildContext context, BoxConstraints constraints) => UCreditCardWidget(
             width: constraints.maxWidth,
             height: widget.height,
             cardNumber: widget.card.pan.separateCharacters(4, "  "),
@@ -50,7 +50,7 @@ class _BankCardViewState extends State<BankCardView> {
             gradient: LinearGradient(colors: colors, begin: Alignment.topRight, end: Alignment.bottomLeft),
             title: isIran ? IranBanks.nameOf(widget.card.pan) : null,
             logo: logo,
-            brandLabel: isIran ? null : CardBrandDetector.label(brand),
+            brandLabel: isIran ? null : UCardBrandDetector.label(brand),
           ).onTap(() => setState(() => backView = !backView)),
         ),
       ),

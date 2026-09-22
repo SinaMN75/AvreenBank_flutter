@@ -13,10 +13,10 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   final PageController pageController = PageController();
-  final RxInt selectedIndex = 0.obs;
+  final URxInt selectedIndex = 0.obs;
 
   @override
-  Widget build(BuildContext context) => Obx(
+  Widget build(BuildContext context) => UObx(
     () {
       final ColorScheme scheme = context.colorScheme;
       return UScaffold(

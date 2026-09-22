@@ -26,7 +26,7 @@ class _LoansPageState extends UState<LoansPage> {
     body: Column(
       children: <Widget>[
         ProfileSelectorHeader(onProfileChanged: () => c.init()),
-        Obx(
+        UObx(
           () {
             if (c.state.isEmpty()) {
               return const UEmptyState(title: "خرید اقساطی انجام نداده‌اید").alignAtCenter();
@@ -94,8 +94,8 @@ class _LoansPageState extends UState<LoansPage> {
   );
 
   void showDetails({required List<InstallmentsStatus> list}) {
-    final RxList<InstallmentsStatus> filteredList = list.obs;
-    final Rx<LoanState> loanState = LoanState.all.obs;
+    final URxList<InstallmentsStatus> filteredList = list.obs;
+    final URx<LoanState> loanState = LoanState.all.obs;
     UNavigator.draggableSheet(
       UColumn(
         padding: const EdgeInsets.all(16),
@@ -115,7 +115,7 @@ class _LoansPageState extends UState<LoansPage> {
               if (i == LoanState.dueDate) filteredList(list.where((InstallmentsStatus e) => e.status == "D").toList());
             },
           ),
-          Obx(
+          UObx(
             () => ListView.separated(
               physics: const NeverScrollableScrollPhysics(),
               padding: const EdgeInsets.only(top: 12),
@@ -145,7 +145,7 @@ class _LoansPageState extends UState<LoansPage> {
   }
 
   void statementBottomSheet({required LoanInfo info}) {
-    final RxState state = RxState();
+    final URxState state = URxState();
     late AccountStatementResponse statement;
     Core.dataSource.accountStatement(
       p: AccountStatementParams(accountId: info.loanAccountId ?? "", count: 100),
@@ -162,6 +162,6 @@ class _LoansPageState extends UState<LoansPage> {
         UToast.error(message: response);
       },
     );
-    UNavigator.draggableSheet(Obx(() => state.isLoaded() ? StatementListView(list: statement.statementElementList).pAll(8) : const SizedBox()));
+    UNavigator.draggableSheet(UObx(() => state.isLoaded() ? StatementListView(list: statement.statementElementList).pAll(8) : const SizedBox()));
   }
 }

@@ -34,7 +34,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
     ),
   );
 
-  Widget byCount() => Obx(
+  Widget byCount() => UObx(
     () => UColumn(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       mainAxisSize: MainAxisSize.min,
@@ -61,7 +61,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
     ),
   );
 
-  Widget byDate() => Obx(
+  Widget byDate() => UObx(
     () => UColumn(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       mainAxisSize: MainAxisSize.min,
@@ -74,7 +74,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
               jalaliType: UJalaliDatePickerType.spinner,
               controller: c.controllerStartDate,
               text: U.s.startDate,
-              onChange: (DateTime d, Jalali j) async {
+              onChange: (DateTime d, UJalali j) async {
                 c.startDate(j);
                 c.controllerStartDate.text = j.formatCompactDate();
               },
@@ -84,7 +84,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
               jalaliType: UJalaliDatePickerType.spinner,
               controller: c.controllerEndDate,
               text: U.s.endDate,
-              onChange: (DateTime d, Jalali j) async {
+              onChange: (DateTime d, UJalali j) async {
                 c.endDate(j);
                 c.controllerEndDate.text = c.endDate.value.formatCompactDate();
               },

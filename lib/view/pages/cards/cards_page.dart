@@ -19,7 +19,7 @@ class _CardsPageState extends UState<CardsPage> {
   @override
   Widget build(BuildContext context) => UScaffold(
     safeArea: false,
-    body: Obx(() {
+    body: UObx(() {
       if (c.state.isLoading()) return const Center(child: UProgressCircular());
       final List<PanInfo> cards = c.cards;
       return SingleChildScrollView(
@@ -46,12 +46,12 @@ class _CardsPageState extends UState<CardsPage> {
     itemSpacing: 12,
     withIndicator: true,
     onPageChanged: (PanInfo card, int index) => c.selectCard(card),
-    itemBuilder: (BuildContext context, PanInfo card, int index) => Obx(
+    itemBuilder: (BuildContext context, PanInfo card, int index) => UObx(
       () => BankCardView(card, selected: card.panId == c.selectedCard.value?.panId).ltr(),
     ),
   );
 
-  Widget _cardDetail(BuildContext context) => Obx(
+  Widget _cardDetail(BuildContext context) => UObx(
     () => UCard(
       color: scheme.surface,
       child: UColumn(
