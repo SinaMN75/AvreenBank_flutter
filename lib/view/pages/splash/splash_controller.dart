@@ -2,6 +2,7 @@ import "package:avreen_bank/data/data.dart";
 import "package:avreen_bank/main.dart";
 import "package:avreen_bank/view/pages/login/login_national_code/login_national_code_page.dart";
 import "package:avreen_bank/view/pages/main/main_page.dart";
+import "package:avreen_bank/view/pages/splash/splash_page.dart";
 import "package:u/utilities.dart";
 
 class SplashController extends UBaseController {
@@ -20,13 +21,13 @@ class SplashController extends UBaseController {
         UToast.error(message: response.errorMessage);
         await ULocalStorage.clear();
         await UFileStorage.clear();
-        // await UNavigator.offAll(const SplashPage());
+        await UNavigator.offAll(const SplashPage());
       },
       onException: (String response) async {
         UToast.error(message: response);
         await ULocalStorage.clear();
         await UFileStorage.clear();
-        // await UNavigator.offAll(const SplashPage());
+        await UNavigator.offAll(const SplashPage());
       },
     );
   }

@@ -29,7 +29,16 @@ class _LoansPageState extends UState<LoansPage> {
         UObx(
           () {
             if (c.state.isEmpty()) {
-              return const UEmptyState(title: "خرید اقساطی انجام نداده‌اید").alignAtCenter();
+              return UCard(
+                margin: const EdgeInsets.symmetric(vertical: 32, horizontal: 20),
+                padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 20),
+                child: UTextBodyMedium(
+                  "براى اين پرونده هنوز قسط فعالى ثبت نشده است. وقتى خريد اقساطى انجام شود، اينجا ديده ميشود.",
+                  color: theme.disabledColor,
+                  maxLines: 5,
+                  textAlign: TextAlign.center,
+                ),
+              ).alignAtTopCenter();
             } else if (c.state.isLoaded())
               return ListView.builder(
                 itemCount: c.list.length,

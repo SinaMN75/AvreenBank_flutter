@@ -1,4 +1,5 @@
 import "package:avreen_bank/data/data.dart";
+import "package:avreen_bank/view/pages/statements/statement_page.dart";
 import "package:u/utilities.dart";
 
 class AccountCard extends StatelessWidget {
@@ -10,7 +11,7 @@ class AccountCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final Color color = account.getColor();
     return UContainer(
-      border: Border.all(color: color),
+      border: Border.all(color: color.withValues(alpha: 0.5)),
       color: color.withValues(alpha: 0.04),
       radius: 16,
       child: URow(
@@ -20,16 +21,17 @@ class AccountCard extends StatelessWidget {
           const SizedBox(width: 12),
           UIconTextVertical(
             crossAxisAlignment: CrossAxisAlignment.start,
-            leading: UTextBodyLarge(account.accountTypeName ?? "---", color: color, fontWeight: FontWeight.bold),
+            leading: UTextBodyLarge((account.accountTypeName ?? "---").subStringIfExist(0, 24), color: color, fontWeight: FontWeight.bold, ),
             trailing: UContainer(
               width: 100,
               maxWidth: 100,
               flexible: 1,
-              border: Border.all(color: color),
+              border: Border.all(color: color.withValues(alpha: 0.5)),
               color: context.colorScheme.surface,
               radius: 24,
               padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 8),
               child: UTextBodyMedium(U.s.statement, color: color),
+              onTap: () => UNavigator.push(TransactionsPage(accountInfo: account)),
             ),
           ),
           const Spacer(),
