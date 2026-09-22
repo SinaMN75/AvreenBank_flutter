@@ -31,7 +31,7 @@ Future<void> main() async {
 }
 
 abstract class AppColors {
-  static const Color brand = Color.fromRGBO(226, 111, 55, 1);
+  static const Color brand = Colors.blue;
   static const Color info = Color(0xFF38EBFF);
   static const Color success = Color(0xFF16A34A);
   static const Color warning = Color(0xFFF59E0B);
@@ -156,8 +156,8 @@ abstract class Core {
 }
 
 abstract class AppConstants {
-  // static const String baseUrl = kIsWeb ? "api/credit/mo" : "https://oa.avreenco.com:8080/api/credit/mo";
-  static const String baseUrl = kIsWeb ? "api/credit/mo" : "https://wpa.tj724.ir/api/credit/mo";
+  static const String baseUrl = kIsWeb ? "api/credit/mo" : "https://oa.avreenco.com:8080/api/credit/mo";
+  // static const String baseUrl = kIsWeb ? "api/credit/mo" : "https://wpa.tj724.ir/api/credit/mo";
   static const String personId = "personId";
 }
 

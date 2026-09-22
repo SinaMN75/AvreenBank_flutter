@@ -1,3 +1,4 @@
+import "package:avreen_bank/data/data.dart";
 import "package:avreen_bank/view/pages/home/home_controller.dart";
 import "package:avreen_bank/view/widgets/account_card.dart";
 import "package:avreen_bank/view/widgets/profile_selector_header.dart";
@@ -41,10 +42,8 @@ class _HomePageState extends UState<HomePage> {
         UEmptyState(title: U.s.noAccountsInThisProfile)
       else
         Column(
-          children: List<Widget>.generate(
-            c.accounts.length,
-            (int index) => AccountCard(account: c.accounts[index], balanceHidden: c.balanceHidden.value, index: index).pSymmetric(vertical: 2),
-          ),
+          spacing: 12,
+          children: c.accounts.map((AccountInfo i) => AccountCard(account: i)).toList(),
         ),
     ],
   );

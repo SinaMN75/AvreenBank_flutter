@@ -20,11 +20,13 @@ class SplashController extends UBaseController {
         UToast.error(message: response.errorMessage);
         await ULocalStorage.clear();
         await UFileStorage.clear();
+        // await UNavigator.offAll(const SplashPage());
       },
       onException: (String response) async {
         UToast.error(message: response);
         await ULocalStorage.clear();
         await UFileStorage.clear();
+        // await UNavigator.offAll(const SplashPage());
       },
     );
   }

@@ -16,12 +16,20 @@ class _MainPageState extends State<MainPage> {
   final URxInt selectedIndex = 0.obs;
 
   @override
+  void dispose() {
+    pageController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) => UObx(
     () {
       final ColorScheme scheme = context.colorScheme;
       return UScaffold(
-        body: IndexedStack(
-          index: selectedIndex.value,
+        body: PageView(
+          controller: pageController,
+          physics: const NeverScrollableScrollPhysics(),
+          onPageChanged: (int index) => selectedIndex(index),
           children: const <Widget>[
             HomePage(),
             CardsPage(),
@@ -38,7 +46,10 @@ class _MainPageState extends State<MainPage> {
           selectedFontSize: 11,
           unselectedFontSize: 11,
           currentIndex: selectedIndex.value,
-          onTap: (int index) => selectedIndex(index),
+          onTap: (int index) {
+            selectedIndex(index);
+            pageController.jumpToPage(index);
+          },
           items: <BottomNavigationBarItem>[
             BottomNavigationBarItem(
               icon: Icon(Icons.account_balance_outlined, color: scheme.onSurfaceVariant),

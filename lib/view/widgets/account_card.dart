@@ -1,42 +1,42 @@
 import "package:avreen_bank/data/data.dart";
-import "package:avreen_bank/main.dart";
-import "package:avreen_bank/view/pages/statements/statement_page.dart";
 import "package:u/utilities.dart";
 
 class AccountCard extends StatelessWidget {
-  const AccountCard({required this.account, required this.index, required this.balanceHidden, super.key});
-
   final AccountInfo account;
-  final bool balanceHidden;
-  final int index;
+
+  const AccountCard({required this.account, super.key});
 
   @override
   Widget build(BuildContext context) {
-    final ColorScheme scheme = Theme.of(context).colorScheme;
+    final Color color = account.getColor();
     return UContainer(
-      color: scheme.surface,
-      radius: 18,
-      border: Border.all(color: scheme.outlineVariant),
-      padding: const EdgeInsets.fromLTRB(12, 6, 12, 12),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      border: Border.all(color: color),
+      color: color.withValues(alpha: 0.04),
+      radius: 16,
+      child: URow(
+        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
         children: <Widget>[
-          ListTile(
-            dense: true,
-            contentPadding: EdgeInsets.zero,
-            leading: ULetterBadge((index + 1).toString(), background: scheme.primary.withValues(alpha: 0.12), foreground: scheme.primary),
-            title: UTextBodyMedium(account.accountTypeName ?? "---", fontWeight: FontWeight.w600, maxLines: 1, overflow: TextOverflow.ellipsis),
-            trailing: UTextTitleMedium(balanceHidden ? "••••••" : account.availableBalance.rial(), fontWeight: FontWeight.bold),
+          UIconBackground(account.getIcon(), color: color, backgroundColor: context.colorScheme.surface),
+          const SizedBox(width: 12),
+          UIconTextVertical(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            leading: UTextBodyLarge(account.accountTypeName ?? "---", color: color, fontWeight: FontWeight.bold),
+            trailing: UContainer(
+              width: 100,
+              maxWidth: 100,
+              flexible: 1,
+              border: Border.all(color: color),
+              color: context.colorScheme.surface,
+              radius: 24,
+              padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 8),
+              child: UTextBodyMedium(U.s.statement, color: color),
+            ),
           ),
-          Row(
-            children: <Widget>[
-              UButton(
-                title: U.s.statement,
-                type: UButtonType.text,
-                icon: const Icon(Icons.show_chart, color: AppColors.brand),
-                onTap: () => UNavigator.push(TransactionsPage(accountInfo: account)),
-              ),
-            ],
+          const Spacer(),
+          UIconTextHorizontal(
+            spaceBetween: 2,
+            leading: UTextBodyLarge((account.availableBalance ?? 0).separate3By3(), color: color),
+            trailing: UTextLabelSmall(U.s.rial),
           ),
         ],
       ),

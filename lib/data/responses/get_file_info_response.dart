@@ -31,6 +31,38 @@ extension GetFileInfoResponseExtension on GetFileInfoResponse {
       .toList();
 }
 
+extension AccountInfoExtension on AccountInfo {
+  Color getColor() {
+    if (accountType == "CREDIT")
+      return Colors.blue;
+    else if (accountType == "WALLET")
+      return Colors.green;
+    else if (accountType == "VOUCHER")
+      return Colors.orange;
+    else if (accountType == "DISCOUNT")
+      return Colors.purple;
+    else if (accountType == "SUBSIDY")
+      return Colors.red;
+    else
+      return AppColors.brand;
+  }
+
+  IconData getIcon() {
+    if (accountType == "CREDIT")
+      return Icons.credit_card;
+    else if (accountType == "WALLET")
+      return Icons.wallet;
+    else if (accountType == "VOUCHER")
+      return Icons.card_giftcard;
+    else if (accountType == "DISCOUNT")
+      return Icons.percent;
+    else if (accountType == "SUBSIDY")
+      return Icons.energy_savings_leaf;
+    else
+      return Icons.credit_card;
+  }
+}
+
 class GetFileInfoResponse {
   GetFileInfoResponse({
     required this.firstName,
@@ -71,8 +103,8 @@ class FileInfo {
     organizationId: json["organizationId"],
     fileTitle: json["fileTitle"],
     organizationName: json["organizationName"],
-    panInfoList: List<PanInfo>.from(json["panInfoList"].map(PanInfo.fromMap)),
-    accountInfoList: List<AccountInfo>.from(json["accountInfoList"].map(AccountInfo.fromMap)),
+    panInfoList: json["panInfoList"] == null ? <PanInfo>[] : List<PanInfo>.from(json["panInfoList"].map(PanInfo.fromMap)),
+    accountInfoList: json["accountInfoList"] == null ? <AccountInfo>[] : List<AccountInfo>.from(json["accountInfoList"].map(AccountInfo.fromMap)),
   );
 
   String toJson() => json.encode(toMap());
