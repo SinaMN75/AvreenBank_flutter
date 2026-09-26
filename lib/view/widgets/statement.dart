@@ -1,4 +1,5 @@
 import "package:avreen_bank/data/data.dart";
+import "package:avreen_bank/view/widgets/transaction_item.dart";
 import "package:u/utilities.dart";
 
 class StatementListView extends StatelessWidget {
@@ -7,10 +8,11 @@ class StatementListView extends StatelessWidget {
   final List<StatementElement> list;
 
   @override
-  Widget build(BuildContext context) => ListView.builder(
+  Widget build(BuildContext context) => ListView.separated(
     physics: const NeverScrollableScrollPhysics(),
     shrinkWrap: true,
     itemCount: list.length,
+    separatorBuilder: (BuildContext _, int _) => const SizedBox(height: 12),
     itemBuilder: (BuildContext context, int index) => StatementItem(list[index]),
   );
 }
@@ -21,19 +23,10 @@ class StatementItem extends StatelessWidget {
   final StatementElement i;
 
   @override
-  Widget build(BuildContext context) => UCard(
-    margin: const EdgeInsets.symmetric(vertical: 4),
-    color: i.type == "L" ? Colors.yellow.shade50 : null,
-    child: UColumn(
-      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
-      children: <Widget>[
-        UKeyValue(
-          leading: UTextBodyLarge(i.transactionAmount.rial(), color: i.transactionAmount!.isNegative ? Colors.red : Colors.green),
-          trailing: UTextBodyMedium(i.voucherDate.formatJalaliDateTime()),
-        ),
-        const SizedBox(height: 12),
-        UTextBodySmall(i.description.toString()),
-      ],
-    ),
+  Widget build(BuildContext context) => TransactionItem(
+    amount: i.transactionAmount ?? 0,
+    positive: !(i.transactionAmount ?? 0).isNegative,
+    description: i.description ?? "",
+    date: i.voucherDate,
   );
 }

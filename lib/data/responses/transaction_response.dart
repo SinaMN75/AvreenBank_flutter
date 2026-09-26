@@ -101,6 +101,13 @@ extension TransactionResponseExtension on TransactionInfo {
     }
   }
 
+  bool isRefund() => debitType == 4;
+
+  String description() => <String>[
+    if (merchantName.isNotNullOrEmpty()) merchantName! else debitTypeName(),
+    if (stan.isNotNullOrEmpty()) "${U.s.traceNumber} ${stan!.toPersianNumber()}",
+  ].join(" — ");
+
   String? pan() => Core.currentFile.value.panInfoList.where((PanInfo e) => e.panId == panId).firstOrDefault()?.pan;
 
   String receiptText() {

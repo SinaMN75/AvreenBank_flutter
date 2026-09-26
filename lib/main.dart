@@ -31,13 +31,26 @@ Future<void> main() async {
 }
 
 abstract class AppColors {
-  static const Color brand = Colors.blue;
+  static const Color brand = Color(0xFF1553A0);
   static const Color info = Color(0xFF38EBFF);
   static const Color success = Color(0xFF16A34A);
   static const Color warning = Color(0xFFF59E0B);
-  static const Color danger = Colors.red;
-  static const Color onGradient = Colors.white;
+  static const Color danger = Color(0xFFDC2626);
+  static const Color onGradient = Color(0xFFFFFFFF);
+  static const Color qr = Color(0xFF000000);
+  static const Color cardChip = Color(0xFFF4C95D);
+  static const Color disabled = Color(0xFFC9CDD6);
+  static const Color credit = Color(0xFF2563EB);
+  static const Color wallet = Color(0xFF0D9488);
+  static const Color voucher = Color(0xFFEA580C);
+  static const Color discount = Color(0xFF16A34A);
+  static const Color subsidy = Color(0xFFDB2777);
+  static const Color sky = Color(0xFF0284C7);
+  static const Color purple = Color(0xFF7C6FE0);
+  static const Color orange = Color(0xFFEA580C);
   static const List<Color> gradient = <Color>[Color(0xFF3B39E5), Color.fromRGBO(226, 111, 55, 1)];
+  static const List<Color> header = <Color>[Color(0xFF0B7BC9), Color(0xFF1553A0)];
+  static const List<Color> card = <Color>[Color(0xFF7DB5E6), Color(0xFF1553A0), Color(0xFF5B4A8E)];
 }
 
 abstract class Core {
@@ -46,12 +59,18 @@ abstract class Core {
 
   static RemoteDataSource dataSource = RemoteDataSource();
   static final ThemeData lightThemeData = _buildTheme(
-    background: Colors.grey.shade100,
+    background: const Color(0xFFF3F5F9),
     scheme: ColorScheme.fromSeed(
       seedColor: AppColors.brand,
       primary: AppColors.brand,
-      surface: Colors.white,
-    ).copyWith(onSurface: Colors.grey.shade900, onSurfaceVariant: Colors.grey.shade600, outlineVariant: Colors.grey.shade300, onPrimary: Colors.white, error: AppColors.danger),
+      surface: const Color(0xFFFFFFFF),
+    ).copyWith(
+      onSurface: const Color(0xFF1F2937),
+      onSurfaceVariant: const Color(0xFF6B7280),
+      outlineVariant: const Color(0xFFDDE2EA),
+      onPrimary: const Color(0xFFFFFFFF),
+      error: AppColors.danger,
+    ),
   );
   static final ThemeData darkThemeData = _buildTheme(
     background: Colors.black,
@@ -110,15 +129,15 @@ abstract class Core {
     inputDecorationTheme: InputDecorationTheme(
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(14),
-        borderSide: const BorderSide(color: Colors.grey, width: 0.3),
+        borderSide: BorderSide(color: scheme.outlineVariant, width: 1.5),
       ),
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(14),
-        borderSide: const BorderSide(color: Colors.grey, width: 0.3),
+        borderSide: BorderSide(color: scheme.outlineVariant, width: 1.5),
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(14),
-        borderSide: BorderSide(color: scheme.primary, width: 0.7),
+        borderSide: BorderSide(color: scheme.primary, width: 1.5),
       ),
       errorBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(14),
@@ -142,6 +161,20 @@ abstract class Core {
         elevation: 0,
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
       ),
+    ),
+    tabBarTheme: TabBarThemeData(
+      labelColor: scheme.primary,
+      unselectedLabelColor: scheme.onSurfaceVariant,
+      indicatorColor: scheme.primary,
+      indicatorSize: TabBarIndicatorSize.tab,
+      dividerColor: scheme.outlineVariant,
+      labelStyle: TextStyle(fontFamily: U.vazir.fontFamily, fontSize: 15, fontWeight: FontWeight.bold),
+      unselectedLabelStyle: TextStyle(fontFamily: U.vazir.fontFamily, fontSize: 15, fontWeight: FontWeight.w600),
+    ),
+    bottomSheetTheme: BottomSheetThemeData(
+      backgroundColor: scheme.surface,
+      dragHandleColor: scheme.outlineVariant,
+      dragHandleSize: const Size(44, 5),
     ),
     listTileTheme: const ListTileThemeData(
       contentPadding: EdgeInsets.symmetric(horizontal: 8),

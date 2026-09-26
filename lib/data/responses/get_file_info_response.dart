@@ -32,35 +32,29 @@ extension GetFileInfoResponseExtension on GetFileInfoResponse {
 }
 
 extension AccountInfoExtension on AccountInfo {
-  Color getColor() {
-    if (accountType == "CREDIT")
-      return Colors.blue;
-    else if (accountType == "WALLET")
-      return Colors.green;
-    else if (accountType == "VOUCHER")
-      return Colors.orange;
-    else if (accountType == "DISCOUNT")
-      return Colors.purple;
-    else if (accountType == "SUBSIDY")
-      return Colors.red;
-    else
-      return AppColors.brand;
-  }
+  Color getColor() => switch (accountType) {
+    "CREDIT" => AppColors.credit,
+    "WALLET" => AppColors.wallet,
+    "VOUCHER" => AppColors.voucher,
+    "DISCOUNT" => AppColors.discount,
+    "SUBSIDY" => AppColors.subsidy,
+    _ => AppColors.brand,
+  };
 
-  IconData getIcon() {
-    if (accountType == "CREDIT")
-      return Icons.credit_card;
-    else if (accountType == "WALLET")
-      return Icons.wallet;
-    else if (accountType == "VOUCHER")
-      return Icons.card_giftcard;
-    else if (accountType == "DISCOUNT")
-      return Icons.percent;
-    else if (accountType == "SUBSIDY")
-      return Icons.energy_savings_leaf;
-    else
-      return Icons.credit_card;
-  }
+  IconData getIcon() => switch (accountType) {
+    "CREDIT" => Icons.credit_card_outlined,
+    "WALLET" => Icons.account_balance_wallet_outlined,
+    "VOUCHER" => Icons.card_giftcard_outlined,
+    "DISCOUNT" => Icons.percent_rounded,
+    "SUBSIDY" => Icons.eco_outlined,
+    _ => Icons.credit_card_outlined,
+  };
+}
+
+extension PanInfoExtension on PanInfo {
+  String? expiry() => expiredDate == null || expiredDate!.length < 4 ? null : "${expiredDate!.substring(0, 2)}/${expiredDate!.substring(2)}";
+
+  String lastFour() => pan.length < 4 ? pan : pan.substring(pan.length - 4);
 }
 
 class GetFileInfoResponse {

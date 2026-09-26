@@ -3,18 +3,9 @@ import "package:avreen_bank/main.dart";
 import "package:u/utilities.dart";
 
 class ProfileSelectorTile extends StatelessWidget {
-  const ProfileSelectorTile({
-    required this.badge,
-    required this.name,
-    required this.color,
-    this.onProfileChange,
-    super.key,
-  });
+  const ProfileSelectorTile({this.onProfileChange, super.key});
 
-  final String badge;
-  final String name;
   final VoidCallback? onProfileChange;
-  final Color color;
 
   @override
   Widget build(BuildContext context) => UContainer(
@@ -29,26 +20,32 @@ class ProfileSelectorTile extends StatelessWidget {
         },
       ),
     ),
-    color: color.withValues(alpha: 0.10),
-    radius: 14,
-    border: Border.all(color: color.withValues(alpha: 0.22)),
-    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 9),
+    color: AppColors.onGradient.withValues(alpha: 0.14),
+    radius: 16,
+    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
     child: Row(
       children: <Widget>[
-        ULetterBadge(badge, background: color.withValues(alpha: 0.18), foreground: color, size: 30, radius: 9),
-        const SizedBox(width: 10),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
+            spacing: 4,
             children: <Widget>[
-              UTextLabelSmall(U.s.activeProfile, color: color.withValues(alpha: 0.65)),
-              UTextBodySmall(name, color: color, maxLines: 1, overflow: TextOverflow.ellipsis),
+              UTextLabelMedium(U.s.activeProfile, color: AppColors.onGradient.withValues(alpha: 0.8)),
+              UObx(
+                () => UTextBodyLarge(
+                  Core.currentFile.value.fileTitle.toPersianNumber(),
+                  color: AppColors.onGradient,
+                  fontWeight: FontWeight.w500,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
             ],
           ),
         ),
         const SizedBox(width: 8),
-        UTextLabelSmall(U.s.change, color: color.withValues(alpha: 0.80)),
+        UTextBodyLarge(U.s.change, color: AppColors.onGradient, fontWeight: FontWeight.bold),
       ],
     ),
   );

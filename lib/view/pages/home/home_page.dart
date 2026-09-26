@@ -24,7 +24,7 @@ class _HomePageState extends UState<HomePage> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
           ProfileSelectorHeader(onProfileChanged: () {}),
-          _accountsSection(context).pAll(16),
+          _accountsSection(context).pSymmetric(horizontal: 16, vertical: 20),
         ],
       );
     }),
@@ -33,16 +33,28 @@ class _HomePageState extends UState<HomePage> {
   Widget _accountsSection(BuildContext context) => Column(
     crossAxisAlignment: CrossAxisAlignment.stretch,
     children: <Widget>[
-      UKeyValue(
-        leading: UTextTitleMedium(U.s.accountsInThisProfile),
-        trailing: UTextLabelSmall(c.accounts.isEmpty ? U.s.empty : "${c.accounts.length} ${U.s.account}"),
+      Row(
+        children: <Widget>[
+          UTextTitleMedium(U.s.accountsInThisProfile, fontWeight: FontWeight.bold, expanded: 1),
+          UContainer(
+            radius: 20,
+            color: scheme.surface,
+            border: Border.all(color: scheme.outlineVariant),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            child: UTextLabelLarge(
+              c.accounts.isEmpty ? U.s.empty : "${c.accounts.length.toString().toPersianNumber()} ${U.s.account}",
+              color: scheme.primary,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ],
       ),
-      const SizedBox(height: 12),
+      const SizedBox(height: 16),
       if (c.accounts.isEmpty)
         UEmptyState(title: U.s.noAccountsInThisProfile)
       else
         Column(
-          spacing: 12,
+          spacing: 14,
           children: c.accounts.map((AccountInfo i) => AccountCard(account: i)).toList(),
         ),
     ],

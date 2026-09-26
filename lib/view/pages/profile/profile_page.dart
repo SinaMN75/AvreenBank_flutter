@@ -1,6 +1,7 @@
 import "package:avreen_bank/main.dart";
 import "package:avreen_bank/view/pages/profile/profile_controller.dart";
 import "package:avreen_bank/view/pages/splash/splash_page.dart";
+import "package:avreen_bank/view/widgets/gradient_header.dart";
 import "package:u/utilities.dart";
 
 class ProfilePage extends StatefulWidget {
@@ -50,12 +51,8 @@ class _ProfilePageState extends UState<ProfilePage> {
     ),
   );
 
-  Widget _header(BuildContext context) => Container(
-    padding: EdgeInsets.fromLTRB(20, MediaQuery.of(context).padding.top + 8, 20, 12),
-    decoration: BoxDecoration(
-      color: context.colorScheme.primary,
-      borderRadius: const BorderRadius.vertical(bottom: Radius.circular(26)),
-    ),
+  Widget _header(BuildContext context) => GradientHeader(
+    padding: const EdgeInsets.fromLTRB(20, 8, 20, 16),
     child: ListTile(
       contentPadding: EdgeInsets.zero,
       leading: CircleAvatar(

@@ -3,43 +3,60 @@ import "package:avreen_bank/view/pages/statements/statement_page.dart";
 import "package:u/utilities.dart";
 
 class AccountCard extends StatelessWidget {
-  final AccountInfo account;
-
   const AccountCard({required this.account, super.key});
+
+  final AccountInfo account;
 
   @override
   Widget build(BuildContext context) {
+    final ColorScheme scheme = context.colorScheme;
     final Color color = account.getColor();
-    return UContainer(
-      border: Border.all(color: color.withValues(alpha: 0.5)),
-      color: color.withValues(alpha: 0.04),
-      radius: 16,
-      child: URow(
-        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+    final Color strong = Color.lerp(color, scheme.onSurface, 0.3)!;
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(20),
+      child: Stack(
         children: <Widget>[
-          UIconBackground(account.getIcon(), color: color, backgroundColor: context.colorScheme.surface),
-          const SizedBox(width: 12),
-          UIconTextVertical(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            leading: UTextBodyLarge((account.accountTypeName ?? "---").subStringIfExist(0, 24), color: color, fontWeight: FontWeight.bold, ),
-            trailing: UContainer(
-              width: 100,
-              maxWidth: 100,
-              flexible: 1,
-              border: Border.all(color: color.withValues(alpha: 0.5)),
-              color: context.colorScheme.surface,
-              radius: 24,
-              padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 8),
-              child: UTextBodyMedium(U.s.statement, color: color),
-              onTap: () => UNavigator.push(TransactionsPage(accountInfo: account)),
+          UContainer(
+            radius: 20,
+            color: color.withValues(alpha: 0.08),
+            border: Border.all(color: color.withValues(alpha: 0.25)),
+            padding: const EdgeInsetsDirectional.fromSTEB(18, 16, 14, 16),
+            child: Row(
+              children: <Widget>[
+                UContainer(
+                  width: 48,
+                  height: 48,
+                  radius: 16,
+                  alignment: Alignment.center,
+                  color: scheme.surface,
+                  child: Icon(account.getIcon(), color: color, size: 24),
+                ),
+                const SizedBox(width: 14),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    spacing: 10,
+                    children: <Widget>[
+                      UTextTitleMedium(account.accountTypeName ?? "---", color: strong, fontWeight: FontWeight.bold, maxLines: 1, overflow: TextOverflow.ellipsis),
+                      UContainer(
+                        radius: 20,
+                        color: scheme.surface,
+                        border: Border.all(color: color.withValues(alpha: 0.35)),
+                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                        onTap: () => UNavigator.push(TransactionsPage(accountInfo: account)),
+                        child: UTextBodySmall("${U.s.view} ${U.s.statement}", color: color, fontWeight: FontWeight.w600),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(width: 8),
+                UTextTitleMedium((account.availableBalance ?? 0).separate3By3().toPersianNumber(), color: strong, fontWeight: FontWeight.bold),
+                const SizedBox(width: 4),
+                UTextLabelMedium(U.s.rial, color: scheme.onSurfaceVariant),
+              ],
             ),
           ),
-          const Spacer(),
-          UIconTextHorizontal(
-            spaceBetween: 2,
-            leading: UTextBodyLarge((account.availableBalance ?? 0).separate3By3(), color: color),
-            trailing: UTextLabelSmall(U.s.rial),
-          ),
+          PositionedDirectional(start: 0, top: 0, bottom: 0, width: 5, child: ColoredBox(color: color)),
         ],
       ),
     );

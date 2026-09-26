@@ -1,5 +1,7 @@
 import "package:avreen_bank/data/data.dart";
 import "package:avreen_bank/view/pages/statements/statement_controller.dart";
+import "package:avreen_bank/view/widgets/gradient_header.dart";
+import "package:avreen_bank/view/widgets/statement.dart";
 import "package:u/utilities.dart";
 
 class TransactionsPage extends StatefulWidget {
@@ -11,7 +13,7 @@ class TransactionsPage extends StatefulWidget {
   State<TransactionsPage> createState() => _TransactionsPageState();
 }
 
-class _TransactionsPageState extends State<TransactionsPage> {
+class _TransactionsPageState extends UState<TransactionsPage> {
   final StatementController c = StatementController();
   static final List<Tab> _tabs = <Tab>[const Tab(text: "براساس تعداد"), const Tab(text: "براساس تاریخ")];
 
@@ -25,12 +27,18 @@ class _TransactionsPageState extends State<TransactionsPage> {
   Widget build(BuildContext context) => DefaultTabController(
     length: _tabs.length,
     child: UScaffold(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      appBar: AppBar(
-        title: Text("${U.s.statement} ${widget.accountInfo.accountTypeName ?? ""}"),
-        bottom: TabBar(tabs: _tabs),
+      safeArea: false,
+      body: Column(
+        children: <Widget>[
+          PageHeader(
+            title: U.s.statement,
+            subtitle: widget.accountInfo.accountTypeName,
+            trailing: "${(widget.accountInfo.availableBalance ?? 0).separate3By3().toPersianNumber()} ${U.s.rial}",
+          ),
+          TabBar(tabs: _tabs, indicatorWeight: 3).pSymmetric(horizontal: 16, vertical: 8),
+          TabBarView(children: <Widget>[byCount(), byDate()]).expanded(),
+        ],
       ),
-      body: TabBarView(children: <Widget>[byCount(), byDate()]),
     ),
   );
 
@@ -39,24 +47,21 @@ class _TransactionsPageState extends State<TransactionsPage> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       mainAxisSize: MainAxisSize.min,
       scrollable: Axis.vertical,
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       children: <Widget>[
         Form(
           key: c.byCountKey,
           child: UTextField(
-            text: "تعداد تراکنش",
+            labelText: "تعداد تراکنش",
             controller: c.controllerCount,
             keyboardType: TextInputType.number,
             maxLength: 3,
             validator: UValidators.number(),
-          ).pSymmetric(vertical: 12),
+            contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+          ).pSymmetric(vertical: 8),
         ),
-        UButton(onTap: c.getTransactionsByCount, title: "دریافت").pSymmetric(vertical: 12),
-        if (c.state.isLoading())
-          const UProgressCircular().alignAtCenter()
-        else if (c.state.isEmpty())
-          const Text("رکوردی یافت نشد.")
-        else if (c.state.isLoaded())
-          statementList(c.byCountList).pSymmetric(vertical: 20),
+        _submit(c.getTransactionsByCount),
+        _result(c.byCountList),
       ],
     ),
   );
@@ -66,61 +71,51 @@ class _TransactionsPageState extends State<TransactionsPage> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       mainAxisSize: MainAxisSize.min,
       scrollable: Axis.vertical,
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       children: <Widget>[
         Row(
+          spacing: 12,
           children: <Widget>[
-            UTextFieldDatePicker(
-              jalali: true,
-              jalaliType: UJalaliDatePickerType.spinner,
-              controller: c.controllerStartDate,
-              text: U.s.startDate,
-              onChange: (DateTime d, UJalali j) async {
-                c.startDate(j);
-                c.controllerStartDate.text = j.formatCompactDate();
-              },
-            ).pSymmetric(horizontal: 12).expanded(),
-            UTextFieldDatePicker(
-              jalali: true,
-              jalaliType: UJalaliDatePickerType.spinner,
-              controller: c.controllerEndDate,
-              text: U.s.endDate,
-              onChange: (DateTime d, UJalali j) async {
-                c.endDate(j);
-                c.controllerEndDate.text = c.endDate.value.formatCompactDate();
-              },
-            ).pSymmetric(horizontal: 12).expanded(),
+            _dateBox(U.s.endDate, c.endDate.value, c.pickEndDate),
+            _dateBox(U.s.startDate, c.startDate.value, c.pickStartDate),
           ],
-        ),
-        UButton(onTap: c.getTransactionsByDate, title: "دریافت").pSymmetric(vertical: 12),
-        if (c.state.isLoading())
-          const UProgressCircular().alignAtCenter()
-        else if (c.state.isEmpty())
-          const Text("رکوردی یافت نشد.")
-        else if (c.state.isLoaded())
-          statementList(c.byDateList).pSymmetric(vertical: 20),
+        ).pSymmetric(vertical: 8),
+        _submit(c.getTransactionsByDate),
+        _result(c.byDateList),
       ],
     ),
   );
 
-  Widget statementList(List<StatementElement> list, {ScrollController? scrollController}) => ListView.builder(
-    controller: scrollController,
-    physics: const NeverScrollableScrollPhysics(),
-    shrinkWrap: true,
-    itemCount: list.length,
-    itemBuilder: (BuildContext context, int index) => statementItem(list[index]),
-  );
-
-  Widget statementItem(StatementElement i) => UCard(
-    margin: const EdgeInsets.symmetric(vertical: 4),
-    color: i.type == "L" ? Colors.yellow.shade50 : null,
-    child: ListTile(
-      contentPadding: const EdgeInsets.all(12),
-      title: UTextBodyLarge(i.transactionAmount.rial(), color: i.transactionAmount!.isNegative ? Colors.red : Colors.green),
-      subtitle: UTextBodySmall(i.description.toString(), maxLines: 3),
-      trailing: UIconTextVertical(
-        leading: UTextBodyMedium(i.voucherDate.formatJalaliDateTime()),
-        trailing: UTextBodySmall("مانده بعد: ${i.balance.toString().separateNumbers3By3()}"),
-      ),
+  Widget _dateBox(String label, UJalali date, VoidCallback onTap) => UContainer(
+    expanded: 1,
+    radius: 16,
+    color: scheme.surface,
+    border: Border.all(color: scheme.outlineVariant),
+    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+    onTap: onTap,
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      spacing: 6,
+      children: <Widget>[
+        UTextBodySmall(label, color: scheme.onSurfaceVariant),
+        UTextTitleSmall(date.formatCompactDate(persianDigits: true), fontWeight: FontWeight.bold),
+      ],
     ),
   );
+
+  Widget _submit(VoidCallback onTap) => UButton(
+    title: "دریافت",
+    onTap: onTap,
+    height: 54,
+    elevation: 0,
+    borderRadius: 16,
+    fullWidth: true,
+  ).pSymmetric(vertical: 12);
+
+  Widget _result(List<StatementElement> list) {
+    if (c.state.isLoading()) return const UProgressCircular().alignAtCenter().pOnly(top: 24);
+    if (c.state.isEmpty()) return UEmptyState(title: U.s.noResults).pOnly(top: 24);
+    if (c.state.isLoaded()) return StatementListView(list: list).pOnly(top: 4, bottom: 20);
+    return const SizedBox();
+  }
 }

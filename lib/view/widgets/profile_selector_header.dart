@@ -1,31 +1,15 @@
-import "package:avreen_bank/main.dart";
+import "package:avreen_bank/view/widgets/gradient_header.dart";
 import "package:avreen_bank/view/widgets/profile_selector_tile.dart";
 import "package:u/utilities.dart";
 
-class ProfileSelectorHeader extends StatefulWidget {
+class ProfileSelectorHeader extends StatelessWidget {
   const ProfileSelectorHeader({required this.onProfileChanged, super.key});
 
   final VoidCallback onProfileChanged;
 
   @override
-  State<ProfileSelectorHeader> createState() => _ProfileSelectorHeaderState();
-}
-
-class _ProfileSelectorHeaderState extends UState<ProfileSelectorHeader> {
-  @override
-  Widget build(BuildContext context) => Container(
-    padding: EdgeInsets.fromLTRB(20, MediaQuery.of(context).padding.top + 16, 20, 24),
-    decoration: BoxDecoration(
-      color: scheme.primary,
-      borderRadius: const BorderRadius.vertical(bottom: Radius.circular(26)),
-    ),
-    child: UObx(
-      () => ProfileSelectorTile(
-        badge: Core.currentFile.value.fileTitle.isNotEmpty == true ? Core.currentFile.value.fileTitle[0] : "",
-        name: Core.currentFile.value.fileTitle,
-        color: context.colorScheme.onPrimary,
-        onProfileChange: widget.onProfileChanged,
-      ),
-    ),
+  Widget build(BuildContext context) => GradientHeader(
+    padding: const EdgeInsets.fromLTRB(20, 16, 20, 28),
+    child: ProfileSelectorTile(onProfileChange: onProfileChanged),
   );
 }

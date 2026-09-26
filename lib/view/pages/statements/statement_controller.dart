@@ -5,15 +5,22 @@ import "package:u/utilities.dart";
 class StatementController {
   late AccountInfo selectedAccount;
   final GlobalKey<FormState> byCountKey = GlobalKey<FormState>();
-  final GlobalKey<FormState> byDateKey = GlobalKey<FormState>();
   final URx<UJalali> startDate = UJalali(1400).obs;
   final URx<UJalali> endDate = UJalali.now().obs;
   final TextEditingController controllerCount = TextEditingController(text: "10");
-  final TextEditingController controllerStartDate = TextEditingController(text: UJalali(1400).formatCompactDate());
-  final TextEditingController controllerEndDate = TextEditingController(text: UJalali.now().formatCompactDate());
   final URxList<StatementElement> byCountList = <StatementElement>[].obs;
   final URxList<StatementElement> byDateList = <StatementElement>[].obs;
   final URxState state = URxState();
+
+  Future<void> pickStartDate() async {
+    final UJalali? date = await UJalaliDatePicker.show(initialDate: startDate.value, lastDate: endDate.value);
+    if (date != null) startDate(date);
+  }
+
+  Future<void> pickEndDate() async {
+    final UJalali? date = await UJalaliDatePicker.show(initialDate: endDate.value, firstDate: startDate.value, lastDate: UJalali.now());
+    if (date != null) endDate(date);
+  }
 
   void getTransactionsByCount() => UValidators.validateForm(
     key: byCountKey,
@@ -33,8 +40,14 @@ class StatementController {
           else
             state.loaded();
         },
-        onError: (ErrorResponse response) => UToast.error(message: response.errorMessage),
-        onException: (String response) {},
+        onError: (ErrorResponse response) {
+          state.error();
+          UToast.error(message: response.errorMessage);
+        },
+        onException: (String response) {
+          state.error();
+          UToast.error(message: response);
+        },
       );
     },
   );
@@ -50,13 +63,19 @@ class StatementController {
       ),
       onOk: (AccountStatementResponse response) {
         byDateList(response.statementElementList);
-        if (byCountList.isEmpty)
+        if (byDateList.isEmpty)
           state.emptying();
         else
           state.loaded();
       },
-      onError: (ErrorResponse response) => UToast.error(message: response.errorMessage),
-      onException: (String response) {},
+      onError: (ErrorResponse response) {
+        state.error();
+        UToast.error(message: response.errorMessage);
+      },
+      onException: (String response) {
+        state.error();
+        UToast.error(message: response);
+      },
     );
   }
 }

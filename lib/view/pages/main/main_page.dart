@@ -37,43 +37,36 @@ class _MainPageState extends State<MainPage> {
             ProfilePage(),
           ],
         ),
-        bottomNavigationBar: BottomNavigationBar(
-          type: BottomNavigationBarType.fixed,
-          backgroundColor: scheme.surface,
-          elevation: 0,
-          selectedItemColor: scheme.primary,
-          unselectedItemColor: scheme.onSurfaceVariant,
-          selectedFontSize: 11,
-          unselectedFontSize: 11,
-          currentIndex: selectedIndex.value,
-          onTap: (int index) {
-            selectedIndex(index);
-            pageController.jumpToPage(index);
-          },
-          items: <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: Icon(Icons.account_balance_outlined, color: scheme.onSurfaceVariant),
-              activeIcon: Icon(Icons.account_balance, color: scheme.primary),
-              label: U.s.accounts,
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.credit_card_outlined, color: scheme.onSurfaceVariant),
-              activeIcon: Icon(Icons.credit_card, color: scheme.primary),
-              label: U.s.cards,
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.credit_card_outlined, color: scheme.onSurfaceVariant),
-              activeIcon: Icon(Icons.credit_card, color: scheme.primary),
-              label: "اقساط",
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.person_outline, color: scheme.onSurfaceVariant),
-              activeIcon: Icon(Icons.person, color: scheme.primary),
-              label: U.s.profile,
-            ),
-          ],
+        bottomNavigationBar: DecoratedBox(
+          decoration: BoxDecoration(border: Border(top: BorderSide(color: scheme.outlineVariant))),
+          child: BottomNavigationBar(
+            type: BottomNavigationBarType.fixed,
+            backgroundColor: scheme.surface,
+            elevation: 0,
+            selectedItemColor: scheme.primary,
+            unselectedItemColor: scheme.onSurfaceVariant,
+            selectedFontSize: 12,
+            selectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold),
+            unselectedLabelStyle: const TextStyle(fontWeight: FontWeight.w500),
+            currentIndex: selectedIndex.value,
+            onTap: (int index) {
+              selectedIndex(index);
+              pageController.jumpToPage(index);
+            },
+            items: <BottomNavigationBarItem>[
+              _item(Icons.home_outlined, U.s.accounts),
+              _item(Icons.credit_card_outlined, U.s.cards),
+              _item(Icons.bookmark_border_rounded, "اقساط"),
+              _item(Icons.person_outline_rounded, U.s.profile),
+            ],
+          ),
         ),
       );
     },
+  );
+
+  BottomNavigationBarItem _item(IconData icon, String label) => BottomNavigationBarItem(
+    icon: Icon(icon).pOnly(bottom: 4),
+    label: label,
   );
 }

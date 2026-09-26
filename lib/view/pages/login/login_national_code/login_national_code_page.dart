@@ -1,5 +1,5 @@
-import "package:avreen_bank/main.dart";
 import "package:avreen_bank/view/pages/login/login_national_code/login_national_code_controller.dart";
+import "package:avreen_bank/view/widgets/app_numeric_keyboard.dart";
 import "package:u/utilities.dart";
 
 class LoginNationalCodePage extends StatefulWidget {
@@ -9,43 +9,44 @@ class LoginNationalCodePage extends StatefulWidget {
   State<LoginNationalCodePage> createState() => _LoginNationalCodePageState();
 }
 
-class _LoginNationalCodePageState extends State<LoginNationalCodePage> {
+class _LoginNationalCodePageState extends UState<LoginNationalCodePage> {
   final LoginNationalcodeController c = LoginNationalcodeController();
 
   @override
   Widget build(BuildContext context) => UScaffold(
-    appBar: AppBar(
-      leadingWidth: 28,
-      title: const ListTile(
-        dense: true,
-        leading: UImage(AppImages.avreen, borderRadius: 8),
-        title: Text("ورود به حساب کاربری"),
-        subtitle: Text("کد ملی خود را وارد کنید. رمز یکبارمصرف به شمارهٔ موبایل ثبت‌شده به نامتان پیامک می‌شود."),
-      ),
-    ),
-    padding: const EdgeInsets.all(20),
+    color: scheme.surface,
+    padding: const EdgeInsets.fromLTRB(20, 32, 20, 16),
     body: Form(
       key: c.formKey,
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
-          const SizedBox(height: 32),
+          const UTextHeadlineSmall("ورود به حساب کاربری", textAlign: TextAlign.center),
+          UTextBodyMedium(
+            "کد ملی خود را وارد کنید. رمز یک‌بارمصرف به شماره موبایلی که ثبت کرده‌اید فرستاده می‌شود.",
+            textAlign: TextAlign.center,
+            color: scheme.onSurfaceVariant,
+            height: 2,
+            maxLines: 3,
+            margin: const EdgeInsets.fromLTRB(12, 12, 12, 36),
+          ),
           UTextField(
             readOnly: true,
             controller: c.controllerNationalCode,
             labelText: U.s.nationalCode,
             validator: UValidators.iranianNationalCode(),
             maxLength: 10,
-            contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
-            fontSize: 18,
+            borderRadius: 28,
+            floatingLabelBehavior: FloatingLabelBehavior.always,
+            contentPadding: const EdgeInsets.symmetric(vertical: 20, horizontal: 24),
+            fontSize: 20,
           ),
           const Spacer(),
-          UNumericKeyboard(
-            actionsPosition: UNumericKeyboardActionsPosition.bottom,
-            actions: <UNumericKeyboardAction>[UNumericKeyboardAction(label: "دریافت کد تایید", onTap: c.submit)],
-            onBackspace: () => c.controllerNationalCode.dropLastCharacter(),
-            onBackspaceLongPress: () => c.controllerNationalCode.clear(),
-            onKeyTap: (String value) => c.controllerNationalCode.appendCharacter(value, maxLength: 11),
+          AppNumericKeyboard(
+            controller: c.controllerNationalCode,
+            maxLength: 10,
+            extraKey: "0000",
+            actions: <UNumericKeyboardAction>[UNumericKeyboardAction(label: "دریافت کد تأیید", onTap: c.submit, fontSize: 16)],
           ),
         ],
       ),

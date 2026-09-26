@@ -23,39 +23,50 @@ class _LoansPageState extends UState<LoansPage> {
 
   @override
   Widget build(BuildContext context) => UScaffold(
+    safeArea: false,
     body: Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
         ProfileSelectorHeader(onProfileChanged: () => c.init()),
+        const UTextTitleMedium("اقساط", fontWeight: FontWeight.bold, margin: EdgeInsets.fromLTRB(20, 28, 20, 16)),
         UObx(
           () {
-            if (c.state.isEmpty()) {
-              return UCard(
-                margin: const EdgeInsets.symmetric(vertical: 32, horizontal: 20),
-                padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 20),
+            if (c.state.isEmpty())
+              return UContainer(
+                radius: 24,
+                color: scheme.surface,
+                margin: const EdgeInsets.symmetric(horizontal: 16),
+                padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 24),
                 child: UTextBodyMedium(
-                  "براى اين پرونده هنوز قسط فعالى ثبت نشده است. وقتى خريد اقساطى انجام شود، اينجا ديده ميشود.",
-                  color: theme.disabledColor,
-                  maxLines: 5,
+                  "برای این پرونده هنوز قسط فعالی ثبت نشده است. وقتی خرید اقساطی انجام شود، اینجا دیده می‌شود.",
+                  color: scheme.onSurfaceVariant,
+                  height: 2,
+                  maxLines: 4,
                   textAlign: TextAlign.center,
                 ),
               ).alignAtTopCenter();
-            } else if (c.state.isLoaded())
-              return ListView.builder(
+            else if (c.state.isLoaded())
+              return ListView.separated(
+                padding: const EdgeInsets.fromLTRB(16, 0, 16, 24),
                 itemCount: c.list.length,
+                separatorBuilder: (BuildContext _, int _) => const SizedBox(height: 14),
                 itemBuilder: (BuildContext context, int index) => _item(info: c.list[index]),
               );
+            else if (c.state.isLoading())
+              return const UProgressCircular().alignAtTopCenter();
             else
-              return const CircularProgressIndicator().alignAtCenter();
+              return const SizedBox();
           },
         ).expanded(),
       ],
     ),
   );
 
-  Widget _item({required LoanInfo info}) => UCard(
-    margin: const EdgeInsets.all(8),
+  Widget _item({required LoanInfo info}) => UContainer(
+    radius: 24,
+    color: scheme.surface,
     child: UColumn(
-      padding: const EdgeInsets.all(12),
+      padding: const EdgeInsets.all(16),
       children: <Widget>[
         UTextTitleMedium(info.loanTitle ?? "", textAlign: TextAlign.center, color: scheme.primary, margin: const EdgeInsets.symmetric(vertical: 6)),
         UKeyValue(
@@ -96,6 +107,10 @@ class _LoansPageState extends UState<LoansPage> {
         UButton(
           title: U.s.details,
           fullWidth: true,
+          height: 50,
+          elevation: 0,
+          borderRadius: 16,
+          margin: const EdgeInsets.only(top: 8),
           onTap: () => showDetails(list: info.installmentsStatus ?? <InstallmentsStatus>[]),
         ),
       ],

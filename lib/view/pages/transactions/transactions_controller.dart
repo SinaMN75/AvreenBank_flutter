@@ -1,7 +1,6 @@
 import "package:avreen_bank/data/data.dart";
 import "package:avreen_bank/main.dart";
-import "package:u/u_admin/u_admin.dart";
-import "package:u/utils/u_toast.dart";
+import "package:u/utilities.dart";
 
 class TransactionsController extends UBaseController {
   List<TransactionInfo> transactions = <TransactionInfo>[];
@@ -13,7 +12,7 @@ class TransactionsController extends UBaseController {
       p: TransactionParams(fileId: profile.fileId),
       onOk: (TransactionResponse response) {
         transactions = response.transactionInfoList;
-        if (state.isEmpty())
+        if (transactions.isEmpty)
           state.emptying();
         else
           state.loaded();
