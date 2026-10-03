@@ -4,16 +4,16 @@ import "package:avreen_bank/view/widgets/gradient_header.dart";
 import "package:avreen_bank/view/widgets/statement.dart";
 import "package:u/utilities.dart";
 
-class TransactionsPage extends StatefulWidget {
-  const TransactionsPage({required this.accountInfo, super.key});
+class StatementPage extends StatefulWidget {
+  const StatementPage({required this.accountInfo, super.key});
 
   final AccountInfo accountInfo;
 
   @override
-  State<TransactionsPage> createState() => _TransactionsPageState();
+  State<StatementPage> createState() => _StatementPageState();
 }
 
-class _TransactionsPageState extends UState<TransactionsPage> {
+class _StatementPageState extends UState<StatementPage> {
   final StatementController c = StatementController();
   static final List<Tab> _tabs = <Tab>[const Tab(text: "براساس تعداد"), const Tab(text: "براساس تاریخ")];
 

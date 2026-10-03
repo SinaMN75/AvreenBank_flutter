@@ -21,38 +21,17 @@ class TransactionItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final ColorScheme scheme = context.colorScheme;
     final Color amountColor = positive ? AppColors.success : scheme.error;
-    return UContainer(
+    return UCard(
       color: scheme.surface,
-      radius: 20,
-      padding: const EdgeInsets.fromLTRB(16, 16, 16, 14),
       onTap: onTap,
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          _icon(scheme),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                Align(
-                  alignment: AlignmentDirectional.centerEnd,
-                  child: UTextTitleSmall(
-                    "${positive ? "+" : "-"}${amount.abs().separate3By3().toPersianNumber()} ${U.s.rial}",
-                    color: amountColor,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 6),
-                UTextBodyMedium(description, color: scheme.onSurface.withValues(alpha: 0.8), height: 1.9, maxLines: 4),
-                if (date.isNotNullOrEmpty()) ...<Widget>[
-                  const SizedBox(height: 8),
-                  UTextLabelMedium(_formatDate(date!), color: scheme.onSurfaceVariant),
-                ],
-              ],
-            ),
-          ),
-        ],
+      child: ListTile(
+        leading: _icon(scheme),
+        trailing: UTextBodySmall(
+          "${positive ? "+" : "-"}${amount.abs().separate3By3().toPersianNumber()} ${U.s.rial}",
+          color: amountColor,
+        ),
+        title: UTextBodyMedium(description, color: scheme.onSurface.withValues(alpha: 0.8), fit: BoxFit.scaleDown),
+        subtitle: UTextLabelMedium(date!.toJalaliDateTime(), color: scheme.onSurfaceVariant),
       ),
     );
   }
@@ -90,11 +69,5 @@ class TransactionItem extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  static String _formatDate(String date) {
-    final DateTime? dateTime = DateTime.tryParse(date)?.toLocal();
-    if (dateTime == null) return date;
-    return UJalali.fromDateTime(dateTime).formatCustom("yyyy/mm/dd - HH:MM:SS", persianDigits: true);
   }
 }
