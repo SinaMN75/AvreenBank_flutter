@@ -51,7 +51,7 @@ class _LoginNationalCodePageState extends UState<LoginNationalCodePage> {
           UTextField(
             controller: c.controllerMobileNo,
             labelText: U.s.mobileNumber,
-            validator: UValidators.phone(),
+            validator: UValidators.iranianPhone(),
             maxLength: 13,
             borderRadius: 28,
             keyboardType: TextInputType.number,

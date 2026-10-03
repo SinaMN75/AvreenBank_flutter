@@ -79,6 +79,13 @@ class _CardsPageState extends UState<CardsPage> {
         spacing: 12,
         children: <Widget>[
           _settingTile(
+            icon: Icons.bookmark_border_rounded,
+            color: AppColors.orange,
+            title: "تراکنش‌های کارت",
+            subtitle: "آخرین خریدها و گردش کارت",
+            onTap: () => UNavigator.push(TransactionsPage(card: c.selectedCard.value)),
+          ),
+          _settingTile(
             icon: Icons.ac_unit_rounded,
             color: AppColors.sky,
             title: U.s.temporarilyBlock,
@@ -92,13 +99,6 @@ class _CardsPageState extends UState<CardsPage> {
             title: "پرداخت با QR",
             subtitle: "نمایش بارکد پرداخت فروشگاهی",
             onTap: _cardQrSheet,
-          ),
-          _settingTile(
-            icon: Icons.bookmark_border_rounded,
-            color: AppColors.orange,
-            title: "تراکنش‌های کارت",
-            subtitle: "آخرین خریدها و گردش کارت",
-            onTap: () => UNavigator.push(TransactionsPage(card: c.selectedCard.value)),
           ),
           _settingTile(
             icon: Icons.block_rounded,

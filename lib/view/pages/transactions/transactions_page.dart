@@ -1,5 +1,4 @@
 import "package:avreen_bank/data/data.dart";
-import "package:avreen_bank/view/pages/receipt/receipt_page.dart";
 import "package:avreen_bank/view/pages/transactions/transactions_controller.dart";
 import "package:avreen_bank/view/widgets/gradient_header.dart";
 import "package:avreen_bank/view/widgets/transaction_item.dart";
@@ -80,15 +79,11 @@ class _TransactionsPageState extends UState<TransactionsPage> {
         Row(
           spacing: 12,
           children: <Widget>[
-            _dateBox(U.s.endDate, c.endDate.value, c.pickEndDate),
             _dateBox(U.s.startDate, c.startDate.value, c.pickStartDate),
+            _dateBox(U.s.endDate, c.endDate.value, c.pickEndDate),
           ],
         ).pSymmetric(vertical: 8),
-        _submit(
-          () {
-            c.getTransactionsByDate();
-          },
-        ),
+        _submit(() => c.getTransactionsByDate()),
         _result(c.byDateState, c.byDateList),
       ],
     ),
@@ -136,19 +131,10 @@ class _TransactionsPageState extends UState<TransactionsPage> {
     if (state.isLoading()) return const UProgressCircular().alignAtCenter().pOnly(top: 24);
     if (state.isEmpty()) return UEmptyState(title: U.s.noResults).pOnly(top: 24);
     if (!state.isLoaded()) return const SizedBox();
-    return Column(
+    return UColumn(
       spacing: 14,
-      children: list
-          .map(
-            (TransactionInfo info) => TransactionItem(
-              amount: info.transactionAmount ?? 0,
-              positive: info.isRefund(),
-              description: info.description(),
-              date: info.logDate,
-              onTap: () => UNavigator.push(ReceiptPage(info)),
-            ),
-          )
-          .toList(),
-    ).pOnly(top: 4, bottom: 20);
+      margin: const EdgeInsets.only(top: 4, bottom: 20),
+      children: list.map((TransactionInfo info) => TransactionItem(i: info)).toList(),
+    );
   }
 }

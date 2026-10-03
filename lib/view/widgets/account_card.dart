@@ -43,8 +43,13 @@ class AccountCard extends StatelessWidget {
                         color: scheme.surface,
                         border: Border.all(color: color.withValues(alpha: 0.35)),
                         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                        onTap: () => UNavigator.push(StatementPage(accountInfo: account)),
-                        child: UTextBodySmall("${U.s.view} ${U.s.statement}", color: color, fontWeight: FontWeight.w600),
+                        onTap: () {
+                          // if (account.accountType == "CREDIT")
+                          //   UNavigator.push(const StatusFacePage());
+                          // else
+                            UNavigator.push(StatementPage(accountInfo: account));
+                        },
+                        child: UTextBodySmall(U.s.statement, color: color, fontWeight: FontWeight.w600),
                       ),
                     ],
                   ),

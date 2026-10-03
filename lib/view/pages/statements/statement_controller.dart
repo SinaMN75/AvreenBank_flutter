@@ -5,7 +5,7 @@ import "package:u/utilities.dart";
 class StatementController {
   late AccountInfo selectedAccount;
   final GlobalKey<FormState> byCountKey = GlobalKey<FormState>();
-  final URx<UJalali> startDate = UJalali(1400).obs;
+  final URx<UJalali> startDate = UJalali.now().firstDayOfMonth().obs;
   final URx<UJalali> endDate = UJalali.now().obs;
   final TextEditingController controllerCount = TextEditingController(text: "10");
   final URxList<StatementElement> byCountList = <StatementElement>[].obs;

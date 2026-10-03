@@ -61,12 +61,27 @@ extension TransactionResponseExtension on TransactionInfo {
 
   bool isSuccessful() => transactionStatus == 2 || transactionStatus == 7;
 
+  Color color() {
+    switch (transactionStatus) {
+      case 2:
+        return Colors.yellow.shade800;
+      case 7:
+        return Colors.green;
+      case 8:
+        return Colors.orange;
+      case 6:
+        return Colors.red;
+      default:
+        return Colors.black;
+    }
+  }
+
   String statusName() {
     switch (transactionStatus) {
       case 1:
         return U.s.request;
       case 2:
-        return U.s.successful;
+        return "موفق";
       case 3:
         return U.s.insufficientAmount;
       case 4:
@@ -74,11 +89,11 @@ extension TransactionResponseExtension on TransactionInfo {
       case 5:
         return U.s.failed;
       case 6:
-        return U.s.reverse;
+        return "برگشت سیستمی";
       case 7:
-        return U.s.confirm;
+        return "تایید شده";
       case 8:
-        return U.s.manualRefund;
+        return "برگشت ستادی";
       default:
         return U.s.other;
     }
@@ -87,9 +102,9 @@ extension TransactionResponseExtension on TransactionInfo {
   String debitTypeName() {
     switch (debitType) {
       case 1:
-        return U.s.cash;
+        return "خرید اعتباری";
       case 2:
-        return U.s.credit;
+        return "خرید اقساطی";
       case 3:
         return "بن کارت";
       case 4:

@@ -76,8 +76,8 @@ class _StatementPageState extends UState<StatementPage> {
         Row(
           spacing: 12,
           children: <Widget>[
-            _dateBox(U.s.endDate, c.endDate.value, c.pickEndDate),
             _dateBox(U.s.startDate, c.startDate.value, c.pickStartDate),
+            _dateBox(U.s.endDate, c.endDate.value, c.pickEndDate),
           ],
         ).pSymmetric(vertical: 8),
         _submit(c.getTransactionsByDate),

@@ -18,19 +18,19 @@ class _ReceiptPageState extends UState<ReceiptPage> {
 
   @override
   Widget build(BuildContext context) => UScaffold(
-      appBar: AppBar(title: Text(U.s.transactionReceipt)),
-      body: UColumn(
-        scrollable: Axis.vertical,
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        padding: const EdgeInsets.all(16),
-        spacing: 16,
-        children: <Widget>[
-          UWidgetToImage(controller: controller, child: _receipt(scheme)),
-          _actions(scheme),
-        ],
-      ),
-    );
+    appBar: AppBar(title: Text(U.s.transactionReceipt)),
+    body: UColumn(
+      scrollable: Axis.vertical,
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      spacing: 16,
+      children: <Widget>[
+        UWidgetToImage(controller: controller, child: _receipt(scheme)),
+        _actions(scheme),
+      ],
+    ),
+  );
 
   Widget _receipt(ColorScheme scheme) => UContainer(
     color: scheme.surface,
@@ -45,35 +45,26 @@ class _ReceiptPageState extends UState<ReceiptPage> {
         _header(scheme),
         Divider(color: scheme.outlineVariant),
         ..._rows(scheme),
-        Divider(color: scheme.outlineVariant),
-        UTextLabelSmall(
-          "${Core.fileInfo.value.firstName ?? ""} ${Core.fileInfo.value.lastName ?? ""}",
-          color: scheme.onSurfaceVariant,
-          textAlign: TextAlign.center,
-        ),
       ],
     ),
   );
 
-  Widget _header(ColorScheme scheme) {
-    final Color color = info.isSuccessful() ? AppColors.success : scheme.error;
-    return UColumn(
+  Widget _header(ColorScheme scheme) => UColumn(
       mainAxisSize: MainAxisSize.min,
       spacing: 10,
       children: <Widget>[
-        UIconBackground(info.isSuccessful() ? Icons.check_rounded : Icons.close_rounded, color: color, size: 58),
-        UTextTitleMedium(info.statusName(), color: color),
+        UIconBackground(info.isSuccessful() ? Icons.check_rounded : Icons.close_rounded, color: info.color(), size: 58),
+        UTextTitleMedium(info.statusName(), color: info.color()),
         UTextHeadlineSmall(info.transactionAmount.rial(), color: info.isSuccessful() ? AppColors.success : scheme.onSurface),
-        UTextLabelSmall(info.logDate?.formatJalaliDateTime() ?? "", color: scheme.onSurfaceVariant),
+        UTextLabelSmall(info.logDate?.formatJalaliDateTime() ?? "", color: scheme.onSurfaceVariant).ltr(),
       ],
     );
-  }
 
   List<Widget> _rows(ColorScheme scheme) {
     final String? pan = info.pan();
     return <Widget>[
       if (info.merchantName.isNotNullOrEmpty()) _row(scheme, U.s.merchant, info.merchantName!),
-      if (info.merchantAddress.isNotNullOrEmpty()) _row(scheme, U.s.address, info.merchantAddress!),
+      // if (info.merchantAddress.isNotNullOrEmpty()) _row(scheme, U.s.address, info.merchantAddress!),
       if (pan.isNotNullOrEmpty()) _row(scheme, U.s.cardNumber, pan!.separateCharacters(4, " ")),
       _row(scheme, U.s.terminalType, info.terminalTypeName()),
       if (info.transactionType.isNotNullOrEmpty()) _row(scheme, U.s.transactionType, info.debitTypeName()),
@@ -114,9 +105,9 @@ class _ReceiptPageState extends UState<ReceiptPage> {
   );
 
   Future<void> _share() async {
-    final ShareResult? result = await UShare.widgetImage(
-      controller: controller,
-      fileName: "receipt_${info.stan ?? info.rrn ?? ""}.png",
+    final UShareResult? result = await UShare.widgetImage(
+      controller,
+      name: "receipt_${info.stan ?? info.rrn ?? ""}.png",
       text: info.receiptText(),
     );
     if (result == null) UToast.errorToast(message: U.s.somethingWentWrong);
