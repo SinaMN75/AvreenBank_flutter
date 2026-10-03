@@ -5,10 +5,10 @@ import "package:avreen_bank/view/widgets/app_numeric_keyboard.dart";
 import "package:u/utilities.dart";
 
 class LoginOtpPage extends StatefulWidget {
-  const LoginOtpPage({required this.nationalCode, required this.preRegisterResponse, super.key});
+  const LoginOtpPage({required this.preRegisterParams, required this.preRegisterResponse, super.key});
 
   final PreRegisterResponse preRegisterResponse;
-  final String nationalCode;
+  final PreRegisterParams preRegisterParams;
 
   @override
   State<LoginOtpPage> createState() => _LoginOtpPageState();
@@ -19,7 +19,7 @@ class _LoginOtpPageState extends UState<LoginOtpPage> {
 
   @override
   void initState() {
-    c.init(preRegisterResponse: widget.preRegisterResponse, nationalCode: widget.nationalCode);
+    c.init(preRegisterResponse: widget.preRegisterResponse, preRegisterParams: widget.preRegisterParams);
     super.initState();
   }
 
@@ -51,15 +51,13 @@ class _LoginOtpPageState extends UState<LoginOtpPage> {
                 onTap: UNavigator.back,
                 child: Icon(Icons.edit_outlined, color: scheme.primary, size: 18),
               ),
-              UTextTitleLarge(widget.nationalCode.toPersianNumber(), fontWeight: FontWeight.bold, textDirection: TextDirection.ltr),
+              UTextTitleLarge(widget.preRegisterParams.mobileNo.toPersianNumber(), fontWeight: FontWeight.bold, textDirection: TextDirection.ltr),
             ],
           ),
           UTextBodyMedium("کد فعال‌سازی به شماره شما ارسال شد.", color: scheme.onSurfaceVariant, maxLines: 2, margin: const EdgeInsets.only(top: 10, bottom: 28)),
           UOtpField(
             length: widget.preRegisterResponse.otpLength,
             controller: c.controllerOtp,
-            keyboardMode: UOtpKeyboardMode.external,
-            expand: false,
             fieldWidth: 46,
             fieldHeight: 58,
             spacing: 10,
@@ -123,8 +121,6 @@ class _LoginOtpPageState extends UState<LoginOtpPage> {
             margin: const EdgeInsets.only(top: 20),
             onTap: () => UToast.snackBar(message: U.s.comingSoon),
           ),
-          const Spacer(),
-          AppNumericKeyboard(controller: c.controllerOtp, maxLength: widget.preRegisterResponse.otpLength),
         ],
       ),
     ),

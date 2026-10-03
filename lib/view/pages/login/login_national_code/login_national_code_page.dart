@@ -1,5 +1,4 @@
 import "package:avreen_bank/view/pages/login/login_national_code/login_national_code_controller.dart";
-import "package:avreen_bank/view/widgets/app_numeric_keyboard.dart";
 import "package:u/utilities.dart";
 
 class LoginNationalCodePage extends StatefulWidget {
@@ -11,6 +10,12 @@ class LoginNationalCodePage extends StatefulWidget {
 
 class _LoginNationalCodePageState extends UState<LoginNationalCodePage> {
   final LoginNationalcodeController c = LoginNationalcodeController();
+
+  @override
+  void initState() {
+    super.initState();
+    c.focusNode.requestFocus();
+  }
 
   @override
   Widget build(BuildContext context) => UScaffold(
@@ -28,25 +33,38 @@ class _LoginNationalCodePageState extends UState<LoginNationalCodePage> {
             color: scheme.onSurfaceVariant,
             height: 2,
             maxLines: 3,
-            margin: const EdgeInsets.fromLTRB(12, 12, 12, 36),
+            margin: const EdgeInsets.fromLTRB(12, 12, 12, 24),
           ),
           UTextField(
-            readOnly: true,
+            focusNode: c.focusNode,
             controller: c.controllerNationalCode,
             labelText: U.s.nationalCode,
             validator: UValidators.iranianNationalCode(),
             maxLength: 10,
             borderRadius: 28,
+            keyboardType: TextInputType.number,
+            formatters: <TextInputFormatter>[UNumberInputFormatter()],
             floatingLabelBehavior: FloatingLabelBehavior.always,
-            contentPadding: const EdgeInsets.symmetric(vertical: 20, horizontal: 24),
             fontSize: 20,
+            margin: const EdgeInsets.symmetric(vertical: 6),
           ),
-          const Spacer(),
-          AppNumericKeyboard(
-            controller: c.controllerNationalCode,
-            maxLength: 10,
-            extraKey: "0000",
-            actions: <UNumericKeyboardAction>[UNumericKeyboardAction(label: "دریافت کد تأیید", onTap: c.submit, fontSize: 16)],
+          UTextField(
+            controller: c.controllerMobileNo,
+            labelText: U.s.mobileNumber,
+            validator: UValidators.phone(),
+            maxLength: 13,
+            borderRadius: 28,
+            keyboardType: TextInputType.number,
+            formatters: <TextInputFormatter>[UNumberInputFormatter()],
+            floatingLabelBehavior: FloatingLabelBehavior.always,
+            fontSize: 20,
+            margin: const EdgeInsets.symmetric(vertical: 6),
+          ),
+          UButton(
+            title: U.s.getPinViaSms,
+            fullWidth: true,
+            onTap: c.submit,
+            margin: const EdgeInsets.symmetric(vertical: 8),
           ),
         ],
       ),

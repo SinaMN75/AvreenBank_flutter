@@ -3,23 +3,23 @@ part of "../data.dart";
 class RegisterParams {
   RegisterParams({
     required this.otp,
-    required this.personId,
+    required this.loginToken,
   });
 
   factory RegisterParams.fromJson(String str) => RegisterParams.fromMap(json.decode(str));
 
   factory RegisterParams.fromMap(Map<String, dynamic> json) => RegisterParams(
         otp: json["otp"],
-        personId: json["personId"],
+        loginToken: json["loginToken"],
       );
 
   String toJson() => json.encode(toMap());
 
   Map<String, dynamic> toMap() => <String, dynamic>{
         "otp": otp,
-        "personId": personId,
+        "loginToken": loginToken,
       };
 
   final String otp;
-  final String personId;
+  final String loginToken;
 }

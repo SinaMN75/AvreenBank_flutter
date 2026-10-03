@@ -4,8 +4,6 @@ class AccountStatementParams {
   AccountStatementParams({
     required this.accountId,
     required this.count,
-    this.functionCode,
-    this.subFunctionCode,
     this.endDateTime,
     this.startDateTime,
   });
@@ -14,15 +12,11 @@ class AccountStatementParams {
 
   factory AccountStatementParams.fromMap(dynamic json) => AccountStatementParams(
     accountId: json["accountId"],
-    functionCode: json["accountId"],
-    subFunctionCode: json["accountId"],
     count: json["count"],
     endDateTime: json["endDateTime"],
     startDateTime: json["startDateTime"],
   );
   final String accountId;
-  final String? functionCode;
-  final String? subFunctionCode;
   final int count;
   final String? endDateTime;
   final String? startDateTime;
@@ -31,8 +25,6 @@ class AccountStatementParams {
 
   Map<String, dynamic> toMap() => <String, dynamic>{
     "accountId": accountId,
-    "functionCode": functionCode,
-    "subFunctionCode": subFunctionCode,
     "count": count,
     "endDateTime": endDateTime,
     "startDateTime": startDateTime,

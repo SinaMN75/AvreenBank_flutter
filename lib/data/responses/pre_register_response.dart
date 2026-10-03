@@ -2,7 +2,7 @@ part of "../data.dart";
 
 class PreRegisterResponse {
   PreRegisterResponse({
-    required this.personId,
+    required this.loginToken,
     required this.otpLength,
   });
 
@@ -10,10 +10,10 @@ class PreRegisterResponse {
 
   factory PreRegisterResponse.fromMap(Map<String, dynamic> json) =>
       PreRegisterResponse(
-        personId: json["personId"],
+        loginToken: json["loginToken"],
         otpLength: json["otpLength"],
       );
 
-  final String personId;
+  final String loginToken;
   final int otpLength;
 }

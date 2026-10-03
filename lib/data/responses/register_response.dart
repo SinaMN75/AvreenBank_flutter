@@ -3,19 +3,16 @@ part of "../data.dart";
 class RegisterResponse {
   RegisterResponse({
     this.token,
-    this.otpLength,
-    this.userName,
+    this.personId,
   });
 
   factory RegisterResponse.fromJson(String str) => RegisterResponse.fromMap(json.decode(str));
 
   factory RegisterResponse.fromMap(Map<String, dynamic> json) => RegisterResponse(
     token: json["token"],
-    otpLength: json["otpLength"],
-    userName: json["userName"],
+    personId: json["personId"],
   );
 
   final String? token;
-  final int? otpLength;
-  final String? userName;
+  final String? personId;
 }

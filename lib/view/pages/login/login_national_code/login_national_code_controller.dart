@@ -5,18 +5,25 @@ import "package:u/utilities.dart";
 
 class LoginNationalcodeController extends UBaseController {
   final TextEditingController controllerNationalCode = TextEditingController();
+  final TextEditingController controllerMobileNo = TextEditingController();
+
+  final FocusNode focusNode = FocusNode();
 
   void submit() {
     UValidators.validateForm(
       key: formKey,
       action: () {
         ULoading.show();
+        final PreRegisterParams preRegisterParams = PreRegisterParams(
+          loginMode: 1,
+          nationalId: controllerNationalCode.numString(),
+          mobileNo: controllerMobileNo.numString(),
+        );
         Core.dataSource.preRegister(
-          p: PreRegisterParams(loginMode: 1, nationalId: controllerNationalCode.numString()),
+          p: preRegisterParams,
           onOk: (PreRegisterResponse response) async {
             ULoading.dismiss();
-            ULocalStorage.set(AppConstants.personId, response.personId);
-            await UNavigator.push(LoginOtpPage(preRegisterResponse: response, nationalCode: controllerNationalCode.text));
+            await UNavigator.push(LoginOtpPage(preRegisterResponse: response, preRegisterParams: preRegisterParams));
           },
           onError: (ErrorResponse response) {
             ULoading.dismiss();

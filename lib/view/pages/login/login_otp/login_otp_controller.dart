@@ -6,26 +6,26 @@ import "package:u/utilities.dart";
 
 class LoginOtpController extends UBaseController {
   late PreRegisterResponse preRegisterResponse;
-  late String nationalCode;
+  late PreRegisterParams preRegisterParams;
 
   final TextEditingController controllerOtp = TextEditingController();
 
   void init({
     required PreRegisterResponse preRegisterResponse,
-    required String nationalCode,
+    required PreRegisterParams preRegisterParams,
   }) {
     this.preRegisterResponse = preRegisterResponse;
-    this.nationalCode = nationalCode;
+    this.preRegisterParams = preRegisterParams;
   }
 
   void sendAgain() {
     ULoading.show();
     Core.dataSource.preRegister(
-      p: PreRegisterParams(loginMode: 1, nationalId: nationalCode),
+      p: PreRegisterParams(loginMode: 1, nationalId: preRegisterParams.nationalId, mobileNo: preRegisterParams.mobileNo),
       onOk: (PreRegisterResponse response) async {
         ULoading.dismiss();
-        ULocalStorage.set(AppConstants.personId, response.personId);
-        await UNavigator.off(LoginOtpPage(nationalCode: nationalCode, preRegisterResponse: response));
+        ULocalStorage.set(AppConstants.personId, response.loginToken);
+        await UNavigator.off(LoginOtpPage(preRegisterParams: preRegisterParams, preRegisterResponse: response));
       },
       onError: (ErrorResponse response) {
         ULoading.dismiss();
@@ -47,10 +47,11 @@ class LoginOtpController extends UBaseController {
     Core.dataSource.register(
       p: RegisterParams(
         otp: controllerOtp.text,
-        personId: preRegisterResponse.personId,
+        loginToken: preRegisterResponse.loginToken,
       ),
       onOk: (RegisterResponse response) {
         ULocalStorage.setToken(response.token!);
+        ULocalStorage.set(AppConstants.personId, response.personId);
         ULoading.dismiss();
         UNavigator.offAll(const SplashPage());
       },
