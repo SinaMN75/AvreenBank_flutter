@@ -196,8 +196,7 @@ abstract class AppConstants {
 
 abstract class AppImages {
   static const String _base = "lib/assets/images";
-  static const String logo = "$_base/logo.jpeg";
-  static const String avreen = "$_base/avreen.png";
+  static const String logo = "$_base/logo.jpg";
 }
 
 abstract class AppIcons {

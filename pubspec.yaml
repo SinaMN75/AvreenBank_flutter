@@ -21,7 +21,7 @@ dev_dependencies:
   flutter_lints: ^6.0.0
 
 flutter_launcher_icons:
-  image_path: lib/assets/images/logo_launcher.jpeg
+  image_path: lib/assets/images/logo_launcher.jpg
   android: true
   ios: true
   web:
@@ -33,10 +33,10 @@ flutter_launcher_icons:
 
 flutter_native_splash:
   color: "#ffffff"
-  image: lib/assets/images/logo_launcher.jpeg
+  image: lib/assets/images/logo_launcher.jpg
   branding: lib/assets/images/please_wait.png
   color_dark: "#ffffff"
-  image_dark: lib/assets/images/logo_launcher.jpeg
+  image_dark: lib/assets/images/logo_launcher.jpg
   branding_dark: lib/assets/images/please_wait.png
 
 #  android_gravity: center
