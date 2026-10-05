@@ -16,7 +16,6 @@ class TransactionsPage extends StatefulWidget {
 class _TransactionsPageState extends UState<TransactionsPage> {
   final TransactionsController c = TransactionsController();
   static final List<Tab> _tabs = <Tab>[
-    const Tab(text: "امروز"),
     const Tab(text: "براساس تعداد"),
     const Tab(text: "براساس تاریخ"),
   ];
@@ -39,7 +38,7 @@ class _TransactionsPageState extends UState<TransactionsPage> {
             subtitle: widget.card == null ? null : "کارت اعتباری — ${widget.card!.lastFour().toPersianNumber()}",
           ),
           TabBar(tabs: _tabs, indicatorWeight: 3).pSymmetric(horizontal: 16, vertical: 8),
-          TabBarView(children: <Widget>[today(), byCount(), byDate()]).expanded(),
+          TabBarView(children: <Widget>[byCount(), byDate()]).expanded(),
         ],
       ),
     ),
@@ -78,6 +77,20 @@ class _TransactionsPageState extends UState<TransactionsPage> {
       children: <Widget>[
         Row(
           spacing: 12,
+          children: TransactionDatePreset.values
+              .map(
+                (TransactionDatePreset preset) => ChoiceChip(
+                  labelPadding: const EdgeInsets.symmetric(vertical: 2, horizontal: 8),
+                  padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 8),
+                  label: Text(preset.title).expanded(),
+                  selected: c.datePreset.value == preset,
+                  onSelected: (_) => c.selectDatePreset(preset),
+                ),
+              )
+              .toList(),
+        ).pSymmetric(vertical: 4),
+        Row(
+          spacing: 12,
           children: <Widget>[
             _dateBox(U.s.startDate, c.startDate.value, c.pickStartDate),
             _dateBox(U.s.endDate, c.endDate.value, c.pickEndDate),
@@ -85,18 +98,6 @@ class _TransactionsPageState extends UState<TransactionsPage> {
         ).pSymmetric(vertical: 8),
         _submit(() => c.getTransactionsByDate()),
         _result(c.byDateState, c.byDateList),
-      ],
-    ),
-  );
-
-  Widget today() => UObx(
-    () => UColumn(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      mainAxisSize: MainAxisSize.min,
-      scrollable: Axis.vertical,
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      children: <Widget>[
-        _result(c.todayState, c.todayList),
       ],
     ),
   );

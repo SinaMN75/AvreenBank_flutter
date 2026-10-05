@@ -27,6 +27,8 @@ class _SplashPageState extends State<SplashPage> {
         const UImage(AppImages.logo, width: 200, height: 200),
         const Spacer(),
         UTextBodyMedium("${U.s.version} ${UApp.version}", fontWeight: FontWeight.bold),
+        const SizedBox(height: 12),
+        const UTextBodyMedium("Powered BY: AvreenCo", fontWeight: FontWeight.bold),
         const Spacer(),
       ],
     ),

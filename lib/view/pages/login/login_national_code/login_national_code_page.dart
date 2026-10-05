@@ -23,14 +23,13 @@ class _LoginNationalCodePageState extends UState<LoginNationalCodePage> {
     key: c.formKey,
     child: AuthLayout(
       children: <Widget>[
-        const UTextHeadlineSmall("ورود به حساب کاربری", textAlign: TextAlign.center, margin: EdgeInsets.only(top: 20)),
+        const UTextHeadlineSmall("ورود به حساب کاربری", textAlign: TextAlign.center, margin: EdgeInsets.only(top: 12)),
         UTextBodyMedium(
           "کد ملی و شماره موبایل خود را وارد کنید. رمز یک‌بارمصرف با پیامک ارسال می‌شود.",
           textAlign: TextAlign.center,
           color: scheme.onSurfaceVariant,
-          height: 1.9,
           maxLines: 3,
-          margin: const EdgeInsets.fromLTRB(4, 10, 4, 24),
+          margin: const EdgeInsets.all(12),
         ),
         UTextField(
           focusNode: c.focusNode,

@@ -7,8 +7,9 @@ import "package:u/utilities.dart";
 
 class SplashController extends UBaseController {
   Future<void> init() async {
+    await Future<void>.delayed(const Duration(milliseconds: 700));
     if (!ULocalStorage.hasToken()) {
-      WidgetsBinding.instance.addPostFrameCallback((Duration _) => UNavigator.offAll(const LoginNationalCodePage()));
+      await UNavigator.offAll(const LoginNationalCodePage());
       return;
     }
     await Core.dataSource.getFileInfo(

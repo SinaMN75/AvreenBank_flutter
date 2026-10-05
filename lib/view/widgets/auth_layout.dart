@@ -24,7 +24,9 @@ class AuthLayout extends StatelessWidget {
       ),
       body: Stack(
         children: <Widget>[
-          Positioned.fill(child: CustomPaint(painter: _AuthArcsPainter(color: scheme.primary))),
+          Positioned.fill(
+            child: CustomPaint(painter: _AuthArcsPainter(color: scheme.primary)),
+          ),
           SafeArea(
             child: Center(
               child: SingleChildScrollView(
@@ -45,7 +47,13 @@ class AuthLayout extends StatelessWidget {
                         "حکمت نو",
                         textAlign: TextAlign.center,
                         color: scheme.onSurfaceVariant,
-                        margin: const EdgeInsets.only(top: 32),
+                        margin: const EdgeInsets.only(top: 16),
+                      ),
+                      UTextBodySmall(
+                        "Powered BY: AvreenCo",
+                        textAlign: TextAlign.center,
+                        color: scheme.onSurfaceVariant,
+                        margin: const EdgeInsets.only(top: 8),
                       ),
                     ],
                   ),
