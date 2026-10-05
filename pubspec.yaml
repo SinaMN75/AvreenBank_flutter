@@ -1,7 +1,7 @@
 name: avreen_bank
 description: "AvreenBank Application."
 publish_to: 'none'
-version: 0.9.0+90
+version: 0.9.1+91
 
 environment:
   sdk: ">=3.13.4"
