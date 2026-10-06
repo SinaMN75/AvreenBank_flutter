@@ -88,12 +88,7 @@ class _CardsPageState extends UState<CardsPage> {
             color: AppColors.orange,
             title: "تراکنش‌های کارت",
             subtitle: "آخرین خریدها و گردش کارت",
-            onTap: () {
-              if (UApp.isAndroid)
-                UNavigator.push(TransactionsPage(card: c.selectedCard.value));
-              else
-                UToast.error(message: "پرداخت با NFC فقط در نسخه نصبی اندروید امکان پذیر است");
-            },
+            onTap: () => UNavigator.push(TransactionsPage(card: c.selectedCard.value)),
           ),
           _settingTile(
             icon: Icons.credit_card_outlined,
@@ -107,7 +102,16 @@ class _CardsPageState extends UState<CardsPage> {
             color: AppColors.purple,
             title: "پرداخت با NFC",
             subtitle: "پرداخت با کارت دیجیتال",
-            onTap: () => UNavigator.push(NfcPage(valueToSend: c.selectedCard.value?.tokenizePanInfo?.track2 ?? "5022291053531784")),
+            onTap: () {
+              if (c.selectedCard.value?.tokenizePanInfo?.track2 == null) {
+                UToast.snackBar(message: U.s.errorReadingData);
+                return;
+              }
+              if (UApp.isAndroid)
+                UNavigator.push(NfcPage(valueToSend: c.selectedCard.value!.tokenizePanInfo!.track2!));
+              else
+                UToast.error(message: "پرداخت با NFC فقط در نسخه نصبی اندروید امکان پذیر است");
+            },
           ),
           _settingTile(
             icon: Icons.ac_unit_rounded,
