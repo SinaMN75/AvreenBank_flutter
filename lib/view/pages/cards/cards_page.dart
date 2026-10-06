@@ -1,6 +1,7 @@
 import "package:avreen_bank/data/data.dart";
 import "package:avreen_bank/main.dart";
 import "package:avreen_bank/view/pages/cards/cards_controller.dart";
+import "package:avreen_bank/view/pages/nfc/nfc_page.dart";
 import "package:avreen_bank/view/pages/transactions/transactions_page.dart";
 import "package:avreen_bank/view/widgets/app_sheet.dart";
 import "package:avreen_bank/view/widgets/bank_card_view.dart";
@@ -71,7 +72,11 @@ class _CardsPageState extends UState<CardsPage> {
         spacing: 12,
         children: <Widget>[
           _actionTile(icon: Icons.ios_share_rounded, title: "شماره کارت و شبا", onTap: _cardInfoSheet),
-          _actionTile(icon: Icons.vpn_key_outlined, title: U.s.dynamicPin, onTap: () => UToast.snackBar(message: U.s.comingSoon)),
+          _actionTile(
+            icon: Icons.vpn_key_outlined,
+            title: U.s.dynamicPin,
+            onTap: () => UToast.snackBar(message: U.s.comingSoon),
+          ),
         ],
       ),
       UTextTitleMedium(U.s.settings, fontWeight: FontWeight.bold, margin: const EdgeInsets.only(top: 28, bottom: 14)),
@@ -83,7 +88,26 @@ class _CardsPageState extends UState<CardsPage> {
             color: AppColors.orange,
             title: "تراکنش‌های کارت",
             subtitle: "آخرین خریدها و گردش کارت",
-            onTap: () => UNavigator.push(TransactionsPage(card: c.selectedCard.value)),
+            onTap: () {
+              if (UApp.isAndroid)
+                UNavigator.push(TransactionsPage(card: c.selectedCard.value));
+              else
+                UToast.error(message: "پرداخت با NFC فقط در نسخه نصبی اندروید امکان پذیر است");
+            },
+          ),
+          _settingTile(
+            icon: Icons.credit_card_outlined,
+            color: AppColors.purple,
+            title: "پرداخت با QR",
+            subtitle: "نمایش بارکد پرداخت فروشگاهی",
+            onTap: _cardQrSheet,
+          ),
+          _settingTile(
+            icon: Icons.credit_card_outlined,
+            color: AppColors.purple,
+            title: "پرداخت با NFC",
+            subtitle: "پرداخت با کارت دیجیتال",
+            onTap: () => UNavigator.push(NfcPage(valueToSend: c.selectedCard.value?.tokenizePanInfo?.track2 ?? "5022291053531784")),
           ),
           _settingTile(
             icon: Icons.ac_unit_rounded,
@@ -92,13 +116,6 @@ class _CardsPageState extends UState<CardsPage> {
             subtitle: "کارت حکمت نو را موقتاً غیرفعال کنید",
             trailing: CupertinoSwitch(value: false, onChanged: (bool _) => _blockSheet()).ltr(),
             onTap: _blockSheet,
-          ),
-          _settingTile(
-            icon: Icons.credit_card_outlined,
-            color: AppColors.purple,
-            title: "پرداخت با QR",
-            subtitle: "نمایش بارکد پرداخت فروشگاهی",
-            onTap: _cardQrSheet,
           ),
           _settingTile(
             icon: Icons.block_rounded,

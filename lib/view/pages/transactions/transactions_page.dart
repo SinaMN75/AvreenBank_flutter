@@ -82,7 +82,7 @@ class _TransactionsPageState extends UState<TransactionsPage> {
                 (TransactionDatePreset preset) => ChoiceChip(
                   labelPadding: const EdgeInsets.symmetric(vertical: 2, horizontal: 8),
                   padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 8),
-                  label: Text(preset.title).expanded(),
+                  label: Text(preset.title),
                   selected: c.datePreset.value == preset,
                   onSelected: (_) => c.selectDatePreset(preset),
                 ),

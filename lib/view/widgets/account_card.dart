@@ -1,5 +1,6 @@
 import "package:avreen_bank/data/data.dart";
 import "package:avreen_bank/view/pages/statements/statement_page.dart";
+import "package:avreen_bank/view/pages/status_face/status_face_page.dart";
 import "package:u/utilities.dart";
 
 class AccountCard extends StatelessWidget {
@@ -44,9 +45,9 @@ class AccountCard extends StatelessWidget {
                         border: Border.all(color: color.withValues(alpha: 0.35)),
                         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                         onTap: () {
-                          // if (account.accountType == "CREDIT")
-                          //   UNavigator.push(const StatusFacePage());
-                          // else
+                          if (account.accountType == "CREDIT" && kDebugMode)
+                            UNavigator.push(const StatusFacePage());
+                          else
                             UNavigator.push(StatementPage(accountInfo: account));
                         },
                         child: UTextBodySmall(U.s.statement, color: color, fontWeight: FontWeight.w600),
