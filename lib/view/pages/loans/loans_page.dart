@@ -28,7 +28,6 @@ class _LoansPageState extends UState<LoansPage> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
         ProfileSelectorHeader(onProfileChanged: () => c.init()),
-        const UTextTitleMedium("اقساط", fontWeight: FontWeight.bold, margin: EdgeInsets.fromLTRB(20, 28, 20, 16)),
         UObx(
           () {
             if (c.state.isEmpty())
@@ -68,7 +67,6 @@ class _LoansPageState extends UState<LoansPage> {
     child: UColumn(
       padding: const EdgeInsets.all(16),
       children: <Widget>[
-        UTextTitleMedium(info.loanTitle ?? "", textAlign: TextAlign.center, color: scheme.primary, margin: const EdgeInsets.symmetric(vertical: 6)),
         UKeyValue(
           leading: UTextBodyMedium("مبلغ کل اقساط", color: theme.disabledColor),
           trailing: Text(info.amount.rial()),
@@ -80,28 +78,13 @@ class _LoansPageState extends UState<LoansPage> {
           margin: const EdgeInsets.symmetric(vertical: 6),
         ),
         UKeyValue(
-          leading: UTextBodyMedium("پرداخت شده کل", color: theme.disabledColor),
+          leading: UTextBodyMedium("پرداخت شده", color: theme.disabledColor),
           trailing: Text(info.payedAmount.rial()),
           margin: const EdgeInsets.symmetric(vertical: 6),
         ),
         UKeyValue(
-          leading: UTextBodyMedium("باقیمانده کل", color: theme.disabledColor),
-          trailing: Text(info.notPayedAmount.rial()),
-          margin: const EdgeInsets.symmetric(vertical: 6),
-        ),
-        UKeyValue(
-          leading: UTextBodyMedium("مبلغ سررسید شده", color: theme.disabledColor),
-          trailing: Text(info.notPayedDueAmount.rial()),
-          margin: const EdgeInsets.symmetric(vertical: 6),
-        ),
-        UKeyValue(
-          leading: UTextBodyMedium(U.s.startDate, color: theme.disabledColor),
+          leading: Text(info.endDate.formatJalaliDateTime()),
           trailing: Text(info.startDate.formatJalaliDateTime()),
-          margin: const EdgeInsets.symmetric(vertical: 6),
-        ),
-        UKeyValue(
-          leading: UTextBodyMedium(U.s.endDate, color: theme.disabledColor),
-          trailing: Text(info.endDate.formatJalaliDateTime()),
           margin: const EdgeInsets.symmetric(vertical: 6),
         ),
         UButton(

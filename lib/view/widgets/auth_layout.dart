@@ -50,7 +50,7 @@ class AuthLayout extends StatelessWidget {
                         margin: const EdgeInsets.only(top: 16),
                       ),
                       UTextBodySmall(
-                        "Powered BY: AvreenCo",
+                        "Powered by: AvreenCo",
                         textAlign: TextAlign.center,
                         color: scheme.onSurfaceVariant,
                         margin: const EdgeInsets.only(top: 8),
