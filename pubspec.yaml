@@ -1,7 +1,7 @@
 name: avreen_bank
 description: "AvreenBank Application."
 publish_to: 'none'
-version: 1.0.0+100
+version: 1.0.2+102
 
 environment:
   sdk: ">=3.13.4"
@@ -21,7 +21,7 @@ dev_dependencies:
   flutter_lints: ^6.0.0
 
 flutter_launcher_icons:
-  image_path: lib/assets/images/logo.png
+  image_path: lib/assets/images/logo_launcher.jpg
   android: true
   ios: true
   web:
@@ -33,11 +33,11 @@ flutter_launcher_icons:
 
 flutter_native_splash:
   color: "#ffffff"
-  image: lib/assets/images/logo.png
-  branding: lib/assets/images/please_wait.png
+  image: lib/assets/images/branding_logo.png
+  branding: lib/assets/images/branding_text.png
   color_dark: "#ffffff"
-  image_dark: lib/assets/images/logo.png
-  branding_dark: lib/assets/images/please_wait.png
+  image_dark: lib/assets/images/branding_logo.png
+  branding_dark: lib/assets/images/branding_text.png
 
 #  android_gravity: center
 #  ios_content_mode: center
