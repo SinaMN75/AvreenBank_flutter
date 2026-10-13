@@ -54,7 +54,7 @@ class StatusFaceController extends UBaseController {
   void readCreditDetails({required String? billId, required Function(List<StatementCreditDetail> list) onOk}) {
     ULoading.show();
     Core.dataSource.statementCreditDetails(
-      p: StatementCreditDetailsParams(accountId: accountInfo.accountId, billId: billId),
+      p: StatementCreditDetailsParams(billId: billId),
       onOk: (StatementCreditDetailsResponse response) {
         ULoading.dismiss();
         onOk(response.result);
