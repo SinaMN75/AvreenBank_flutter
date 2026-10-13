@@ -19,13 +19,13 @@ class SplashController extends UBaseController {
         UNavigator.offAll(const MainPage());
       },
       onError: (ErrorResponse response) async {
-        UToast.error(message: response.errorMessage);
+        UToast.errorToast(message: response.errorMessage);
         await ULocalStorage.clear();
         await UFileStorage.clear();
         await UNavigator.offAll(const SplashPage());
       },
       onException: (String response) async {
-        UToast.error(message: response);
+        UToast.errorToast(message: response);
         await ULocalStorage.clear();
         await UFileStorage.clear();
         await UNavigator.offAll(const SplashPage());

@@ -26,11 +26,11 @@ class LoansController extends UBaseController {
         else state.loaded();
       },
       onError: (ErrorResponse response) {
-        UToast.error(message: response.errorMessage);
+        UToast.errorToast(message: response.errorMessage);
         state.error();
       },
       onException: (String response) {
-        UToast.error(message: response);
+        UToast.errorToast(message: response);
         state.error();
       },
     );

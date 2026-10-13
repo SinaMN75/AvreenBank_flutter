@@ -1,30 +1,37 @@
 import "package:avreen_bank/data/data.dart";
-import "package:avreen_bank/view/pages/loans/loans_controller.dart";
+import "package:avreen_bank/view/pages/status_face/status_face_controller.dart";
+import "package:avreen_bank/view/widgets/gradient_header.dart";
 import "package:u/utilities.dart";
 
 class StatusFacePage extends StatefulWidget {
-  const StatusFacePage({super.key});
+  const StatusFacePage({required this.accountInfo, super.key});
+
+  final AccountInfo accountInfo;
 
   @override
   State<StatusFacePage> createState() => _StatusFacePageState();
 }
 
 class _StatusFacePageState extends UState<StatusFacePage> {
-  final LoansController c = LoansController();
+  final StatusFaceController c = StatusFaceController();
 
   @override
   void initState() {
-    c.init();
+    c.init(accountInfo: widget.accountInfo);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) => UScaffold(
-    appBar: AppBar(),
     safeArea: false,
     body: Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
+        PageHeader(
+          title: U.s.statement,
+          subtitle: widget.accountInfo.accountTypeName,
+          trailing: "${(widget.accountInfo.availableBalance ?? 0).separate3By3().toPersianNumber()} ${U.s.rial}",
+        ),
         UObx(
           () {
             if (c.state.isEmpty())
@@ -58,41 +65,40 @@ class _StatusFacePageState extends UState<StatusFacePage> {
     ),
   );
 
-  Widget _item({required LoanInfo info}) => UContainer(
+  Widget _item({required CreditStatement info}) => UContainer(
     radius: 24,
     color: scheme.surface,
     child: UColumn(
       padding: const EdgeInsets.all(16),
       children: <Widget>[
-        UTextTitleMedium(info.loanTitle ?? "", textAlign: TextAlign.center, color: scheme.primary, margin: const EdgeInsets.symmetric(vertical: 6)),
         UKeyValue(
           leading: UTextBodyMedium("تاریخ سررسید", color: theme.disabledColor),
-          trailing: Text(info.amount.rial()),
+          trailing: Text(info.dueDate?.toJalaliCompactDateString() ?? "---"),
           margin: const EdgeInsets.symmetric(vertical: 6),
         ),
         UKeyValue(
           leading: UTextBodyMedium("وضعیت", color: theme.disabledColor),
-          trailing: Text(info.installmentCount.toString()),
+          trailing: Text(info.statusText()),
           margin: const EdgeInsets.symmetric(vertical: 6),
         ),
         UKeyValue(
           leading: UTextBodyMedium("بدهی اعتباری", color: theme.disabledColor),
-          trailing: Text(info.payedAmount.rial()),
+          trailing: Text(info.creditDebt.rial()),
           margin: const EdgeInsets.symmetric(vertical: 6),
         ),
         UKeyValue(
           leading: UTextBodyMedium("مانده بدهی اعتباری", color: theme.disabledColor),
-          trailing: Text(info.notPayedAmount.rial()),
+          trailing: Text(info.remainCreditDebt.rial()),
           margin: const EdgeInsets.symmetric(vertical: 6),
         ),
         UKeyValue(
           leading: UTextBodyMedium("بدهی تسهیلاتی", color: theme.disabledColor),
-          trailing: Text(info.notPayedDueAmount.rial()),
+          trailing: Text(info.loanDebt.rial()),
           margin: const EdgeInsets.symmetric(vertical: 6),
         ),
         UKeyValue(
           leading: UTextBodyMedium("مانده بدهی تسهیلاتی", color: theme.disabledColor),
-          trailing: Text(info.startDate.formatJalaliDateTime()),
+          trailing: Text(info.remainLoanDebt.rial()),
           margin: const EdgeInsets.symmetric(vertical: 6),
         ),
         URow(
@@ -104,7 +110,7 @@ class _StatusFacePageState extends UState<StatusFacePage> {
               borderRadius: 16,
               margin: const EdgeInsets.only(top: 8),
               expanded: 1,
-              onTap: () => showCreditDetails(list: info.installmentsStatus ?? <InstallmentsStatus>[]),
+              onTap: () => showCreditDetails(list: <InstallmentsStatus>[]),
             ),
             const SizedBox(width: 20),
             UButton(
@@ -114,7 +120,7 @@ class _StatusFacePageState extends UState<StatusFacePage> {
               borderRadius: 16,
               margin: const EdgeInsets.only(top: 8),
               expanded: 1,
-              onTap: () => showLoanDetails(list: info.installmentsStatus ?? <InstallmentsStatus>[]),
+              onTap: () => showLoanDetails(list: <InstallmentsStatus>[]),
             ),
           ],
         ),
@@ -167,38 +173,38 @@ class _StatusFacePageState extends UState<StatusFacePage> {
               itemCount: filteredList.length,
               separatorBuilder: (BuildContext context, int index) => const SizedBox(height: 8),
               itemBuilder: (BuildContext context, int index) => Card(
-                  child: UColumn(
-                    padding: const EdgeInsets.all(12),
-                    children: <Widget>[
-                      UKeyValue(
-                        leading: UTextBodyMedium("تاریخ", color: theme.disabledColor),
-                        trailing: const Text("---"),
-                        margin: const EdgeInsets.symmetric(vertical: 6),
-                      ),
-                      UKeyValue(
-                        leading: UTextBodyMedium("مبلغ کل", color: theme.disabledColor),
-                        trailing: const Text("---"),
-                        margin: const EdgeInsets.symmetric(vertical: 6),
-                      ),
-                      UKeyValue(
-                        leading: UTextBodyMedium("تعداد اقساط", color: theme.disabledColor),
-                        trailing: const Text("---"),
-                        margin: const EdgeInsets.symmetric(vertical: 6),
-                      ),
-                      UKeyValue(
-                        leading: UTextBodyMedium("قسط اول", color: theme.disabledColor),
-                        trailing: const Text("---"),
-                        margin: const EdgeInsets.symmetric(vertical: 6),
-                      ),
-                      UKeyValue(
-                        leading: UTextBodyMedium("بدهی اقساط", color: theme.disabledColor),
-                        trailing: const Text("---"),
-                        margin: const EdgeInsets.symmetric(vertical: 6),
-                      ),
-                      const UTextBodySmall("vgcfyhujbhvgcfyuhjbvghjbv"),
-                    ],
-                  ),
+                child: UColumn(
+                  padding: const EdgeInsets.all(12),
+                  children: <Widget>[
+                    UKeyValue(
+                      leading: UTextBodyMedium("تاریخ", color: theme.disabledColor),
+                      trailing: const Text("---"),
+                      margin: const EdgeInsets.symmetric(vertical: 6),
+                    ),
+                    UKeyValue(
+                      leading: UTextBodyMedium("مبلغ کل", color: theme.disabledColor),
+                      trailing: const Text("---"),
+                      margin: const EdgeInsets.symmetric(vertical: 6),
+                    ),
+                    UKeyValue(
+                      leading: UTextBodyMedium("تعداد اقساط", color: theme.disabledColor),
+                      trailing: const Text("---"),
+                      margin: const EdgeInsets.symmetric(vertical: 6),
+                    ),
+                    UKeyValue(
+                      leading: UTextBodyMedium("قسط اول", color: theme.disabledColor),
+                      trailing: const Text("---"),
+                      margin: const EdgeInsets.symmetric(vertical: 6),
+                    ),
+                    UKeyValue(
+                      leading: UTextBodyMedium("بدهی اقساط", color: theme.disabledColor),
+                      trailing: const Text("---"),
+                      margin: const EdgeInsets.symmetric(vertical: 6),
+                    ),
+                    const UTextBodySmall("vgcfyhujbhvgcfyuhjbvghjbv"),
+                  ],
                 ),
+              ),
             ),
           ),
         ],

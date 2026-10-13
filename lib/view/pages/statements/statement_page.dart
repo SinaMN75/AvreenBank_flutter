@@ -1,5 +1,6 @@
 import "package:avreen_bank/data/data.dart";
 import "package:avreen_bank/view/pages/statements/statement_controller.dart";
+import "package:avreen_bank/view/pages/transactions/transactions_controller.dart";
 import "package:avreen_bank/view/widgets/gradient_header.dart";
 import "package:avreen_bank/view/widgets/statement.dart";
 import "package:u/utilities.dart";
@@ -73,6 +74,20 @@ class _StatementPageState extends UState<StatementPage> {
       scrollable: Axis.vertical,
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       children: <Widget>[
+        Row(
+          spacing: 12,
+          children: TransactionDatePreset.values
+              .map(
+                (TransactionDatePreset preset) => ChoiceChip(
+                  labelPadding: const EdgeInsets.symmetric(vertical: 2, horizontal: 8),
+                  padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 8),
+                  label: Text(preset.title),
+                  selected: c.datePreset.value == preset,
+                  onSelected: (_) => c.selectDatePreset(preset),
+                ),
+              )
+              .toList(),
+        ).pSymmetric(vertical: 4),
         Row(
           spacing: 12,
           children: <Widget>[

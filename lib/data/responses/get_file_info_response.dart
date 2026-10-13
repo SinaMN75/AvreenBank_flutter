@@ -55,6 +55,8 @@ extension PanInfoExtension on PanInfo {
   String? expiry() => expiredDate == null || expiredDate!.length < 4 ? null : "${expiredDate!.substring(0, 2)}/${expiredDate!.substring(2)}";
 
   String lastFour() => pan.length < 4 ? pan : pan.substring(pan.length - 4);
+
+  bool get isGift => panType == "ANONYMOUS";
 }
 
 class GetFileInfoResponse {

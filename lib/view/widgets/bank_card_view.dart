@@ -3,11 +3,20 @@ import "package:avreen_bank/main.dart";
 import "package:u/utilities.dart";
 
 class BankCardView extends StatelessWidget {
-  const BankCardView(this.card, {required this.selected, this.height = 200, super.key});
+  const BankCardView(
+    this.card, {
+    required this.selected,
+    this.height = 200,
+    this.colors = AppColors.card,
+    this.label = "کارت اعتباری",
+    super.key,
+  });
 
   final PanInfo card;
   final bool selected;
   final double height;
+  final List<Color> colors;
+  final String label;
 
   @override
   Widget build(BuildContext context) => AnimatedScale(
@@ -30,14 +39,14 @@ class BankCardView extends StatelessWidget {
           borderRadius: 24,
           padding: const EdgeInsets.fromLTRB(20, 20, 20, 18),
           chipColor: AppColors.cardChip,
-          boxShadow: <BoxShadow>[BoxShadow(color: AppColors.brand.withValues(alpha: 0.25), blurRadius: 20, offset: const Offset(0, 10))],
-          gradient: const LinearGradient(colors: AppColors.card, begin: Alignment.topLeft, end: Alignment.bottomRight),
-          logo: const Column(
+          boxShadow: <BoxShadow>[BoxShadow(color: colors[colors.length ~/ 2].withValues(alpha: 0.25), blurRadius: 20, offset: const Offset(0, 10))],
+          gradient: LinearGradient(colors: colors, begin: Alignment.topLeft, end: Alignment.bottomRight),
+          logo: Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             spacing: 4,
             children: <Widget>[
-              Text("حکمت نو", style: TextStyle(color: AppColors.onGradient, fontSize: 16, fontWeight: FontWeight.bold)),
-              Text("کارت اعتباری", style: TextStyle(color: AppColors.onGradient, fontSize: 12)),
+              const Text("حکمت نو", style: TextStyle(color: AppColors.onGradient, fontSize: 16, fontWeight: FontWeight.bold)),
+              Text(label, style: const TextStyle(color: AppColors.onGradient, fontSize: 12)),
             ],
           ),
           spreadNumberGroups: true,

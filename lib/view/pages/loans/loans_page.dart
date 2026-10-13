@@ -162,11 +162,11 @@ class _LoansPageState extends UState<LoansPage> {
       },
       onError: (ErrorResponse response) {
         state.error();
-        UToast.error(message: response.errorMessage);
+        UToast.errorToast(message: response.errorMessage);
       },
       onException: (String response) {
         state.error();
-        UToast.error(message: response);
+        UToast.errorToast(message: response);
       },
     );
     UNavigator.draggableSheet(UObx(() => state.isLoaded() ? StatementListView(list: statement.statementElementList).pAll(8) : const SizedBox()));

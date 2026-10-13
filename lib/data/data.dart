@@ -4,13 +4,16 @@ import "package:u/utilities.dart";
 
 part "params/account_statement_params.dart";
 part "params/base_params.dart";
+part "params/credit_statement_params.dart";
 part "params/inquiry_loan_params.dart";
 part "params/pre_register_params.dart";
+part "params/register_card_params.dart";
 part "params/register_params.dart";
 part "params/transaction_params.dart";
 part "remote_datasource.dart";
 part "responses/acciunt_statement_response.dart";
 part "responses/base_response.dart";
+part "responses/credit_statement_response.dart";
 part "responses/get_file_info_response.dart";
 part "responses/inquiry_loan_response.dart";
 part "responses/pre_register_response.dart";

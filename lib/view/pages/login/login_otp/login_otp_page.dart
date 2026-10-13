@@ -114,7 +114,7 @@ class _LoginOtpPageState extends UState<LoginOtpPage> {
           color: scheme.primary,
           fontWeight: FontWeight.w600,
           margin: const EdgeInsets.only(top: 20),
-          onTap: () => UToast.snackBar(message: U.s.comingSoon),
+          onTap: () => UToast.toast(message: U.s.comingSoon),
         ),
       ],
     ),

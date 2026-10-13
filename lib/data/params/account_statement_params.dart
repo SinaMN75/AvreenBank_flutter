@@ -3,7 +3,7 @@ part of "../data.dart";
 class AccountStatementParams {
   AccountStatementParams({
     required this.accountId,
-    required this.count,
+    this.count,
     this.endDateTime,
     this.startDateTime,
   });
@@ -17,7 +17,7 @@ class AccountStatementParams {
     startDateTime: json["startDateTime"],
   );
   final String accountId;
-  final int count;
+  final int? count;
   final String? endDateTime;
   final String? startDateTime;
 

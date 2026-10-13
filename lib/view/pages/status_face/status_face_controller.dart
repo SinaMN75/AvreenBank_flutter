@@ -3,28 +3,30 @@ import "package:avreen_bank/main.dart";
 import "package:u/utilities.dart";
 
 class StatusFaceController extends UBaseController {
+  late AccountInfo accountInfo;
   final URxn<FileInfo> activeProfile = URxn<FileInfo>();
-  List<LoanInfo> list = <LoanInfo>[];
+  List<CreditStatement> list = <CreditStatement>[];
   
-  void init() {
+  void init({required AccountInfo accountInfo}) {
+    this.accountInfo = accountInfo;
     read();
   }
 
   void read() {
     state.loading();
-    Core.dataSource.inquiryLoan(
-      p: InquiryLoanParams(fileId: Core.currentFile.value.fileId),
-      onOk: (InquiryLoanResponse response) {
-        list = response.loanInfoList;
-        if (response.loanInfoList.isEmpty) state.emptying();
+    Core.dataSource.creditStatement(
+      p: CreditStatementParams(accountId: accountInfo.accountId),
+      onOk: (CreditStatementResponse response) {
+        list = response.result;
+        if (response.result.isEmpty) state.emptying();
         else state.loaded();
       },
       onError: (ErrorResponse response) {
-        UToast.error(message: response.errorMessage);
+        UToast.errorToast(message: response.errorMessage);
         state.error();
       },
       onException: (String response) {
-        UToast.error(message: response);
+        UToast.errorToast(message: response);
         state.error();
       },
     );

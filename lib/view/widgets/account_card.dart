@@ -46,7 +46,7 @@ class AccountCard extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                         onTap: () {
                           if (account.accountType == "CREDIT" && kDebugMode)
-                            UNavigator.push(const StatusFacePage());
+                            UNavigator.push(StatusFacePage(accountInfo: account));
                           else
                             UNavigator.push(StatementPage(accountInfo: account));
                         },

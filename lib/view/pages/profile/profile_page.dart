@@ -24,19 +24,19 @@ class _ProfilePageState extends UState<ProfilePage> {
           icon: Icons.edit_outlined,
           title: U.s.editItem(U.s.userInformation),
           color: AppColors.brand,
-          onTap: () => UToast.snackBar(message: U.s.comingSoon),
+          onTap: () => UToast.toast(message: U.s.comingSoon),
         ).pSymmetric(vertical: 4, horizontal: 16),
         UListTile(
           icon: Icons.description_outlined,
           title: U.s.termsAndConditions,
           color: AppColors.warning,
-          onTap: () => UToast.snackBar(message: U.s.comingSoon),
+          onTap: () => UToast.toast(message: U.s.comingSoon),
         ).pSymmetric(vertical: 4, horizontal: 16),
         UListTile(
           icon: Icons.language,
           title: U.s.visitWebsite,
           color: AppColors.success,
-          onTap: () => UToast.snackBar(message: U.s.comingSoon),
+          onTap: () => UToast.toast(message: U.s.comingSoon),
         ).pSymmetric(vertical: 4, horizontal: 16),
         UListTile(
           icon: Icons.logout,

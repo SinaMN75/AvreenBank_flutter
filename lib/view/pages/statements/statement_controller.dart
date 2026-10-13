@@ -1,5 +1,6 @@
 import "package:avreen_bank/data/data.dart";
 import "package:avreen_bank/main.dart";
+import "package:avreen_bank/view/pages/transactions/transactions_controller.dart";
 import "package:u/utilities.dart";
 
 class StatementController {
@@ -11,6 +12,7 @@ class StatementController {
   final URxList<StatementElement> byCountList = <StatementElement>[].obs;
   final URxList<StatementElement> byDateList = <StatementElement>[].obs;
   final URxState state = URxState();
+  final URxn<TransactionDatePreset> datePreset = URxn<TransactionDatePreset>();
 
   Future<void> pickStartDate() async {
     final UJalali? date = await UJalaliDatePicker.show(initialDate: startDate.value, lastDate: endDate.value);
@@ -20,6 +22,13 @@ class StatementController {
   Future<void> pickEndDate() async {
     final UJalali? date = await UJalaliDatePicker.show(initialDate: endDate.value, firstDate: startDate.value, lastDate: UJalali.now());
     if (date != null) endDate(date);
+  }
+
+  void selectDatePreset(TransactionDatePreset preset) {
+    final UJalali now = UJalali.now();
+    datePreset(preset);
+    startDate(now.addDays(-preset.fromDaysAgo));
+    endDate(now.addDays(-preset.toDaysAgo));
   }
 
   void getTransactionsByCount() => UValidators.validateForm(
@@ -42,11 +51,11 @@ class StatementController {
         },
         onError: (ErrorResponse response) {
           state.error();
-          UToast.error(message: response.errorMessage);
+          UToast.errorToast(message: response.errorMessage);
         },
         onException: (String response) {
           state.error();
-          UToast.error(message: response);
+          UToast.errorToast(message: response);
         },
       );
     },
@@ -70,11 +79,11 @@ class StatementController {
       },
       onError: (ErrorResponse response) {
         state.error();
-        UToast.error(message: response.errorMessage);
+        UToast.errorToast(message: response.errorMessage);
       },
       onException: (String response) {
         state.error();
-        UToast.error(message: response);
+        UToast.errorToast(message: response);
       },
     );
   }

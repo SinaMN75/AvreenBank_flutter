@@ -5,6 +5,7 @@ import "package:avreen_bank/view/pages/nfc/nfc_page.dart";
 import "package:avreen_bank/view/pages/transactions/transactions_page.dart";
 import "package:avreen_bank/view/widgets/app_sheet.dart";
 import "package:avreen_bank/view/widgets/bank_card_view.dart";
+import "package:avreen_bank/view/widgets/profile_selector_header.dart";
 import "package:flutter/cupertino.dart";
 import "package:u/utilities.dart";
 
@@ -21,35 +22,44 @@ class _CardsPageState extends UState<CardsPage> {
   @override
   Widget build(BuildContext context) => UScaffold(
     safeArea: false,
-    body: UObx(() {
-      if (c.state.isLoading()) return const Center(child: UProgressCircular());
-      final List<PanInfo> cards = c.cards;
-      if (cards.isEmpty) return UEmptyState(title: U.s.noCardIssuedForThisProfile).alignAtCenter();
-      final Color tint = scheme.primary.withValues(alpha: 0.12);
-      return SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            Container(
-              padding: EdgeInsets.only(top: MediaQuery.paddingOf(context).top + 16, bottom: 16),
-              decoration: BoxDecoration(
-                gradient: LinearGradient(begin: Alignment.topCenter, end: Alignment.bottomCenter, colors: <Color>[scheme.primary.withValues(alpha: 0.18), tint]),
+    body: UObx(
+      () {
+        if (c.state.isLoading()) return const Center(child: UProgressCircular());
+        final List<PanInfo> cards = c.cards;
+        if (cards.isEmpty)
+          return Column(
+            children: <Widget>[
+              ProfileSelectorHeader(onProfileChanged: () {}),
+              const Spacer(),
+              UEmptyState(
+                title: U.s.noCardIssuedForThisProfile,
+                action: UButton(title: "افزودن کارت هدیه", height: 48, elevation: 0, borderRadius: 16, onTap: _giftCardSheet),
+              ).alignAtCenter(),
+              const Spacer(),
+            ],
+          );
+        final Color tint = scheme.primary.withValues(alpha: 0.12);
+        return SingleChildScrollView(
+          child: UColumn(
+            gradient: LinearGradient(begin: Alignment.topCenter, end: Alignment.bottomCenter, colors: <Color>[scheme.primary.withValues(alpha: 0.18), tint]),
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              ProfileSelectorHeader(onProfileChanged: () {}),
+              _carousel(cards),
+              ColoredBox(
+                color: tint,
+                child: UContainer(
+                  color: scheme.surface,
+                  borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
+                  padding: const EdgeInsets.fromLTRB(16, 20, 16, 24),
+                  child: _cardDetail(),
+                ),
               ),
-              child: _carousel(cards),
-            ),
-            ColoredBox(
-              color: tint,
-              child: UContainer(
-                color: scheme.surface,
-                borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
-                padding: const EdgeInsets.fromLTRB(16, 20, 16, 24),
-                child: _cardDetail(),
-              ),
-            ),
-          ],
-        ),
-      );
-    }),
+            ],
+          ),
+        );
+      },
+    ),
   );
 
   Widget _carousel(List<PanInfo> cards) => UCarousel<PanInfo>(
@@ -61,7 +71,12 @@ class _CardsPageState extends UState<CardsPage> {
     withIndicator: cards.length > 1,
     onPageChanged: (PanInfo card, int index) => c.selectCard(card),
     itemBuilder: (BuildContext context, PanInfo card, int index) => UObx(
-      () => BankCardView(card, selected: card.panId == c.selectedCard.value?.panId).pSymmetric(vertical: 8),
+      () => BankCardView(
+        card,
+        selected: card.panId == c.selectedCard.value?.panId,
+        colors: card.isGift ? AppColors.gradient : AppColors.card,
+        label: card.isGift ? "کارت هدیه" : "کارت اعتباری",
+      ).pSymmetric(vertical: 8),
     ),
   );
 
@@ -75,8 +90,9 @@ class _CardsPageState extends UState<CardsPage> {
           _actionTile(
             icon: Icons.vpn_key_outlined,
             title: U.s.dynamicPin,
-            onTap: () => UToast.snackBar(message: U.s.comingSoon),
+            onTap: () => UToast.toast(message: U.s.comingSoon),
           ),
+          _actionTile(icon: Icons.card_giftcard_rounded, title: "افزودن کارت هدیه", onTap: _giftCardSheet),
         ],
       ),
       UTextTitleMedium(U.s.settings, fontWeight: FontWeight.bold, margin: const EdgeInsets.only(top: 28, bottom: 14)),
@@ -104,13 +120,13 @@ class _CardsPageState extends UState<CardsPage> {
             subtitle: "پرداخت با کارت دیجیتال",
             onTap: () {
               if (c.selectedCard.value?.tokenizePanInfo?.track2 == null) {
-                UToast.snackBar(message: U.s.errorReadingData);
+                UToast.errorToast(message: U.s.errorReadingData);
                 return;
               }
               if (UApp.isAndroid)
                 UNavigator.push(NfcPage(valueToSend: c.selectedCard.value!.tokenizePanInfo!.track2!));
               else
-                UToast.error(message: "پرداخت با NFC فقط در نسخه نصبی اندروید امکان پذیر است");
+                UToast.errorToast(message: "پرداخت با NFC فقط در نسخه نصبی اندروید امکان پذیر است");
             },
           ),
           _settingTile(
@@ -127,7 +143,7 @@ class _CardsPageState extends UState<CardsPage> {
             titleColor: scheme.error,
             title: "غیر فعال کردن",
             subtitle: "مسدودسازی در صورت مفقودی یا سرقت",
-            onTap: () => UToast.snackBar(message: U.s.comingSoon),
+            onTap: () => UToast.toast(message: U.s.comingSoon),
           ),
         ],
       ),
@@ -152,7 +168,13 @@ class _CardsPageState extends UState<CardsPage> {
           color: scheme.surface,
           child: Icon(icon, color: scheme.primary, size: 22),
         ),
-        UTextBodyMedium(title, color: Color.lerp(scheme.primary, scheme.onSurface, 0.3), fontWeight: FontWeight.bold, textAlign: TextAlign.center, maxLines: 2),
+        UTextBodyMedium(
+          title,
+          color: Color.lerp(scheme.primary, scheme.onSurface, 0.3),
+          fontWeight: FontWeight.bold,
+          textAlign: TextAlign.center,
+          fit: BoxFit.scaleDown,
+        ),
       ],
     ),
   );
@@ -208,7 +230,7 @@ class _CardsPageState extends UState<CardsPage> {
     final PanInfo? card = c.selectedCard.value;
     final String? track2 = card?.tokenizePanInfo?.track2;
     if (card == null || track2 == null) {
-      UToast.snackBar(message: U.s.errorReadingData);
+      UToast.errorToast(message: U.s.errorReadingData);
       return;
     }
     AppSheet.show<void>(
@@ -231,6 +253,78 @@ class _CardsPageState extends UState<CardsPage> {
     );
   }
 
+  void _giftCardSheet() {
+    c.clearGiftCardForm();
+    AppSheet.show<void>(
+      title: "افزودن کارت هدیه",
+      children: <Widget>[
+        ListenableBuilder(
+          listenable: Listenable.merge(<Listenable>[c.giftPanController, c.giftExpiryController, c.giftCvvController]),
+          builder: (BuildContext context, Widget? child) => BankCardView(c.giftCardPreview, selected: true, height: 190, colors: AppColors.gradient, label: "کارت هدیه"),
+        ),
+        Form(
+          key: c.formKey,
+          child: Column(
+            spacing: 12,
+            children: <Widget>[
+              UTextField(
+                controller: c.giftPanController,
+                labelText: U.s.cardNumber,
+                hintText: "XXXX XXXX XXXX XXXX",
+                validator: UValidators.cardNumber(),
+                keyboardType: TextInputType.number,
+                formatters: <TextInputFormatter>[UGroupedDigitsInputFormatter(groups: <int>[4, 4, 4, 4])],
+                floatingLabelBehavior: FloatingLabelBehavior.always,
+              ),
+              Row(
+                spacing: 12,
+                children: <Widget>[
+                  UTextField(
+                    expanded: 1,
+                    controller: c.giftExpiryController,
+                    labelText: U.s.expires,
+                    hintText: "YY/MM",
+                    validator: UValidators.iranianCardExpiry(),
+                    keyboardType: TextInputType.number,
+                    formatters: <TextInputFormatter>[UGroupedDigitsInputFormatter(groups: <int>[2, 2], separator: "/")],
+                    floatingLabelBehavior: FloatingLabelBehavior.always,
+                  ),
+                  UTextField(
+                    expanded: 1,
+                    controller: c.giftCvvController,
+                    labelText: "CVV2",
+                    hintText: "XXX",
+                    validator: UValidators.number(minLength: 3, maxLength: 4),
+                    keyboardType: TextInputType.number,
+                    formatters: <TextInputFormatter>[UNumberInputFormatter(maxDigits: 4)],
+                    floatingLabelBehavior: FloatingLabelBehavior.always,
+                  ),
+                ],
+              ),
+              // UTextField(
+              //   controller: c.giftPinController,
+              //   labelText: "رمز کارت",
+              //   obscureText: true,
+              //   validator: UValidators.required(),
+              //   keyboardType: TextInputType.number,
+              //   formatters: <TextInputFormatter>[UNumberInputFormatter(maxDigits: 12)],
+              //   floatingLabelBehavior: FloatingLabelBehavior.always,
+              // ),
+            ],
+          ),
+        ),
+        UButton(
+          title: U.s.submit,
+          height: 54,
+          elevation: 0,
+          borderRadius: 16,
+          fullWidth: true,
+          onTap: c.registerGiftCard,
+        ),
+      ],
+    );
+  }
+
   void _blockSheet() => AppSheet.show<void>(
     title: U.s.temporarilyBlock,
     children: <Widget>[
@@ -243,7 +337,7 @@ class _CardsPageState extends UState<CardsPage> {
         fullWidth: true,
         onTap: () {
           UNavigator.back();
-          UToast.snackBar(message: U.s.comingSoon);
+          UToast.toast(message: U.s.comingSoon);
         },
       ),
       UButton(

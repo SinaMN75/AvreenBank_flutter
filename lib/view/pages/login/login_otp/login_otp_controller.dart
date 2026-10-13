@@ -29,11 +29,11 @@ class LoginOtpController extends UBaseController {
       },
       onError: (ErrorResponse response) {
         ULoading.dismiss();
-        UToast.error(message: response.errorMessage);
+        UToast.errorToast(message: response.errorMessage);
       },
       onException: (String response) {
         ULoading.dismiss();
-        UToast.error(message: response);
+        UToast.errorToast(message: response);
       },
     );
   }
