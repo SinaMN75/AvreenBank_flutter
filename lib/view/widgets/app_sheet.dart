@@ -1,37 +1,52 @@
 import "package:u/utilities.dart";
 
 class AppSheet extends StatelessWidget {
-  const AppSheet({required this.title, required this.children, super.key});
+  const AppSheet({
+    required this.title,
+    required this.children,
+    required this.scrollable,
+    super.key,
+  });
 
   final String title;
   final List<Widget> children;
+  final bool scrollable;
 
-  static Future<T?> show<T>({required String title, required List<Widget> children}) => UNavigator.bottomSheet<T>(
-    AppSheet(title: title, children: children),
-    showDragHandle: true,
-    shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(28))),
-  );
+  static Future<T?> show<T>({
+    required String title,
+    required List<Widget> children,
+    bool scrollable = true,
+  }) {
+    if (scrollable)
+      return UNavigator.draggableSheet<T>(
+        AppSheet(title: title, scrollable: scrollable, children: children),
+        initialChildSize: 0.8,
+        shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(28))),
+      );
+    else
+      return UNavigator.bottomSheet<T>(
+        AppSheet(title: title, scrollable: scrollable, children: children),
+        shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(28))),
+      );
+  }
 
   @override
-  Widget build(BuildContext context) => SafeArea(
-    top: false,
-    child: SingleChildScrollView(
-      padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        spacing: 12,
+  Widget build(BuildContext context) => UColumn(
+    scrollable: scrollable ? Axis.vertical : null,
+    margin: const EdgeInsets.fromLTRB(20, 0, 20, 20),
+    mainAxisSize: MainAxisSize.min,
+    crossAxisAlignment: CrossAxisAlignment.stretch,
+    spacing: 12,
+    children: <Widget>[
+      URow(
+        padding: const EdgeInsets.only(bottom: 4),
         children: <Widget>[
-          Row(
-            children: <Widget>[
-              UTextTitleLarge(title, fontWeight: FontWeight.bold, expanded: 1),
-              UTextBodyMedium(U.s.close, color: context.colorScheme.primary, fontWeight: FontWeight.w600, onTap: UNavigator.back),
-            ],
-          ).pOnly(bottom: 4),
-          ...children,
+          UTextTitleLarge(title, fontWeight: FontWeight.bold, expanded: 1),
+          UTextBodyMedium(U.s.close, color: context.colorScheme.primary, fontWeight: FontWeight.w600, onTap: UNavigator.back),
         ],
       ),
-    ),
+      ...children,
+    ],
   );
 }
 

@@ -193,6 +193,68 @@ class RemoteDataSource {
     return result;
   }
 
+  Future<(StatementLoanDetailsResponse?, ErrorResponse?, String?)> statementLoanDetails({
+    required StatementLoanDetailsParams p,
+    required Function(StatementLoanDetailsResponse r)? onOk,
+    required Function(ErrorResponse e)? onError,
+    required Function(String e)? onException,
+  }) async {
+    (StatementLoanDetailsResponse?, ErrorResponse?, String?) result = (null, null, null);
+    await UHttpClient.send(
+      method: "POST",
+      body: p.toMap(),
+      headers: <String, String>{"clientType": "1", "X-Person": ULocalStorage.getString(AppConstants.personId) ?? "", "Authorization": ?ULocalStorage.getToken()},
+      endpoint: "${AppConstants.baseUrl}/statementLoanDetails",
+      onSuccess: (Response r) {
+        final StatementLoanDetailsResponse ok = StatementLoanDetailsResponse.fromJson(r.body);
+        result = (ok, null, null);
+        onOk?.call(ok);
+      },
+      onError: (Response r) {
+        final ErrorResponse err = ErrorResponse.fromJson(r.body);
+        result = (null, err, null);
+        onError?.call(err);
+        onAuthorized(r);
+      },
+      onException: (String e) {
+        result = (null, null, e);
+        onException?.call(e);
+      },
+    );
+    return result;
+  }
+
+  Future<(StatementCreditDetailsResponse?, ErrorResponse?, String?)> statementCreditDetails({
+    required StatementCreditDetailsParams p,
+    required Function(StatementCreditDetailsResponse r)? onOk,
+    required Function(ErrorResponse e)? onError,
+    required Function(String e)? onException,
+  }) async {
+    (StatementCreditDetailsResponse?, ErrorResponse?, String?) result = (null, null, null);
+    await UHttpClient.send(
+      method: "POST",
+      body: p.toMap(),
+      headers: <String, String>{"clientType": "1", "X-Person": ULocalStorage.getString(AppConstants.personId) ?? "", "Authorization": ?ULocalStorage.getToken()},
+      endpoint: "${AppConstants.baseUrl}/statementCreditDetails",
+      onSuccess: (Response r) {
+        final StatementCreditDetailsResponse ok = StatementCreditDetailsResponse.fromJson(r.body);
+        result = (ok, null, null);
+        onOk?.call(ok);
+      },
+      onError: (Response r) {
+        final ErrorResponse err = ErrorResponse.fromJson(r.body);
+        result = (null, err, null);
+        onError?.call(err);
+        onAuthorized(r);
+      },
+      onException: (String e) {
+        result = (null, null, e);
+        onException?.call(e);
+      },
+    );
+    return result;
+  }
+
   Future<(InquiryLoanResponse?, ErrorResponse?, String?)> inquiryLoan({
     required InquiryLoanParams p,
     required Function(InquiryLoanResponse r)? onOk,

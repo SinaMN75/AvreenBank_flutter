@@ -92,7 +92,7 @@ class _CardsPageState extends UState<CardsPage> {
             title: U.s.dynamicPin,
             onTap: () => UToast.toast(message: U.s.comingSoon),
           ),
-          _actionTile(icon: Icons.card_giftcard_rounded, title: "افزودن کارت هدیه", onTap: _giftCardSheet),
+          // _actionTile(icon: Icons.card_giftcard_rounded, title: "افزودن کارت هدیه", onTap: _giftCardSheet),
         ],
       ),
       UTextTitleMedium(U.s.settings, fontWeight: FontWeight.bold, margin: const EdgeInsets.only(top: 28, bottom: 14)),
@@ -130,12 +130,12 @@ class _CardsPageState extends UState<CardsPage> {
             },
           ),
           _settingTile(
-            icon: Icons.ac_unit_rounded,
+            icon: Icons.add_card_outlined,
             color: AppColors.sky,
-            title: U.s.temporarilyBlock,
-            subtitle: "کارت حکمت نو را موقتاً غیرفعال کنید",
+            title: "درخواست صدور کارت المثنی",
+            subtitle: "در صورت مفقودی کارت کارت المثنی درخواست دهید",
             trailing: CupertinoSwitch(value: false, onChanged: (bool _) => _blockSheet()).ltr(),
-            onTap: _blockSheet,
+            onTap: () => UToast.toast(message: U.s.comingSoon),
           ),
           _settingTile(
             icon: Icons.block_rounded,
@@ -218,6 +218,7 @@ class _CardsPageState extends UState<CardsPage> {
     final String pan = card.pan.separateCharacters(4, " ");
     AppSheet.show<void>(
       title: "شماره کارت و شبا",
+      scrollable: false,
       children: <Widget>[
         SheetInfoBox(label: U.s.cardNumber, value: pan, ltr: true, onTap: () => UClipboard.set(card.pan, snackBar: true)),
         SheetInfoBox(label: "دارنده", value: "${Core.fileInfo.value.firstName ?? ""} ${Core.fileInfo.value.lastName ?? ""}"),

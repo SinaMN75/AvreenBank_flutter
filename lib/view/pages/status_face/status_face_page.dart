@@ -1,5 +1,6 @@
 import "package:avreen_bank/data/data.dart";
 import "package:avreen_bank/view/pages/status_face/status_face_controller.dart";
+import "package:avreen_bank/view/widgets/app_sheet.dart";
 import "package:avreen_bank/view/widgets/gradient_header.dart";
 import "package:u/utilities.dart";
 
@@ -104,23 +105,23 @@ class _StatusFacePageState extends UState<StatusFacePage> {
         URow(
           children: <Widget>[
             UButton(
-              title: "بدهی اعتباری",
+              title: U.s.creditDebt,
               height: 50,
               elevation: 0,
               borderRadius: 16,
               margin: const EdgeInsets.only(top: 8),
               expanded: 1,
-              onTap: () => showCreditDetails(list: <InstallmentsStatus>[]),
+              onTap: () => c.readCreditDetails(billId: info.id, onOk: showCreditDetails),
             ),
             const SizedBox(width: 20),
             UButton(
-              title: "بدهی تسهیلاتی",
+              title: U.s.loanDebt,
               height: 50,
               elevation: 0,
               borderRadius: 16,
               margin: const EdgeInsets.only(top: 8),
               expanded: 1,
-              onTap: () => showLoanDetails(list: <InstallmentsStatus>[]),
+              onTap: () => c.readLoanDetails(billId: info.id, onOk: showLoanDetails),
             ),
           ],
         ),
@@ -128,87 +129,82 @@ class _StatusFacePageState extends UState<StatusFacePage> {
     ),
   );
 
-  void showCreditDetails({required List<InstallmentsStatus> list}) {
-    final URxList<InstallmentsStatus> filteredList = list.obs;
-    UNavigator.draggableSheet(
-      UColumn(
-        padding: const EdgeInsets.all(16),
-        children: <Widget>[
-          UObx(
-            () => ListView.separated(
-              physics: const NeverScrollableScrollPhysics(),
-              padding: const EdgeInsets.only(top: 12),
-              shrinkWrap: true,
-              itemCount: filteredList.length,
-              separatorBuilder: (BuildContext context, int index) => const SizedBox(height: 8),
-              itemBuilder: (BuildContext context, int index) {
-                final InstallmentsStatus i = filteredList[index];
-                return Card(
-                  child: ListTile(
-                    contentPadding: const EdgeInsets.symmetric(horizontal: 12),
-                    title: UTextBodyMedium(i.amount.rial(), color: i.statusColor()),
-                    subtitle: Text(i.dueDate.toJalaliDateString()),
-                    trailing: Text(i.dueDate.toJalaliDateString()),
-                  ),
-                );
-              },
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+  void showCreditDetails(List<StatementCreditDetail> list) => AppSheet.show<void>(
+    title: U.s.creditPurchases,
+    children: list.isEmpty
+        ? <Widget>[const UEmptyState(icon: Icons.receipt_long_outlined).pSymmetric(vertical: 32)]
+        : list.map(_creditDetailItem).toList(),
+  );
 
-  void showLoanDetails({required List<InstallmentsStatus> list}) {
-    final URxList<InstallmentsStatus> filteredList = list.obs;
-    UNavigator.draggableSheet(
-      UColumn(
-        padding: const EdgeInsets.all(16),
-        children: <Widget>[
-          UObx(
-            () => ListView.separated(
-              physics: const NeverScrollableScrollPhysics(),
-              padding: const EdgeInsets.only(top: 12),
-              shrinkWrap: true,
-              itemCount: filteredList.length,
-              separatorBuilder: (BuildContext context, int index) => const SizedBox(height: 8),
-              itemBuilder: (BuildContext context, int index) => Card(
-                child: UColumn(
-                  padding: const EdgeInsets.all(12),
-                  children: <Widget>[
-                    UKeyValue(
-                      leading: UTextBodyMedium("تاریخ", color: theme.disabledColor),
-                      trailing: const Text("---"),
-                      margin: const EdgeInsets.symmetric(vertical: 6),
-                    ),
-                    UKeyValue(
-                      leading: UTextBodyMedium("مبلغ کل", color: theme.disabledColor),
-                      trailing: const Text("---"),
-                      margin: const EdgeInsets.symmetric(vertical: 6),
-                    ),
-                    UKeyValue(
-                      leading: UTextBodyMedium("تعداد اقساط", color: theme.disabledColor),
-                      trailing: const Text("---"),
-                      margin: const EdgeInsets.symmetric(vertical: 6),
-                    ),
-                    UKeyValue(
-                      leading: UTextBodyMedium("قسط اول", color: theme.disabledColor),
-                      trailing: const Text("---"),
-                      margin: const EdgeInsets.symmetric(vertical: 6),
-                    ),
-                    UKeyValue(
-                      leading: UTextBodyMedium("بدهی اقساط", color: theme.disabledColor),
-                      trailing: const Text("---"),
-                      margin: const EdgeInsets.symmetric(vertical: 6),
-                    ),
-                    const UTextBodySmall("vgcfyhujbhvgcfyuhjbvghjbv"),
-                  ],
-                ),
-              ),
-            ),
+  Widget _creditDetailItem(StatementCreditDetail i) => UContainer(
+    radius: 18,
+    color: scheme.onSurface.withValues(alpha: 0.04),
+    padding: const EdgeInsets.all(16),
+    child: Column(
+      children: <Widget>[
+        ListTile(
+          contentPadding: EdgeInsets.zero,
+          dense: true,
+          leading: UIconBackground(
+            Icons.credit_card_outlined,
+            color: scheme.primary,
+            backgroundColor: scheme.primary.withValues(alpha: 0.12),
           ),
-        ],
-      ),
-    );
-  }
+          title: UTextBodySmall(U.s.totalAmount, color: scheme.onSurfaceVariant),
+          subtitle: UTextTitleMedium(i.amount.rial(), fontWeight: FontWeight.bold),
+          trailing: UTextBodySmall(i.date?.toJalaliCompactDateString() ?? "---", color: scheme.onSurfaceVariant),
+        ),
+        const Divider(height: 24),
+        UKeyValue(
+          leading: UTextBodyMedium(U.s.documentNumber, color: theme.disabledColor),
+          trailing: Text(i.docId ?? "---"),
+          margin: const EdgeInsets.symmetric(vertical: 6),
+        ),
+        const SizedBox(height: 6),
+        if (i.description.isNotNullOrEmpty()) UTextBodySmall(i.description!, color: scheme.onSurfaceVariant, maxLines: 3, textAlign: TextAlign.center),
+      ],
+    ),
+  );
+
+  void showLoanDetails(List<StatementLoanDetail> list) => AppSheet.show<void>(
+    title: U.s.installmentPurchases,
+    children: list.isEmpty
+        ? <Widget>[const UEmptyState(icon: Icons.receipt_long_outlined).pSymmetric(vertical: 32)]
+        : list.map(_loanDetailItem).toList(),
+  );
+
+  Widget _loanDetailItem(StatementLoanDetail i) => UContainer(
+    radius: 18,
+    color: scheme.onSurface.withValues(alpha: 0.04),
+    padding: const EdgeInsets.all(16),
+    child: Column(
+      children: <Widget>[
+        ListTile(
+          contentPadding: EdgeInsets.zero,
+          dense: true,
+          leading: UIconBackground(
+            Icons.shopping_bag_outlined,
+            color: scheme.primary,
+            backgroundColor: scheme.primary.withValues(alpha: 0.12),
+          ),
+          title: UTextBodySmall(U.s.totalAmount, color: scheme.onSurfaceVariant),
+          subtitle: UTextTitleMedium(i.totalAmount.rial(), fontWeight: FontWeight.bold),
+          trailing: UTextBodySmall(i.date?.toJalaliCompactDateString() ?? "---", color: scheme.onSurfaceVariant),
+        ),
+        const Divider(height: 24),
+        UKeyValue(
+          leading: UTextBodyMedium(U.s.installments, color: theme.disabledColor),
+          trailing: Text("${i.instalmentCount ?? 0} قسط "),
+          margin: const EdgeInsets.symmetric(vertical: 6),
+        ),
+        UKeyValue(
+          leading: UTextBodyMedium(U.s.loanDebt, color: theme.disabledColor),
+          trailing: UTextBodyMedium(i.loanDebt.rial(), color: scheme.error, fontWeight: FontWeight.w600),
+          margin: const EdgeInsets.symmetric(vertical: 6),
+        ),
+        const SizedBox(height: 6),
+        if (i.description.isNotNullOrEmpty()) UTextBodySmall(i.description!, color: scheme.onSurfaceVariant, maxLines: 3, textAlign: TextAlign.center),
+      ],
+    ),
+  );
 }

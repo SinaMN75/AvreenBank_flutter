@@ -31,4 +31,42 @@ class StatusFaceController extends UBaseController {
       },
     );
   }
+
+  void readLoanDetails({required String? billId, required Function(List<StatementLoanDetail> list) onOk}) {
+    ULoading.show();
+    Core.dataSource.statementLoanDetails(
+      p: StatementLoanDetailsParams(billId: billId),
+      onOk: (StatementLoanDetailsResponse response) {
+        ULoading.dismiss();
+        onOk(response.result);
+      },
+      onError: (ErrorResponse response) {
+        ULoading.dismiss();
+        UToast.errorToast(message: response.errorMessage);
+      },
+      onException: (String response) {
+        ULoading.dismiss();
+        UToast.errorToast(message: response);
+      },
+    );
+  }
+
+  void readCreditDetails({required String? billId, required Function(List<StatementCreditDetail> list) onOk}) {
+    ULoading.show();
+    Core.dataSource.statementCreditDetails(
+      p: StatementCreditDetailsParams(accountId: accountInfo.accountId, billId: billId),
+      onOk: (StatementCreditDetailsResponse response) {
+        ULoading.dismiss();
+        onOk(response.result);
+      },
+      onError: (ErrorResponse response) {
+        ULoading.dismiss();
+        UToast.errorToast(message: response.errorMessage);
+      },
+      onException: (String response) {
+        ULoading.dismiss();
+        UToast.errorToast(message: response);
+      },
+    );
+  }
 }
