@@ -1,5 +1,6 @@
 import "package:avreen_bank/main.dart";
 import "package:avreen_bank/view/pages/splash/splash_page.dart";
+import "package:avreen_bank/view/widgets/request_error_dialog.dart";
 import "package:u/utilities.dart";
 
 part "params/account_statement_params.dart";
@@ -11,6 +12,7 @@ part "params/register_card_params.dart";
 part "params/register_params.dart";
 part "params/statement_credit_details_params.dart";
 part "params/statement_loan_details_params.dart";
+part "params/transaction_detail_params.dart";
 part "params/transaction_params.dart";
 part "remote_datasource.dart";
 part "responses/acciunt_statement_response.dart";
@@ -20,6 +22,7 @@ part "responses/get_file_info_response.dart";
 part "responses/inquiry_loan_response.dart";
 part "responses/pre_register_response.dart";
 part "responses/register_response.dart";
-part "responses/statement_loan_details_response.dart";
 part "responses/statement_credit_details_response.dart";
+part "responses/statement_loan_details_response.dart";
+part "responses/transaction_detail_response.dart";
 part "responses/transaction_response.dart";

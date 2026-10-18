@@ -46,6 +46,7 @@ class CardsController extends UBaseController {
     action: () {
       ULoading.show();
       Core.dataSource.registerAnonymousCard(
+        page: U.s.cards,
         p: RegisterCardParams(
           fileId: Core.currentFile.value.fileId,
           pan: giftPanController.numString(),
@@ -60,7 +61,6 @@ class CardsController extends UBaseController {
         },
         onException: (String response) {
           ULoading.dismiss();
-          UToast.errorToast(message: response);
         },
       );
     },
@@ -68,6 +68,7 @@ class CardsController extends UBaseController {
 
   Future<void> _reloadCards() async {
     await Core.dataSource.getFileInfo(
+      page: U.s.cards,
       onOk: (GetFileInfoResponse response) {
         final String fileId = Core.currentFile.value.fileId;
         Core.fileInfo(response);
@@ -76,7 +77,7 @@ class CardsController extends UBaseController {
         selectedCard(cards.where((PanInfo e) => e.panId == selectedPanId).firstOrNull ?? cards.firstOrNull);
       },
       onError: (ErrorResponse response) => UToast.errorToast(message: response.errorMessage),
-      onException: (String response) => UToast.errorToast(message: response),
+      onException: null,
     );
     ULoading.dismiss();
     UNavigator.back();

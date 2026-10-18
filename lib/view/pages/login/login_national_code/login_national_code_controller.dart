@@ -20,6 +20,7 @@ class LoginNationalcodeController extends UBaseController {
           mobileNo: controllerMobileNo.numString(),
         );
         Core.dataSource.preRegister(
+          page: U.s.login,
           p: preRegisterParams,
           onOk: (PreRegisterResponse response) async {
             ULoading.dismiss();
@@ -31,7 +32,6 @@ class LoginNationalcodeController extends UBaseController {
           },
           onException: (String response) {
             ULoading.dismiss();
-            UToast.errorToast(message: response);
           },
         );
       },

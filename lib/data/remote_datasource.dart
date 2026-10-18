@@ -8,14 +8,63 @@ class RemoteDataSource {
     }
   }
 
+  Future<void> onTooManyRequests() => TooManyRequestsDialog.show();
+
+  Future<void> onServerError({required String page, required String request, required String message}) => RequestErrorDialog.show(
+    page: page,
+    request: request,
+    message: message,
+  );
+
+  Future<void> _send({
+    required String page,
+    required String method,
+    required String endpoint,
+    required Function(Response r) onSuccess,
+    required Function(Response r) onError,
+    required Function(String e) onException,
+    Map<String, String>? headers,
+    dynamic body,
+  }) async {
+    final String request = endpoint.split("/").last;
+    await UHttpClient.send(
+      method: method,
+      endpoint: endpoint,
+      headers: headers,
+      body: body,
+      onSuccess: onSuccess,
+      timeout: const Duration(seconds: 10),
+      retryAmount: 2,
+      onError: (Response r) {
+        if (r.statusCode == 429) {
+          onException(U.s.tooManyRequests);
+          onTooManyRequests();
+        } else if (r.statusCode >= 500) {
+          final String message = "${U.s.serverError} (${r.statusCode})";
+          onException(message);
+          onServerError(page: page, request: request, message: message);
+        } else {
+          onError(r);
+          onAuthorized(r);
+        }
+      },
+      onException: (String e) {
+        onException(e);
+        onServerError(page: page, request: request, message: e);
+      },
+    );
+  }
+
   Future<(PreRegisterResponse?, ErrorResponse?, String?)> preRegister({
     required PreRegisterParams p,
     required Function(PreRegisterResponse r)? onOk,
     required Function(ErrorResponse e)? onError,
     required Function(String e)? onException,
+    required String page,
   }) async {
     (PreRegisterResponse?, ErrorResponse?, String?) result = (null, null, null);
-    await UHttpClient.send(
+    await _send(
+      page: page,
       method: "POST",
       endpoint: "${AppConstants.baseUrl}/preRegister",
       body: p.toMap(),
@@ -29,7 +78,6 @@ class RemoteDataSource {
         final ErrorResponse err = ErrorResponse.fromJson(r.body);
         result = (null, err, null);
         onError?.call(err);
-        onAuthorized(r);
       },
       onException: (String e) {
         result = (null, null, e);
@@ -44,9 +92,11 @@ class RemoteDataSource {
     required Function(RegisterResponse r)? onOk,
     required Function(ErrorResponse e)? onError,
     required Function(String e)? onException,
+    required String page,
   }) async {
     (RegisterResponse?, ErrorResponse?, String?) result = (null, null, null);
-    await UHttpClient.send(
+    await _send(
+      page: page,
       method: "POST",
       headers: <String, String>{"clientType": "1"},
       endpoint: "${AppConstants.baseUrl}/register",
@@ -60,7 +110,6 @@ class RemoteDataSource {
         final ErrorResponse err = ErrorResponse.fromJson(r.body);
         result = (null, err, null);
         onError?.call(err);
-        onAuthorized(r);
       },
       onException: (String e) {
         result = (null, null, e);
@@ -74,9 +123,11 @@ class RemoteDataSource {
     required Function(GetFileInfoResponse r)? onOk,
     required Function(ErrorResponse e)? onError,
     required Function(String e)? onException,
+    required String page,
   }) async {
     (GetFileInfoResponse?, ErrorResponse?, String?) result = (null, null, null);
-    await UHttpClient.send(
+    await _send(
+      page: page,
       body: <String, dynamic>{},
       method: "POST",
       headers: <String, String>{"clientType": "1", "X-Person": ULocalStorage.getString(AppConstants.personId) ?? "", "Authorization": ?ULocalStorage.getToken()},
@@ -90,7 +141,6 @@ class RemoteDataSource {
         final ErrorResponse err = ErrorResponse.fromJson(r.body);
         result = (null, err, null);
         onError?.call(err);
-        onAuthorized(r);
       },
       onException: (String e) {
         result = (null, null, e);
@@ -105,9 +155,11 @@ class RemoteDataSource {
     required Function(TransactionResponse r)? onOk,
     required Function(ErrorResponse e)? onError,
     required Function(String e)? onException,
+    required String page,
   }) async {
     (TransactionResponse?, ErrorResponse?, String?) result = (null, null, null);
-    await UHttpClient.send(
+    await _send(
+      page: page,
       method: "POST",
       body: p.toMap(),
       headers: <String, String>{"clientType": "1", "X-Person": ULocalStorage.getString(AppConstants.personId) ?? "", "Authorization": ?ULocalStorage.getToken()},
@@ -121,7 +173,38 @@ class RemoteDataSource {
         final ErrorResponse err = ErrorResponse.fromJson(r.body);
         result = (null, err, null);
         onError?.call(err);
-        onAuthorized(r);
+      },
+      onException: (String e) {
+        result = (null, null, e);
+        onException?.call(e);
+      },
+    );
+    return result;
+  }
+
+  Future<(TransactionDetailResponse?, ErrorResponse?, String?)> viewTransactionDetail({
+    required TransactionDetailParams p,
+    required Function(TransactionDetailResponse r)? onOk,
+    required Function(ErrorResponse e)? onError,
+    required Function(String e)? onException,
+    required String page,
+  }) async {
+    (TransactionDetailResponse?, ErrorResponse?, String?) result = (null, null, null);
+    await _send(
+      page: page,
+      method: "POST",
+      body: p.toMap(),
+      headers: <String, String>{"clientType": "1", "X-Person": ULocalStorage.getString(AppConstants.personId) ?? "", "Authorization": ?ULocalStorage.getToken()},
+      endpoint: "${AppConstants.baseUrl}/viewTransactionDetails",
+      onSuccess: (Response r) {
+        final TransactionDetailResponse ok = TransactionDetailResponse.fromJson(r.body);
+        result = (ok, null, null);
+        onOk?.call(ok);
+      },
+      onError: (Response r) {
+        final ErrorResponse err = ErrorResponse.fromJson(r.body);
+        result = (null, err, null);
+        onError?.call(err);
       },
       onException: (String e) {
         result = (null, null, e);
@@ -136,9 +219,11 @@ class RemoteDataSource {
     required Function(AccountStatementResponse r)? onOk,
     required Function(ErrorResponse e)? onError,
     required Function(String e)? onException,
+    required String page,
   }) async {
     (AccountStatementResponse?, ErrorResponse?, String?) result = (null, null, null);
-    await UHttpClient.send(
+    await _send(
+      page: page,
       method: "POST",
       body: p.toMap(),
       headers: <String, String>{"clientType": "1", "X-Person": ULocalStorage.getString(AppConstants.personId) ?? "", "Authorization": ?ULocalStorage.getToken()},
@@ -152,7 +237,6 @@ class RemoteDataSource {
         final ErrorResponse err = ErrorResponse.fromJson(r.body);
         result = (null, err, null);
         onError?.call(err);
-        onAuthorized(r);
       },
       onException: (String e) {
         result = (null, null, e);
@@ -167,9 +251,11 @@ class RemoteDataSource {
     required Function(CreditStatementResponse r)? onOk,
     required Function(ErrorResponse e)? onError,
     required Function(String e)? onException,
+    required String page,
   }) async {
     (CreditStatementResponse?, ErrorResponse?, String?) result = (null, null, null);
-    await UHttpClient.send(
+    await _send(
+      page: page,
       method: "POST",
       body: p.toMap(),
       headers: <String, String>{"clientType": "1", "X-Person": ULocalStorage.getString(AppConstants.personId) ?? "", "Authorization": ?ULocalStorage.getToken()},
@@ -183,7 +269,6 @@ class RemoteDataSource {
         final ErrorResponse err = ErrorResponse.fromJson(r.body);
         result = (null, err, null);
         onError?.call(err);
-        onAuthorized(r);
       },
       onException: (String e) {
         result = (null, null, e);
@@ -198,9 +283,11 @@ class RemoteDataSource {
     required Function(StatementLoanDetailsResponse r)? onOk,
     required Function(ErrorResponse e)? onError,
     required Function(String e)? onException,
+    required String page,
   }) async {
     (StatementLoanDetailsResponse?, ErrorResponse?, String?) result = (null, null, null);
-    await UHttpClient.send(
+    await _send(
+      page: page,
       method: "POST",
       body: p.toMap(),
       headers: <String, String>{"clientType": "1", "X-Person": ULocalStorage.getString(AppConstants.personId) ?? "", "Authorization": ?ULocalStorage.getToken()},
@@ -214,7 +301,6 @@ class RemoteDataSource {
         final ErrorResponse err = ErrorResponse.fromJson(r.body);
         result = (null, err, null);
         onError?.call(err);
-        onAuthorized(r);
       },
       onException: (String e) {
         result = (null, null, e);
@@ -229,9 +315,11 @@ class RemoteDataSource {
     required Function(StatementCreditDetailsResponse r)? onOk,
     required Function(ErrorResponse e)? onError,
     required Function(String e)? onException,
+    required String page,
   }) async {
     (StatementCreditDetailsResponse?, ErrorResponse?, String?) result = (null, null, null);
-    await UHttpClient.send(
+    await _send(
+      page: page,
       method: "POST",
       body: p.toMap(),
       headers: <String, String>{"clientType": "1", "X-Person": ULocalStorage.getString(AppConstants.personId) ?? "", "Authorization": ?ULocalStorage.getToken()},
@@ -245,7 +333,6 @@ class RemoteDataSource {
         final ErrorResponse err = ErrorResponse.fromJson(r.body);
         result = (null, err, null);
         onError?.call(err);
-        onAuthorized(r);
       },
       onException: (String e) {
         result = (null, null, e);
@@ -260,9 +347,11 @@ class RemoteDataSource {
     required Function(InquiryLoanResponse r)? onOk,
     required Function(ErrorResponse e)? onError,
     required Function(String e)? onException,
+    required String page,
   }) async {
     (InquiryLoanResponse?, ErrorResponse?, String?) result = (null, null, null);
-    await UHttpClient.send(
+    await _send(
+      page: page,
       method: "POST",
       body: p.toMap(),
       headers: <String, String>{"clientType": "1", "X-Person": ULocalStorage.getString(AppConstants.personId) ?? "", "Authorization": ?ULocalStorage.getToken()},
@@ -276,7 +365,6 @@ class RemoteDataSource {
         final ErrorResponse err = ErrorResponse.fromJson(r.body);
         result = (null, err, null);
         onError?.call(err);
-        onAuthorized(r);
       },
       onException: (String e) {
         result = (null, null, e);
@@ -291,9 +379,11 @@ class RemoteDataSource {
     required VoidCallback? onOk,
     required Function(ErrorResponse e)? onError,
     required Function(String e)? onException,
+    required String page,
   }) async {
     (bool, ErrorResponse?, String?) result = (false, null, null);
-    await UHttpClient.send(
+    await _send(
+      page: page,
       method: "POST",
       body: p.toMap(),
       headers: <String, String>{"clientType": "1", "X-Person": ULocalStorage.getString(AppConstants.personId) ?? "", "Authorization": ?ULocalStorage.getToken()},
@@ -306,7 +396,6 @@ class RemoteDataSource {
         final ErrorResponse err = ErrorResponse.fromJson(r.body);
         result = (false, err, null);
         onError?.call(err);
-        onAuthorized(r);
       },
       onException: (String e) {
         result = (false, null, e);

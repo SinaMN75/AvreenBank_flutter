@@ -14,4 +14,17 @@ class HomeController extends UBaseController {
   int get totalBalance => accounts.fold<int>(0, (int sum, AccountInfo account) => sum + (account.availableBalance ?? 0));
 
   void toggleBalance() => balanceHidden.toggle();
+
+  Future<void> refreshFileInfo() async {
+    await Core.dataSource.getFileInfo(
+      page: U.s.home,
+      onOk: (GetFileInfoResponse response) {
+        final String fileId = Core.currentFile.value.fileId;
+        Core.fileInfo(response);
+        Core.currentFile(response.fileInfoList.where((FileInfo e) => e.fileId == fileId).firstOrNull ?? response.fileInfoList.first);
+      },
+      onError: (ErrorResponse response) => UToast.errorToast(message: response.errorMessage),
+      onException: null,
+    );
+  }
 }

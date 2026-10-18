@@ -155,6 +155,7 @@ class _LoansPageState extends UState<LoansPage> {
     final URxState state = URxState();
     late AccountStatementResponse statement;
     Core.dataSource.accountStatement(
+      page: U.s.loans,
       p: AccountStatementParams(accountId: info.loanAccountId ?? "", count: 100),
       onOk: (AccountStatementResponse response) {
         statement = response;
@@ -166,7 +167,6 @@ class _LoansPageState extends UState<LoansPage> {
       },
       onException: (String response) {
         state.error();
-        UToast.errorToast(message: response);
       },
     );
     UNavigator.draggableSheet(UObx(() => state.isLoaded() ? StatementListView(list: statement.statementElementList).pAll(8) : const SizedBox()));

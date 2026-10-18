@@ -25,6 +25,11 @@ class _SplashPageState extends State<SplashPage> {
       children: <Widget>[
         const Spacer(),
         const UImage(AppImages.logo, width: 200, height: 200),
+        UObx(() {
+          if (c.state.isError()) return UErrorRetry(onTap: c.getFileInfo).pOnly(top: 32);
+          if (c.state.isLoading()) return const UProgressCircular().pOnly(top: 32);
+          return const SizedBox.shrink();
+        }),
         const Spacer(),
         UTextBodyMedium("${U.s.version} ${UApp.version}", fontWeight: FontWeight.bold),
         const SizedBox(height: 12),

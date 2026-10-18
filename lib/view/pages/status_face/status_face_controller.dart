@@ -15,6 +15,7 @@ class StatusFaceController extends UBaseController {
   void read() {
     state.loading();
     Core.dataSource.creditStatement(
+      page: U.s.statement,
       p: CreditStatementParams(accountId: accountInfo.accountId),
       onOk: (CreditStatementResponse response) {
         list = response.result;
@@ -26,7 +27,6 @@ class StatusFaceController extends UBaseController {
         state.error();
       },
       onException: (String response) {
-        UToast.errorToast(message: response);
         state.error();
       },
     );
@@ -35,6 +35,7 @@ class StatusFaceController extends UBaseController {
   void readLoanDetails({required String? billId, required Function(List<StatementLoanDetail> list) onOk}) {
     ULoading.show();
     Core.dataSource.statementLoanDetails(
+      page: U.s.statement,
       p: StatementLoanDetailsParams(billId: billId),
       onOk: (StatementLoanDetailsResponse response) {
         ULoading.dismiss();
@@ -46,7 +47,6 @@ class StatusFaceController extends UBaseController {
       },
       onException: (String response) {
         ULoading.dismiss();
-        UToast.errorToast(message: response);
       },
     );
   }
@@ -54,6 +54,7 @@ class StatusFaceController extends UBaseController {
   void readCreditDetails({required String? billId, required Function(List<StatementCreditDetail> list) onOk}) {
     ULoading.show();
     Core.dataSource.statementCreditDetails(
+      page: U.s.statement,
       p: StatementCreditDetailsParams(billId: billId),
       onOk: (StatementCreditDetailsResponse response) {
         ULoading.dismiss();
@@ -65,7 +66,6 @@ class StatusFaceController extends UBaseController {
       },
       onException: (String response) {
         ULoading.dismiss();
-        UToast.errorToast(message: response);
       },
     );
   }

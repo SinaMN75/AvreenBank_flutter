@@ -1,5 +1,6 @@
 import "package:avreen_bank/data/data.dart";
 import "package:avreen_bank/main.dart";
+import "package:avreen_bank/view/pages/receipt/receipt_controller.dart";
 import "package:u/utilities.dart";
 
 class ReceiptPage extends StatefulWidget {
@@ -13,8 +14,15 @@ class ReceiptPage extends StatefulWidget {
 
 class _ReceiptPageState extends UState<ReceiptPage> {
   final UWidgetToImageController controller = UWidgetToImageController();
+  final ReceiptController c = ReceiptController();
 
   TransactionInfo get info => widget.info;
+
+  @override
+  void initState() {
+    c.init(info: widget.info);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) => UScaffold(
@@ -23,7 +31,7 @@ class _ReceiptPageState extends UState<ReceiptPage> {
       scrollable: Axis.vertical,
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.stretch,
-      padding: const EdgeInsets.symmetric(horizontal: 16),
+      padding: const EdgeInsets.fromLTRB(16, 0, 16, 32),
       spacing: 16,
       children: <Widget>[
         UWidgetToImage(controller: controller, child: _receipt(scheme)),
@@ -44,34 +52,45 @@ class _ReceiptPageState extends UState<ReceiptPage> {
       children: <Widget>[
         _header(scheme),
         Divider(color: scheme.outlineVariant),
-        ..._rows(scheme),
+        UObx(() {
+          if (c.state.isLoading()) return const UProgressCircular().pSymmetric(vertical: 16);
+          if (c.state.isError()) return UErrorRetry(onTap: c.read);
+          return UColumn(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisSize: MainAxisSize.min,
+            spacing: 12,
+            children: _rows(scheme),
+          );
+        }),
       ],
     ),
   );
 
   Widget _header(ColorScheme scheme) => UColumn(
-      mainAxisSize: MainAxisSize.min,
-      spacing: 10,
-      children: <Widget>[
-        UIconBackground(info.isSuccessful() ? Icons.check_rounded : Icons.close_rounded, color: info.color(), size: 58),
-        UTextTitleMedium(info.statusName(), color: info.color()),
-        UTextHeadlineSmall(info.transactionAmount.rial(), color: info.isSuccessful() ? AppColors.success : scheme.onSurface),
-        UTextLabelSmall(info.logDate?.formatJalaliDateTime() ?? "", color: scheme.onSurfaceVariant).ltr(),
-      ],
-    );
+    mainAxisSize: MainAxisSize.min,
+    spacing: 6,
+    children: <Widget>[
+      UIconBackground(info.isSuccessful() ? Icons.check_rounded : Icons.close_rounded, color: info.color(), size: 58),
+      UTextTitleMedium(info.statusName(), color: info.color()),
+      UTextHeadlineSmall(info.transactionAmount.rial(), color: info.isSuccessful() ? AppColors.success : scheme.onSurface),
+      UTextLabelSmall(info.logDate?.formatJalaliDateTime() ?? "", color: scheme.onSurfaceVariant).ltr(),
+    ],
+  );
 
   List<Widget> _rows(ColorScheme scheme) {
-    final String? pan = info.pan();
+    final TransactionDetailResponse? d = c.detail;
     return <Widget>[
-      if (info.merchantName.isNotNullOrEmpty()) _row(scheme, U.s.merchant, info.merchantName!),
-      // if (info.merchantAddress.isNotNullOrEmpty()) _row(scheme, U.s.address, info.merchantAddress!),
-      if (pan.isNotNullOrEmpty()) _row(scheme, U.s.cardNumber, pan!.separateCharacters(4, " ")),
+      if (d?.merchantName.isNotNullOrEmpty() ?? false) _row(scheme, U.s.merchant, d!.merchantName!),
+      if (d?.merchantAddress.isNotNullOrEmpty() ?? false) _row(scheme, U.s.address, d!.merchantAddress!),
       _row(scheme, U.s.terminalType, info.terminalTypeName()),
-      if (info.transactionType.isNotNullOrEmpty()) _row(scheme, U.s.transactionType, info.debitTypeName()),
+      if (d?.transactionType.isNotNullOrEmpty() ?? false) _row(scheme, U.s.transactionType, info.debitTypeName()),
       if (info.rrn.isNotNullOrEmpty()) _row(scheme, U.s.referenceNumber, info.rrn!),
-      if (info.stan.isNotNullOrEmpty()) _row(scheme, U.s.traceNumber, info.stan!),
-      if (info.docId.isNotNullOrEmpty()) _row(scheme, U.s.documentNumber, info.docId!),
-      if (info.logMessage.isNotNullOrEmpty()) _row(scheme, U.s.description, info.logMessage!),
+      if (d?.stan.isNotNullOrEmpty() ?? false) _row(scheme, U.s.traceNumber, d!.stan!),
+      if ((d?.discountAmount ?? 0) > 0) _row(scheme, U.s.discount, d!.discountAmount.rial()),
+      if (d?.loanId.isNotNullOrEmpty() ?? false) _row(scheme, U.s.loanId, d!.loanId!),
+      const Divider(),
+      ...?d?.accountTypes.map((TransactionAccount e) => _row(scheme, e.accountTypeName ?? e.accountType ?? "", e.amount.rial())),
+      if (d?.logMessage.isNotNullOrEmpty() ?? false) _row(scheme, U.s.description, d!.logMessage!),
     ];
   }
 
@@ -107,8 +126,8 @@ class _ReceiptPageState extends UState<ReceiptPage> {
   Future<void> _share() async {
     final UShareResult? result = await UShare.widgetImage(
       controller,
-      name: "receipt_${info.stan ?? info.rrn ?? ""}.png",
-      text: info.receiptText(),
+      name: "receipt_${c.detail?.stan ?? info.rrn ?? ""}.png",
+      text: _receiptText(),
     );
     if (result == null) UToast.errorToast(message: U.s.somethingWentWrong);
   }
@@ -123,5 +142,14 @@ class _ReceiptPageState extends UState<ReceiptPage> {
     UToast.successToast(message: "${U.s.screenshotSaved}\n${file.path}");
   }
 
-  void _copy() => UClipboard.set(info.receiptText(), snackBar: true);
+  void _copy() => UClipboard.set(_receiptText(), snackBar: true);
+
+  String _receiptText() =>
+      c.detail?.receiptText(info) ??
+      <String>[
+        U.s.transactionReceipt,
+        "${U.s.amount}: ${info.transactionAmount.rial()}",
+        if (info.logDate.isNotNullOrEmpty()) "${U.s.date}: ${info.logDate.formatJalaliDateTime()}",
+        "${U.s.status}: ${info.statusName()}",
+      ].join("\n");
 }

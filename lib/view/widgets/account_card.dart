@@ -1,6 +1,5 @@
 import "package:avreen_bank/data/data.dart";
 import "package:avreen_bank/view/pages/statements/statement_page.dart";
-import "package:avreen_bank/view/pages/status_face/status_face_page.dart";
 import "package:u/utilities.dart";
 
 class AccountCard extends StatelessWidget {
@@ -25,14 +24,14 @@ class AccountCard extends StatelessWidget {
             child: Row(
               children: <Widget>[
                 UContainer(
-                  width: 48,
-                  height: 48,
-                  radius: 16,
+                  width: 42,
+                  height: 42,
+                  radius: 12,
                   alignment: Alignment.center,
                   color: scheme.surface,
                   child: Icon(account.getIcon(), color: color, size: 24),
                 ),
-                const SizedBox(width: 14),
+                const SizedBox(width: 8),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -44,14 +43,30 @@ class AccountCard extends StatelessWidget {
                         color: scheme.surface,
                         border: Border.all(color: color.withValues(alpha: 0.35)),
                         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                        onTap: () {
-                          if (account.accountType == "CREDIT")
-                            UNavigator.push(StatusFacePage(accountInfo: account));
-                          else
-                            UNavigator.push(StatementPage(accountInfo: account));
-                        },
-                        child: UTextBodySmall(U.s.statement, color: color, fontWeight: FontWeight.w600),
+                        onTap: () => UNavigator.push(StatementPage(accountInfo: account)),
+                        child: UTextBodySmall("گردش", color: color, fontWeight: FontWeight.w600),
                       ),
+                      // Row(
+                      //   children: <Widget>[
+                      //     UContainer(
+                      //       radius: 20,
+                      //       color: scheme.surface,
+                      //       border: Border.all(color: color.withValues(alpha: 0.35)),
+                      //       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                      //       onTap: () => UNavigator.push(StatementPage(accountInfo: account)),
+                      //       child: UTextBodySmall("گردش", color: color, fontWeight: FontWeight.w600),
+                      //     ),
+                      //     if (account.accountType == "CREDIT")
+                      //       UContainer(
+                      //         radius: 20,
+                      //         color: scheme.surface,
+                      //         border: Border.all(color: color.withValues(alpha: 0.35)),
+                      //         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                      //         onTap: () => UNavigator.push(StatusFacePage(accountInfo: account)),
+                      //         child: UTextBodySmall("صورت‌وضعیت", color: color, fontWeight: FontWeight.w600),
+                      //       ),
+                      //   ],
+                      // ).fit(),
                     ],
                   ),
                 ),

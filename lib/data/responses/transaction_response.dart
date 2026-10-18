@@ -117,32 +117,6 @@ extension TransactionResponseExtension on TransactionInfo {
   }
 
   bool isRefund() => debitType == 4;
-
-  String description() => <String>[
-    if (merchantName.isNotNullOrEmpty()) merchantName! else debitTypeName(),
-    if (stan.isNotNullOrEmpty()) "${U.s.traceNumber} ${stan!.toPersianNumber()}",
-  ].join(" — ");
-
-  String? pan() => Core.currentFile.value.panInfoList.where((PanInfo e) => e.panId == panId).firstOrDefault()?.pan;
-
-  String receiptText() {
-    final String? cardNumber = pan();
-    return <String>[
-      U.s.transactionReceipt,
-      "${U.s.amount}: ${transactionAmount.rial()}",
-      if (logDate.isNotNullOrEmpty()) "${U.s.date}: ${logDate.formatJalaliDateTime()}",
-      if (merchantName.isNotNullOrEmpty()) "${U.s.merchant}: $merchantName",
-      if (merchantAddress.isNotNullOrEmpty()) "${U.s.address}: $merchantAddress",
-      if (cardNumber.isNotNullOrEmpty()) "${U.s.cardNumber}: $cardNumber",
-      "${U.s.terminalType}: ${terminalTypeName()}",
-      if (transactionType.isNotNullOrEmpty()) "${U.s.transactionType}: $transactionType",
-      if (rrn.isNotNullOrEmpty()) "${U.s.referenceNumber}: $rrn",
-      if (stan.isNotNullOrEmpty()) "${U.s.traceNumber}: $stan",
-      if (docId.isNotNullOrEmpty()) "${U.s.documentNumber}: $docId",
-      if (logMessage.isNotNullOrEmpty()) "${U.s.description}: $logMessage",
-      "${U.s.status}: ${statusName()}",
-    ].join("\n");
-  }
 }
 
 class TransactionResponse {
@@ -167,74 +141,42 @@ class TransactionResponse {
 class TransactionInfo {
   TransactionInfo({
     this.debitType,
-    this.docId,
-    this.fileId,
     this.logDate,
     this.logId,
-    this.logMessage,
-    this.merchantAddress,
-    this.merchantName,
     this.rrn,
-    this.stan,
     this.terminalType,
     this.transactionAmount,
     this.transactionStatus,
-    this.transactionType,
-    this.panId,
   });
 
   factory TransactionInfo.fromJson(String str) => TransactionInfo.fromMap(json.decode(str));
 
   factory TransactionInfo.fromMap(dynamic json) => TransactionInfo(
     debitType: json["debitType"],
-    docId: json["docId"],
-    fileId: json["fileId"],
     logDate: json["logDate"],
     logId: json["logId"],
-    logMessage: json["logMessage"],
-    merchantAddress: json["merchantAddress"],
-    merchantName: json["merchantName"],
     rrn: json["rrn"],
-    stan: json["stan"],
     terminalType: json["terminalType"],
     transactionAmount: json["transactionAmount"],
     transactionStatus: json["transactionStatus"],
-    transactionType: json["transactionType"],
-    panId: json["panId"],
   );
-  final String? docId;
-  final String? fileId;
-  final String? logDate;
   final String? logId;
-  final String? logMessage;
-  final String? merchantAddress;
-  final String? merchantName;
-  final String? rrn;
-  final String? stan;
-  final String? terminalType;
-  final String? transactionType;
-  final int? debitType;
-  final int? transactionAmount;
+  final String? logDate;
   final int? transactionStatus;
-  final String? panId;
+  final int? transactionAmount;
+  final String? rrn;
+  final String? terminalType;
+  final int? debitType;
 
   String toJson() => json.encode(toMap());
 
   Map<String, dynamic> toMap() => <String, dynamic>{
     "debitType": debitType,
-    "docId": docId,
-    "fileId": fileId,
     "logDate": logDate,
     "logId": logId,
-    "logMessage": logMessage,
-    "merchantAddress": merchantAddress,
-    "merchantName": merchantName,
     "rrn": rrn,
-    "stan": stan,
     "terminalType": terminalType,
     "transactionAmount": transactionAmount,
     "transactionStatus": transactionStatus,
-    "transactionType": transactionType,
-    "panId": panId,
   };
 }

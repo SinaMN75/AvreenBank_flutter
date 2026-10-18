@@ -21,6 +21,7 @@ class LoginOtpController extends UBaseController {
   void sendAgain() {
     ULoading.show();
     Core.dataSource.preRegister(
+      page: U.s.login,
       p: PreRegisterParams(loginMode: 1, nationalId: preRegisterParams.nationalId, mobileNo: preRegisterParams.mobileNo),
       onOk: (PreRegisterResponse response) async {
         ULoading.dismiss();
@@ -33,7 +34,6 @@ class LoginOtpController extends UBaseController {
       },
       onException: (String response) {
         ULoading.dismiss();
-        UToast.errorToast(message: response);
       },
     );
   }
@@ -45,8 +45,9 @@ class LoginOtpController extends UBaseController {
     }
     ULoading.show();
     Core.dataSource.register(
+      page: U.s.login,
       p: RegisterParams(
-        otp: controllerOtp.text,
+        otp: controllerOtp.numString(),
         loginToken: preRegisterResponse.loginToken,
       ),
       onOk: (RegisterResponse response) {
@@ -61,7 +62,6 @@ class LoginOtpController extends UBaseController {
       },
       onException: (String response) {
         ULoading.dismiss();
-        UToast.errorToast(message: response);
       },
     );
   }

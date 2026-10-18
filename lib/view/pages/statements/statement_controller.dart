@@ -36,9 +36,10 @@ class StatementController {
     action: () {
       state.loading();
       Core.dataSource.accountStatement(
+        page: U.s.statement,
         p: AccountStatementParams(
           accountId: selectedAccount.accountId!,
-          count: controllerCount.text.toInt(),
+          count: controllerCount.numInt(),
           startDateTime: DateTime(2020).toString(),
           endDateTime: DateTime(2030).toString(),
         ),
@@ -55,7 +56,6 @@ class StatementController {
         },
         onException: (String response) {
           state.error();
-          UToast.errorToast(message: response);
         },
       );
     },
@@ -64,6 +64,7 @@ class StatementController {
   void getTransactionsByDate() {
     state.loading();
     Core.dataSource.accountStatement(
+      page: U.s.statement,
       p: AccountStatementParams(
         accountId: selectedAccount.accountId!,
         count: 10,
@@ -83,7 +84,6 @@ class StatementController {
       },
       onException: (String response) {
         state.error();
-        UToast.errorToast(message: response);
       },
     );
   }

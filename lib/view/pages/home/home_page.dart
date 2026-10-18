@@ -19,13 +19,16 @@ class _HomePageState extends UState<HomePage> {
     safeArea: false,
     body: UObx(() {
       if (c.state.isLoading()) return const Center(child: UProgressCircular());
-      return UColumn(
-        scrollable: Axis.vertical,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-          ProfileSelectorHeader(onProfileChanged: () {}),
-          _accountsSection(context).pSymmetric(horizontal: 16, vertical: 20),
-        ],
+      return RefreshIndicator.adaptive(
+        onRefresh: c.refreshFileInfo,
+        child: ListView(
+          physics: const AlwaysScrollableScrollPhysics(),
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            ProfileSelectorHeader(onProfileChanged: () {}),
+            _accountsSection(context).pSymmetric(horizontal: 16, vertical: 20),
+          ],
+        ),
       );
     }),
   );
@@ -33,21 +36,12 @@ class _HomePageState extends UState<HomePage> {
   Widget _accountsSection(BuildContext context) => Column(
     crossAxisAlignment: CrossAxisAlignment.stretch,
     children: <Widget>[
-      Row(
-        children: <Widget>[
-          UTextTitleMedium(U.s.accountsInThisProfile, fontWeight: FontWeight.bold, expanded: 1),
-          UContainer(
-            radius: 20,
-            color: scheme.surface,
-            border: Border.all(color: scheme.outlineVariant),
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            child: UTextLabelLarge(
-              c.accounts.isEmpty ? U.s.empty : "${c.accounts.length.toString().toPersianNumber()} ${U.s.account}",
-              color: scheme.primary,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ],
+      UListTile(
+        icon: Icons.shopping_basket_outlined,
+        title: U.s.kalabargBalanceInquiry,
+        trailingIcon: Icons.arrow_forward_ios_rounded,
+        color: scheme.primary,
+        onTap: () => UToast.toast(message: U.s.beingSetUp),
       ),
       const SizedBox(height: 16),
       if (c.accounts.isEmpty)

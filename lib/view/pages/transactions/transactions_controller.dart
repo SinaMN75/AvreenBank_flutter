@@ -53,7 +53,7 @@ class TransactionsController {
   void getTransactionsByCount() => UValidators.validateForm(
     key: byCountKey,
     action: () => _fetch(
-      p: TransactionParams(fileId: Core.currentFile.value.fileId, count: controllerCount.text.toInt()),
+      p: TransactionParams(fileId: Core.currentFile.value.fileId, count: controllerCount.numInt()),
       list: byCountList,
       state: byCountState,
     ),
@@ -74,6 +74,7 @@ class TransactionsController {
   void _fetch({required TransactionParams p, required URxList<TransactionInfo> list, required URxState state}) {
     state.loading();
     Core.dataSource.viewTransaction(
+      page: U.s.cardTransactions,
       p: p,
       onOk: (TransactionResponse response) {
         list(response.transactionInfoList);
@@ -88,7 +89,6 @@ class TransactionsController {
       },
       onException: (String e) {
         state.error();
-        UToast.errorToast(message: e);
       },
     );
   }

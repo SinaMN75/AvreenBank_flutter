@@ -95,7 +95,7 @@ class _CardsPageState extends UState<CardsPage> {
           // _actionTile(icon: Icons.card_giftcard_rounded, title: "افزودن کارت هدیه", onTap: _giftCardSheet),
         ],
       ),
-      UTextTitleMedium(U.s.settings, fontWeight: FontWeight.bold, margin: const EdgeInsets.only(top: 28, bottom: 14)),
+      const SizedBox(height: 12),
       Column(
         spacing: 12,
         children: <Widget>[

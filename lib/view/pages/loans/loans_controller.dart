@@ -19,6 +19,7 @@ class LoansController extends UBaseController {
   void read() {
     state.loading();
     Core.dataSource.inquiryLoan(
+      page: U.s.loans,
       p: InquiryLoanParams(fileId: Core.currentFile.value.fileId),
       onOk: (InquiryLoanResponse response) {
         list = response.loanInfoList;
@@ -30,7 +31,6 @@ class LoansController extends UBaseController {
         state.error();
       },
       onException: (String response) {
-        UToast.errorToast(message: response);
         state.error();
       },
     );
