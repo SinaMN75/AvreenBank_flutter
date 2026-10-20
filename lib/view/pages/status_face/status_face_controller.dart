@@ -2,57 +2,32 @@ import "package:avreen_bank/data/data.dart";
 import "package:avreen_bank/main.dart";
 import "package:u/utilities.dart";
 
-enum CreditStatementDatePreset {
-  thisMonth,
-  previousMonth,
-  threeMonthsAgo,
-  lastYear;
-
-  String get title => switch (this) {
-    CreditStatementDatePreset.thisMonth => U.s.thisMonth,
-    CreditStatementDatePreset.previousMonth => U.s.previousMonth,
-    CreditStatementDatePreset.threeMonthsAgo => "سه ماه قبل",
-    CreditStatementDatePreset.lastYear => "سال قبل",
-  };
-
-  (UJalali, UJalali) range(UJalali now) => switch (this) {
-    CreditStatementDatePreset.thisMonth => (now.firstDayOfMonth(), now),
-    CreditStatementDatePreset.previousMonth => (now.add(months: -1).firstDayOfMonth(), now.add(months: -1).lastDayOfMonth()),
-    CreditStatementDatePreset.threeMonthsAgo => (now.add(months: -3), now),
-    CreditStatementDatePreset.lastYear => (now.add(years: -1), now),
-  };
-}
-
 class CreditStatementFilter {
-  CreditStatementFilter() {
-    selectDatePreset(CreditStatementDatePreset.thisMonth);
-  }
 
   final URx<UJalali> startDate = UJalali.now().firstDayOfMonth().obs;
   final URx<UJalali> endDate = UJalali.now().obs;
-  final URxn<CreditStatementDatePreset> datePreset = URxn<CreditStatementDatePreset>();
   final URxList<CreditStatement> list = <CreditStatement>[].obs;
   final URxState state = URxState();
 
-  void selectDatePreset(CreditStatementDatePreset preset) {
-    final (UJalali start, UJalali end) = preset.range(UJalali.now());
-    datePreset(preset);
-    startDate(start);
-    endDate(end);
-  }
-
   Future<void> pickStartDate() async {
-    final UJalali? date = await UJalaliDatePicker.show(initialDate: startDate.value, lastDate: endDate.value);
+    final UJalali? date = await UJalaliDatePicker.show(
+      initialDate: startDate.value,
+      lastDate: endDate.value,
+      spinnerShowDay: false,
+    );
     if (date == null) return;
-    datePreset(null);
-    startDate(date);
+    startDate(date.copy(day: 1));
   }
 
   Future<void> pickEndDate() async {
-    final UJalali? date = await UJalaliDatePicker.show(initialDate: endDate.value, firstDate: startDate.value, lastDate: UJalali.now());
+    final UJalali? date = await UJalaliDatePicker.show(
+      initialDate: endDate.value,
+      firstDate: startDate.value,
+      lastDate: UJalali.now(),
+      spinnerShowDay: false,
+    );
     if (date == null) return;
-    datePreset(null);
-    endDate(date);
+    endDate(date.copy(day: date.lastDayOfMonth().day));
   }
 
   DateTime _startOfDay(UJalali date) => date.toDateTime().copyWith(hour: 0, minute: 0, second: 0, millisecond: 0, microsecond: 0);
@@ -81,8 +56,10 @@ class StatusFaceController extends UBaseController {
       p: CreditStatementParams(accountId: accountInfo.accountId),
       onOk: (CreditStatementResponse response) {
         list = response.result;
-        if (response.result.isEmpty) state.emptying();
-        else state.loaded();
+        if (response.result.isEmpty)
+          state.emptying();
+        else
+          state.loaded();
       },
       onError: (ErrorResponse response) {
         UToast.errorToast(message: response.errorMessage);

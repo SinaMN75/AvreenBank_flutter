@@ -15,6 +15,7 @@ class StatusFacePage extends StatefulWidget {
 
 class _StatusFacePageState extends UState<StatusFacePage> {
   final StatusFaceController c = StatusFaceController();
+
   List<Tab> get _tabs => <Tab>[
     const Tab(text: "جاری"),
     Tab(text: U.s.past),
@@ -90,21 +91,6 @@ class _StatusFacePageState extends UState<StatusFacePage> {
       scrollable: Axis.vertical,
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       children: <Widget>[
-        Wrap(
-          spacing: 12,
-          runSpacing: 8,
-          children: CreditStatementDatePreset.values
-              .map(
-                (CreditStatementDatePreset preset) => ChoiceChip(
-                  labelPadding: const EdgeInsets.symmetric(vertical: 2, horizontal: 8),
-                  padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 8),
-                  label: Text(preset.title),
-                  selected: filter.datePreset.value == preset,
-                  onSelected: (_) => filter.selectDatePreset(preset),
-                ),
-              )
-              .toList(),
-        ).pSymmetric(vertical: 4),
         Row(
           spacing: 12,
           children: <Widget>[
@@ -125,13 +111,9 @@ class _StatusFacePageState extends UState<StatusFacePage> {
     border: Border.all(color: scheme.outlineVariant),
     padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
     onTap: onTap,
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      spacing: 6,
-      children: <Widget>[
-        UTextBodySmall(label, color: scheme.onSurfaceVariant),
-        UTextTitleSmall(date.formatCompactDate(persianDigits: true), fontWeight: FontWeight.bold),
-      ],
+    child: UIconTextVertical(
+      leading: UTextBodySmall(label, color: scheme.onSurfaceVariant),
+      trailing: UTextTitleSmall(date.formatCompactDate(persianDigits: true), fontWeight: FontWeight.bold),
     ),
   );
 
@@ -220,9 +202,7 @@ class _StatusFacePageState extends UState<StatusFacePage> {
 
   void showCreditDetails(List<StatementCreditDetail> list) => AppSheet.show<void>(
     title: U.s.creditPurchases,
-    children: list.isEmpty
-        ? <Widget>[const UEmptyState(icon: Icons.receipt_long_outlined).pSymmetric(vertical: 32)]
-        : list.map(_creditDetailItem).toList(),
+    children: list.isEmpty ? <Widget>[const UEmptyState(icon: Icons.receipt_long_outlined).pSymmetric(vertical: 32)] : list.map(_creditDetailItem).toList(),
   );
 
   Widget _creditDetailItem(StatementCreditDetail i) => UContainer(
@@ -257,9 +237,7 @@ class _StatusFacePageState extends UState<StatusFacePage> {
 
   void showLoanDetails(List<StatementLoanDetail> list) => AppSheet.show<void>(
     title: U.s.installmentPurchases,
-    children: list.isEmpty
-        ? <Widget>[const UEmptyState(icon: Icons.receipt_long_outlined).pSymmetric(vertical: 32)]
-        : list.map(_loanDetailItem).toList(),
+    children: list.isEmpty ? <Widget>[const UEmptyState(icon: Icons.receipt_long_outlined).pSymmetric(vertical: 32)] : list.map(_loanDetailItem).toList(),
   );
 
   Widget _loanDetailItem(StatementLoanDetail i) => UContainer(
