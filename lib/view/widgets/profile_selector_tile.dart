@@ -1,5 +1,6 @@
 import "package:avreen_bank/data/data.dart";
 import "package:avreen_bank/main.dart";
+import "package:avreen_bank/view/widgets/app_sheet.dart";
 import "package:u/utilities.dart";
 
 class ProfileSelectorTile extends StatelessWidget {
@@ -7,19 +8,56 @@ class ProfileSelectorTile extends StatelessWidget {
 
   final VoidCallback? onProfileChange;
 
+  void _changeProfile() => UNavigator.bottomSheet<void>(
+    ProfileSheet(
+      profiles: Core.fileInfo.value.fileInfoList,
+      activeId: Core.currentFile.value.fileId,
+      onSelect: (FileInfo profile) {
+        Core.currentFile(profile);
+        onProfileChange?.call();
+        UNavigator.back();
+      },
+    ),
+  );
+
+  void _readFileDetails() {
+    ULoading.show();
+    Core.dataSource.fileDetails(
+      page: U.s.activeProfile,
+      p: FileDetailsParams(fileId: Core.currentFile.value.fileId),
+      onOk: (FileDetailsResponse response) {
+        ULoading.dismiss();
+        if (response.result == null)
+          UToast.errorToast(message: U.s.errorReadingData);
+        else
+          _fileDetailsSheet(response.result!);
+      },
+      onError: (ErrorResponse response) {
+        ULoading.dismiss();
+        UToast.errorToast(message: response.errorMessage);
+      },
+      onException: (String response) {
+        ULoading.dismiss();
+      },
+    );
+  }
+
+  void _fileDetailsSheet(FileDetail i) => AppSheet.show<void>(
+    title: "جزئیات پرونده",
+    children: <Widget>[
+      SheetInfoBox(label: "کد پرونده", value: (i.fileCode ?? "---").toPersianNumber()),
+      SheetInfoBox(label: "کد سازمان", value: i.organId ?? "---"),
+      SheetInfoBox(label: "کد بخش", value: (i.sectionCode ?? "---").toPersianNumber()),
+      SheetInfoBox(label: "کد پرسنلی", value: (i.personnelCode ?? "---").toPersianNumber()),
+      SheetInfoBox(label: "تعداد خانوار", value: (i.familyCount ?? 0).toString().toPersianNumber()),
+      SheetInfoBox(label: "تعداد افراد خانواده", value: (i.personFamilyCount ?? 0).toString().toPersianNumber()),
+      SheetInfoBox(label: U.s.createdAt, value: i.createDate?.toJalaliCompactDateString() ?? "---"),
+    ],
+  );
+
   @override
   Widget build(BuildContext context) => UContainer(
-    onTap: () => UNavigator.bottomSheet<void>(
-      ProfileSheet(
-        profiles: Core.fileInfo.value.fileInfoList,
-        activeId: Core.currentFile.value.fileId,
-        onSelect: (FileInfo profile) {
-          Core.currentFile(profile);
-          onProfileChange?.call();
-          UNavigator.back();
-        },
-      ),
-    ),
+    onTap: _readFileDetails,
     color: AppColors.onGradient.withValues(alpha: 0.14),
     radius: 16,
     padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
@@ -45,7 +83,13 @@ class ProfileSelectorTile extends StatelessWidget {
           ),
         ),
         const SizedBox(width: 8),
-        UTextBodyLarge(U.s.change, color: AppColors.onGradient, fontWeight: FontWeight.bold),
+        UContainer(
+          onTap: _changeProfile,
+          color: AppColors.onGradient.withValues(alpha: 0.14),
+          radius: 12,
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+          child: UTextBodyLarge(U.s.change, color: AppColors.onGradient, fontWeight: FontWeight.bold),
+        ),
       ],
     ),
   );

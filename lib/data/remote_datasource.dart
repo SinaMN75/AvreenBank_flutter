@@ -406,6 +406,38 @@ class RemoteDataSource {
     return result;
   }
 
+  Future<(FileDetailsResponse?, ErrorResponse?, String?)> fileDetails({
+    required FileDetailsParams p,
+    required Function(FileDetailsResponse r)? onOk,
+    required Function(ErrorResponse e)? onError,
+    required Function(String e)? onException,
+    required String page,
+  }) async {
+    (FileDetailsResponse?, ErrorResponse?, String?) result = (null, null, null);
+    await _send(
+      page: page,
+      method: "POST",
+      body: p.toMap(),
+      headers: <String, String>{"clientType": "1", "X-Person": ULocalStorage.getString(AppConstants.personId) ?? "", "Authorization": ?ULocalStorage.getToken()},
+      endpoint: "${AppConstants.baseUrl}/fileDetails",
+      onSuccess: (Response r) {
+        final FileDetailsResponse ok = FileDetailsResponse.fromJson(r.body);
+        result = (ok, null, null);
+        onOk?.call(ok);
+      },
+      onError: (Response r) {
+        final ErrorResponse err = ErrorResponse.fromJson(r.body);
+        result = (null, err, null);
+        onError?.call(err);
+      },
+      onException: (String e) {
+        result = (null, null, e);
+        onException?.call(e);
+      },
+    );
+    return result;
+  }
+
   Future<(InquiryLoanResponse?, ErrorResponse?, String?)> inquiryLoan({
     required InquiryLoanParams p,
     required Function(InquiryLoanResponse r)? onOk,
