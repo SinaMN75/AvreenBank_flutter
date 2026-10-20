@@ -15,6 +15,11 @@ class StatusFacePage extends StatefulWidget {
 
 class _StatusFacePageState extends UState<StatusFacePage> {
   final StatusFaceController c = StatusFaceController();
+  List<Tab> get _tabs => <Tab>[
+    const Tab(text: "جاری"),
+    Tab(text: U.s.past),
+    Tab(text: U.s.settled),
+  ];
 
   @override
   void initState() {
@@ -23,48 +28,132 @@ class _StatusFacePageState extends UState<StatusFacePage> {
   }
 
   @override
-  Widget build(BuildContext context) => UScaffold(
-    safeArea: false,
-    body: Column(
+  Widget build(BuildContext context) => DefaultTabController(
+    length: _tabs.length,
+    child: UScaffold(
+      safeArea: false,
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          PageHeader(
+            title: U.s.statement,
+            subtitle: widget.accountInfo.accountTypeName,
+            trailing: "${(widget.accountInfo.availableBalance ?? 0).separate3By3().toPersianNumber()} ${U.s.rial}",
+          ),
+          TabBar(tabs: _tabs, indicatorWeight: 3).pSymmetric(horizontal: 16, vertical: 8),
+          TabBarView(
+            children: <Widget>[
+              current(),
+              byDate(filter: c.past, onSubmit: c.readPast),
+              byDate(filter: c.settled, onSubmit: c.readSettled),
+            ],
+          ).expanded(),
+        ],
+      ),
+    ),
+  );
+
+  Widget current() => UObx(
+    () {
+      if (c.state.isEmpty())
+        return UContainer(
+          radius: 24,
+          color: scheme.surface,
+          margin: const EdgeInsets.symmetric(horizontal: 16),
+          padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 24),
+          child: UTextBodyMedium(
+            "برای این پرونده هنوز قسط فعالی ثبت نشده است. وقتی خرید اقساطی انجام شود، اینجا دیده می‌شود.",
+            color: scheme.onSurfaceVariant,
+            height: 2,
+            maxLines: 4,
+            textAlign: TextAlign.center,
+          ),
+        ).alignAtTopCenter();
+      else if (c.state.isLoaded())
+        return ListView.separated(
+          padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
+          itemCount: c.list.length,
+          separatorBuilder: (BuildContext _, int _) => const SizedBox(height: 14),
+          itemBuilder: (BuildContext context, int index) => _item(info: c.list[index]),
+        );
+      else if (c.state.isLoading())
+        return const UProgressCircular().alignAtTopCenter().pOnly(top: 24);
+      else
+        return const SizedBox();
+    },
+  );
+
+  Widget byDate({required CreditStatementFilter filter, required VoidCallback onSubmit}) => UObx(
+    () => UColumn(
       crossAxisAlignment: CrossAxisAlignment.stretch,
+      mainAxisSize: MainAxisSize.min,
+      scrollable: Axis.vertical,
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       children: <Widget>[
-        PageHeader(
-          title: U.s.statement,
-          subtitle: widget.accountInfo.accountTypeName,
-          trailing: "${(widget.accountInfo.availableBalance ?? 0).separate3By3().toPersianNumber()} ${U.s.rial}",
-        ),
-        UObx(
-          () {
-            if (c.state.isEmpty())
-              return UContainer(
-                radius: 24,
-                color: scheme.surface,
-                margin: const EdgeInsets.symmetric(horizontal: 16),
-                padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 24),
-                child: UTextBodyMedium(
-                  "برای این پرونده هنوز قسط فعالی ثبت نشده است. وقتی خرید اقساطی انجام شود، اینجا دیده می‌شود.",
-                  color: scheme.onSurfaceVariant,
-                  height: 2,
-                  maxLines: 4,
-                  textAlign: TextAlign.center,
+        Wrap(
+          spacing: 12,
+          runSpacing: 8,
+          children: CreditStatementDatePreset.values
+              .map(
+                (CreditStatementDatePreset preset) => ChoiceChip(
+                  labelPadding: const EdgeInsets.symmetric(vertical: 2, horizontal: 8),
+                  padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 8),
+                  label: Text(preset.title),
+                  selected: filter.datePreset.value == preset,
+                  onSelected: (_) => filter.selectDatePreset(preset),
                 ),
-              ).alignAtTopCenter();
-            else if (c.state.isLoaded())
-              return ListView.separated(
-                padding: const EdgeInsets.fromLTRB(16, 0, 16, 24),
-                itemCount: c.list.length,
-                separatorBuilder: (BuildContext _, int _) => const SizedBox(height: 14),
-                itemBuilder: (BuildContext context, int index) => _item(info: c.list[index]),
-              );
-            else if (c.state.isLoading())
-              return const UProgressCircular().alignAtTopCenter();
-            else
-              return const SizedBox();
-          },
-        ).expanded(),
+              )
+              .toList(),
+        ).pSymmetric(vertical: 4),
+        Row(
+          spacing: 12,
+          children: <Widget>[
+            _dateBox(U.s.startDate, filter.startDate.value, filter.pickStartDate),
+            _dateBox(U.s.endDate, filter.endDate.value, filter.pickEndDate),
+          ],
+        ).pSymmetric(vertical: 8),
+        _submit(onSubmit),
+        _result(filter.state, filter.list),
       ],
     ),
   );
+
+  Widget _dateBox(String label, UJalali date, VoidCallback onTap) => UContainer(
+    expanded: 1,
+    radius: 16,
+    color: scheme.surface,
+    border: Border.all(color: scheme.outlineVariant),
+    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+    onTap: onTap,
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      spacing: 6,
+      children: <Widget>[
+        UTextBodySmall(label, color: scheme.onSurfaceVariant),
+        UTextTitleSmall(date.formatCompactDate(persianDigits: true), fontWeight: FontWeight.bold),
+      ],
+    ),
+  );
+
+  Widget _submit(VoidCallback onTap) => UButton(
+    title: U.s.receive,
+    onTap: onTap,
+    height: 54,
+    elevation: 0,
+    borderRadius: 16,
+    fullWidth: true,
+  ).pSymmetric(vertical: 12);
+
+  Widget _result(URxState state, List<CreditStatement> list) {
+    if (state.isLoading()) return const UProgressCircular().alignAtCenter().pOnly(top: 24);
+    if (state.isEmpty()) return UEmptyState(title: U.s.noResults).pOnly(top: 24);
+    if (!state.isLoaded()) return const SizedBox();
+    return UColumn(
+      spacing: 14,
+      margin: const EdgeInsets.only(top: 4, bottom: 20),
+      children: list.map((CreditStatement info) => _item(info: info)).toList(),
+    );
+  }
 
   Widget _item({required CreditStatement info}) => UContainer(
     radius: 24,
