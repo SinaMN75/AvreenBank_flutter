@@ -470,22 +470,21 @@ class RemoteDataSource {
     return result;
   }
 
-  Future<(KalabargBalanceResponse?, ErrorResponse?, String?)> kalabargBalance({
-    required KalabargBalanceParams p,
-    required Function(KalabargBalanceResponse r)? onOk,
+  Future<(FaraBalanceResponse?, ErrorResponse?, String?)> faraBalance({
+    required Function(FaraBalanceResponse r)? onOk,
     required Function(ErrorResponse e)? onError,
     required Function(String e)? onException,
     required String page,
   }) async {
-    (KalabargBalanceResponse?, ErrorResponse?, String?) result = (null, null, null);
+    (FaraBalanceResponse?, ErrorResponse?, String?) result = (null, null, null);
     await _send(
       page: page,
       method: "POST",
-      body: p.toMap(),
+      body: <String, dynamic>{},
       headers: <String, String>{"clientType": "1", "X-Person": ULocalStorage.getString(AppConstants.personId) ?? "", "Authorization": ?ULocalStorage.getToken()},
-      endpoint: "${AppConstants.baseUrl}/kalabargBalance",
+      endpoint: "${AppConstants.baseUrl}/faraBalance",
       onSuccess: (Response r) {
-        final KalabargBalanceResponse ok = KalabargBalanceResponse.fromJson(r.body);
+        final FaraBalanceResponse ok = FaraBalanceResponse.fromJson(r.body);
         result = (ok, null, null);
         onOk?.call(ok);
       },

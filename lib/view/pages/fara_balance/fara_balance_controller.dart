@@ -2,8 +2,8 @@ import "package:avreen_bank/data/data.dart";
 import "package:avreen_bank/main.dart";
 import "package:u/utilities.dart";
 
-class KalabargController extends UBaseController {
-  KalabargBalanceResponse? kalabarg;
+class FaraBalanceController extends UBaseController {
+  FaraBalanceResponse? faraBalance;
 
   void init() {
     state.loading();
@@ -11,11 +11,10 @@ class KalabargController extends UBaseController {
   }
 
   Future<void> read() async {
-    await Core.dataSource.kalabargBalance(
-      page: U.s.kalabargBalance,
-      p: KalabargBalanceParams(fileId: Core.currentFile.value.fileId),
-      onOk: (KalabargBalanceResponse response) {
-        kalabarg = response;
+    await Core.dataSource.faraBalance(
+      page: "موجودی کالابرگ",
+      onOk: (FaraBalanceResponse response) {
+        faraBalance = response;
         state.loaded();
       },
       onError: (ErrorResponse response) {

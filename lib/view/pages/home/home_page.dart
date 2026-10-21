@@ -1,6 +1,6 @@
 import "package:avreen_bank/data/data.dart";
+import "package:avreen_bank/view/pages/fara_balance/fara_balance_page.dart";
 import "package:avreen_bank/view/pages/home/home_controller.dart";
-import "package:avreen_bank/view/pages/kalabarg/kalabarg_page.dart";
 import "package:avreen_bank/view/widgets/account_card.dart";
 import "package:avreen_bank/view/widgets/profile_selector_header.dart";
 import "package:u/utilities.dart";
@@ -42,7 +42,7 @@ class _HomePageState extends UState<HomePage> {
         title: U.s.kalabargBalanceInquiry,
         trailingIcon: Icons.arrow_forward_ios_rounded,
         color: scheme.primary,
-        onTap: () => UNavigator.push(const KalabargPage()),
+        onTap: () => UNavigator.push(const FaraBalancePage()),
       ),
       const SizedBox(height: 16),
       if (c.accounts.isEmpty)

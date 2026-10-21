@@ -139,7 +139,7 @@ class _LoansPageState extends UState<LoansPage> {
                     trailing: UIconTextVertical(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       leading: Text("مبلغ کل اقساط${i.amount.rial()}"),
-                      trailing: Text("پرداخت شده کل ${i.payAmount.rial()}"),
+                      trailing: Text("پرداخت شده${i.payAmount.rial()}"),
                     ),
                   ),
                 );

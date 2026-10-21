@@ -103,7 +103,7 @@ class _CardsPageState extends UState<CardsPage> {
             icon: Icons.bookmark_border_rounded,
             color: AppColors.orange,
             title: "تراکنش‌های کارت",
-            subtitle: "آخرین خریدها و گردش کارت",
+            subtitle: "گزارش خریدها و عملیات کارت",
             onTap: () => UNavigator.push(TransactionsPage(card: c.selectedCard.value)),
           ),
           _settingTile(
@@ -133,15 +133,14 @@ class _CardsPageState extends UState<CardsPage> {
             icon: Icons.add_card_outlined,
             color: AppColors.sky,
             title: "درخواست صدور کارت المثنی",
-            subtitle: "در صورت مفقودی کارت کارت المثنی درخواست دهید",
-            trailing: CupertinoSwitch(value: false, onChanged: (bool _) => _blockSheet()).ltr(),
+            subtitle: "درخواست صدور المثنی در صورت مفقودی",
             onTap: () => UToast.toast(message: U.s.comingSoon),
           ),
           _settingTile(
             icon: Icons.block_rounded,
             color: scheme.error,
             titleColor: scheme.error,
-            title: "غیر فعال کردن",
+            title: "غیر فعال سازی",
             subtitle: "مسدودسازی در صورت مفقودی یا سرقت",
             onTap: () => UToast.toast(message: U.s.comingSoon),
           ),
@@ -325,32 +324,4 @@ class _CardsPageState extends UState<CardsPage> {
       ],
     );
   }
-
-  void _blockSheet() => AppSheet.show<void>(
-    title: U.s.temporarilyBlock,
-    children: <Widget>[
-      UTextBodyMedium("موجودی حساب‌ها سر جایش می‌ماند؛ فقط خرید با این کارت متوقف می‌شود.", color: scheme.onSurfaceVariant, maxLines: 3),
-      UButton(
-        title: "مسدود کردن کارت",
-        height: 54,
-        elevation: 0,
-        borderRadius: 16,
-        fullWidth: true,
-        onTap: () {
-          UNavigator.back();
-          UToast.toast(message: U.s.comingSoon);
-        },
-      ),
-      UButton(
-        title: U.s.cancel,
-        height: 54,
-        elevation: 0,
-        borderRadius: 16,
-        fullWidth: true,
-        backgroundColor: scheme.primary.withValues(alpha: 0.1),
-        foregroundColor: scheme.primary,
-        onTap: UNavigator.back,
-      ),
-    ],
-  );
 }

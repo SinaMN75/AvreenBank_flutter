@@ -1,4 +1,5 @@
 import "package:avreen_bank/data/data.dart";
+import "package:avreen_bank/main.dart";
 import "package:avreen_bank/view/pages/status_face/status_face_controller.dart";
 import "package:avreen_bank/view/widgets/app_sheet.dart";
 import "package:avreen_bank/view/widgets/gradient_header.dart";
@@ -37,7 +38,7 @@ class _StatusFacePageState extends UState<StatusFacePage> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
           PageHeader(
-            title: U.s.statement,
+            title: "صورت وضعیت",
             subtitle: widget.accountInfo.accountTypeName,
             trailing: "${(widget.accountInfo.availableBalance ?? 0).separate3By3().toPersianNumber()} ${U.s.rial}",
           ),
@@ -63,7 +64,7 @@ class _StatusFacePageState extends UState<StatusFacePage> {
           margin: const EdgeInsets.symmetric(horizontal: 16),
           padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 24),
           child: UTextBodyMedium(
-            "برای این پرونده هنوز قسط فعالی ثبت نشده است. وقتی خرید اقساطی انجام شود، اینجا دیده می‌شود.",
+            "برای این پرونده صورت وضعیت جاری وجود ندارد",
             color: scheme.onSurfaceVariant,
             height: 2,
             maxLines: 4,
@@ -145,7 +146,7 @@ class _StatusFacePageState extends UState<StatusFacePage> {
       children: <Widget>[
         UKeyValue(
           leading: UTextBodyMedium("تاریخ سررسید", color: theme.disabledColor),
-          trailing: Text(info.dueDate?.toJalaliCompactDateString() ?? "---"),
+          trailing: Text(info.dueDate?.toJalaliDateTime() ?? "---").ltr(),
           margin: const EdgeInsets.symmetric(vertical: 6),
         ),
         UKeyValue(
@@ -256,7 +257,7 @@ class _StatusFacePageState extends UState<StatusFacePage> {
           ),
           title: UTextBodySmall(U.s.totalAmount, color: scheme.onSurfaceVariant),
           subtitle: UTextTitleMedium(i.totalAmount.rial(), fontWeight: FontWeight.bold),
-          trailing: UTextBodySmall(i.date?.toJalaliCompactDateString() ?? "---", color: scheme.onSurfaceVariant),
+          trailing: UTextBodySmall(i.date?.toJalaliDateTime() ?? "---", color: scheme.onSurfaceVariant, textDirection: TextDirection.ltr),
         ),
         const Divider(height: 24),
         UKeyValue(
@@ -266,7 +267,12 @@ class _StatusFacePageState extends UState<StatusFacePage> {
         ),
         UKeyValue(
           leading: UTextBodyMedium(U.s.loanDebt, color: theme.disabledColor),
-          trailing: UTextBodyMedium(i.loanDebt.rial(), color: scheme.error, fontWeight: FontWeight.w600),
+          trailing: UTextBodyMedium(i.loanDebt.rial(), color: i.payStatus == 1 ? AppColors.orange : AppColors.success, fontWeight: FontWeight.w600),
+          margin: const EdgeInsets.symmetric(vertical: 6),
+        ),
+        UKeyValue(
+          leading: UTextBodyMedium(U.s.status, color: theme.disabledColor),
+          trailing: UTextBodyMedium(i.payStatus == 1 ? "پرداخت نشده" : U.s.paid, color: i.payStatus == 1 ? AppColors.orange : AppColors.success, fontWeight: FontWeight.w600),
           margin: const EdgeInsets.symmetric(vertical: 6),
         ),
         const SizedBox(height: 6),

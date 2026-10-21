@@ -27,6 +27,7 @@ class StatementLoanDetail {
   final int? instalmentCount;
   final int? loanDebt;
   final String? description;
+  final int? payStatus;
 
   StatementLoanDetail({
     this.id,
@@ -35,6 +36,7 @@ class StatementLoanDetail {
     this.instalmentCount,
     this.loanDebt,
     this.description,
+    this.payStatus,
   });
 
   factory StatementLoanDetail.fromJson(String str) => StatementLoanDetail.fromMap(json.decode(str));
@@ -48,6 +50,7 @@ class StatementLoanDetail {
     instalmentCount: json["instalmentCount"],
     loanDebt: json["loanDebt"],
     description: json["description"],
+    payStatus: json["payStatus"],
   );
 
   Map<String, dynamic> toMap() => <String, dynamic>{
@@ -57,5 +60,6 @@ class StatementLoanDetail {
     "instalmentCount": instalmentCount,
     "loanDebt": loanDebt,
     "description": description,
+    "payStatus": payStatus,
   };
 }

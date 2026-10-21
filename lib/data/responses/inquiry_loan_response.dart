@@ -4,14 +4,14 @@ extension InstallmentsStatusExtension on InstallmentsStatus {
   String statusString() {
     if (status == "N") return "پرداخت نشده";
     if (status == "P") return "پرداخت شده";
-    if (status == "D") return "سررسیدشده پرداخت نشده";
+    if (status == "D") return "پرداخت نشده سررسیدشده";
     return "";
   }
 
   Color statusColor() {
     if (status == "N") return Colors.yellow.shade900;
     if (status == "P") return Colors.green;
-    if (status == "N") return Colors.red;
+    if (status == "D") return Colors.red;
     return Colors.black;
   }
 }

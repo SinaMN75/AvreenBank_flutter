@@ -102,7 +102,7 @@ extension TransactionResponseExtension on TransactionInfo {
   String debitTypeName() {
     switch (debitType) {
       case 1:
-        return "خرید اعتباری";
+        return "خرید";
       case 2:
         return "خرید اقساطی";
       case 3:

@@ -50,7 +50,7 @@ class ProfileSelectorTile extends StatelessWidget {
       SheetInfoBox(vertical: false, label: "کد بخش", value: (i.sectionCode ?? "---")),
       SheetInfoBox(vertical: false, label: "کد پرسنلی", value: (i.personnelCode ?? "---")),
       SheetInfoBox(vertical: false, label: "تعداد خانوار", value: (i.familyCount ?? 0).toString()),
-      SheetInfoBox(vertical: false, label: "تعداد افراد خانواده", value: (i.personFamilyCount ?? 0).toString()),
+      SheetInfoBox(vertical: false, label: "تعداد افراد خانواده (یارانه دولت)", value: (i.personFamilyCount ?? 0).toString()),
       SheetInfoBox(vertical: false, label: U.s.createdAt, value: i.createDate?.toJalaliCompactDateString() ?? "---"),
     ],
   );
@@ -75,7 +75,7 @@ class ProfileSelectorTile extends StatelessWidget {
                   Core.currentFile.value.fileTitle.toPersianNumber(),
                   color: AppColors.onGradient,
                   fontWeight: FontWeight.w500,
-                  maxLines: 1,
+                  maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
