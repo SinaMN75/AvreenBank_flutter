@@ -51,26 +51,39 @@ class AppSheet extends StatelessWidget {
 }
 
 class SheetInfoBox extends StatelessWidget {
-  const SheetInfoBox({required this.label, required this.value, this.ltr = false, this.onTap, super.key});
+  const SheetInfoBox({
+    required this.label,
+    required this.value,
+    this.ltr = false,
+    this.onTap,
+    this.vertical = true,
+    super.key,
+  });
 
   final String label;
   final String value;
   final bool ltr;
+  final bool vertical;
   final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) => UContainer(
     radius: 18,
     color: context.colorScheme.onSurface.withValues(alpha: 0.04),
-    padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 14),
+    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
     onTap: onTap,
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      spacing: 6,
-      children: <Widget>[
-        UTextBodySmall(label, color: context.colorScheme.onSurfaceVariant),
-        UTextTitleMedium(value, fontWeight: FontWeight.bold, textDirection: ltr ? TextDirection.ltr : null, maxLines: 2),
-      ],
-    ),
+    child: vertical
+        ? Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            spacing: 6,
+            children: <Widget>[
+              UTextBodySmall(label, color: context.colorScheme.onSurfaceVariant),
+              UTextTitleMedium(value, fontWeight: FontWeight.bold, textDirection: ltr ? TextDirection.ltr : null, maxLines: 2),
+            ],
+          )
+        : UKeyValue(
+            leading: UTextBodySmall(label, color: context.colorScheme.onSurfaceVariant),
+            trailing: UTextTitleMedium(value, fontWeight: FontWeight.bold, textDirection: ltr ? TextDirection.ltr : null, maxLines: 2),
+          ),
   );
 }

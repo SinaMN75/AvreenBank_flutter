@@ -45,13 +45,13 @@ class ProfileSelectorTile extends StatelessWidget {
   void _fileDetailsSheet(FileDetail i) => AppSheet.show<void>(
     title: "جزئیات پرونده",
     children: <Widget>[
-      SheetInfoBox(label: "کد پرونده", value: (i.fileCode ?? "---").toPersianNumber()),
-      SheetInfoBox(label: "کد سازمان", value: i.organId ?? "---"),
-      SheetInfoBox(label: "کد بخش", value: (i.sectionCode ?? "---").toPersianNumber()),
-      SheetInfoBox(label: "کد پرسنلی", value: (i.personnelCode ?? "---").toPersianNumber()),
-      SheetInfoBox(label: "تعداد خانوار", value: (i.familyCount ?? 0).toString().toPersianNumber()),
-      SheetInfoBox(label: "تعداد افراد خانواده", value: (i.personFamilyCount ?? 0).toString().toPersianNumber()),
-      SheetInfoBox(label: U.s.createdAt, value: i.createDate?.toJalaliCompactDateString() ?? "---"),
+      SheetInfoBox(vertical: false, label: "کد سازمان", value: i.organId ?? "---"),
+      SheetInfoBox(vertical: false, label: "کد پرونده", value: (i.fileCode ?? "---")),
+      SheetInfoBox(vertical: false, label: "کد بخش", value: (i.sectionCode ?? "---")),
+      SheetInfoBox(vertical: false, label: "کد پرسنلی", value: (i.personnelCode ?? "---")),
+      SheetInfoBox(vertical: false, label: "تعداد خانوار", value: (i.familyCount ?? 0).toString()),
+      SheetInfoBox(vertical: false, label: "تعداد افراد خانواده", value: (i.personFamilyCount ?? 0).toString()),
+      SheetInfoBox(vertical: false, label: U.s.createdAt, value: i.createDate?.toJalaliCompactDateString() ?? "---"),
     ],
   );
 
@@ -60,7 +60,7 @@ class ProfileSelectorTile extends StatelessWidget {
     onTap: _readFileDetails,
     color: AppColors.onGradient.withValues(alpha: 0.14),
     radius: 16,
-    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
+    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
     child: Row(
       children: <Widget>[
         Expanded(
