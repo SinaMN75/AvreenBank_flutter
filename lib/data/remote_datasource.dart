@@ -470,6 +470,38 @@ class RemoteDataSource {
     return result;
   }
 
+  Future<(KalabargBalanceResponse?, ErrorResponse?, String?)> kalabargBalance({
+    required KalabargBalanceParams p,
+    required Function(KalabargBalanceResponse r)? onOk,
+    required Function(ErrorResponse e)? onError,
+    required Function(String e)? onException,
+    required String page,
+  }) async {
+    (KalabargBalanceResponse?, ErrorResponse?, String?) result = (null, null, null);
+    await _send(
+      page: page,
+      method: "POST",
+      body: p.toMap(),
+      headers: <String, String>{"clientType": "1", "X-Person": ULocalStorage.getString(AppConstants.personId) ?? "", "Authorization": ?ULocalStorage.getToken()},
+      endpoint: "${AppConstants.baseUrl}/kalabargBalance",
+      onSuccess: (Response r) {
+        final KalabargBalanceResponse ok = KalabargBalanceResponse.fromJson(r.body);
+        result = (ok, null, null);
+        onOk?.call(ok);
+      },
+      onError: (Response r) {
+        final ErrorResponse err = ErrorResponse.fromJson(r.body);
+        result = (null, err, null);
+        onError?.call(err);
+      },
+      onException: (String e) {
+        result = (null, null, e);
+        onException?.call(e);
+      },
+    );
+    return result;
+  }
+
   Future<(bool, ErrorResponse?, String?)> registerAnonymousCard({
     required RegisterCardParams p,
     required VoidCallback? onOk,
