@@ -54,7 +54,7 @@ class _MainPageState extends State<MainPage> {
               pageController.jumpToPage(index);
             },
             items: <BottomNavigationBarItem>[
-              _item(Icons.home_outlined, U.s.accounts),
+              _item(Icons.home_outlined, "حساب ها"),
               _item(Icons.credit_card_outlined, U.s.cards),
               _item(Icons.bookmark_border_rounded, "اقساط"),
               _item(Icons.person_outline_rounded, U.s.profile),

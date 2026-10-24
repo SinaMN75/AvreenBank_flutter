@@ -119,7 +119,7 @@ class _StatusFacePageState extends UState<StatusFacePage> {
   );
 
   Widget _submit(VoidCallback onTap) => UButton(
-    title: U.s.receive,
+    title: "دریافت",
     onTap: onTap,
     height: 54,
     elevation: 0,
