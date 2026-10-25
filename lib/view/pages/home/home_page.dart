@@ -1,4 +1,5 @@
 import "package:avreen_bank/data/data.dart";
+import "package:avreen_bank/main.dart";
 import "package:avreen_bank/view/pages/fara_balance/fara_balance_page.dart";
 import "package:avreen_bank/view/pages/home/home_controller.dart";
 import "package:avreen_bank/view/widgets/account_card.dart";
@@ -42,7 +43,7 @@ class _HomePageState extends UState<HomePage> {
         title: U.s.kalabargBalanceInquiry,
         trailingIcon: Icons.arrow_forward_ios_rounded,
         color: scheme.primary,
-        onTap: () => UNavigator.push(const FaraBalancePage()),
+        onTap: () => Core.fileInfo.value.hasExternalNid ? UNavigator.push(const FaraBalancePage()) : UToast.errorToast(message: "کالابرگ برای کد ملی شما ثبت نشده است."),
       ),
       const SizedBox(height: 16),
       if (c.accounts.isEmpty)

@@ -64,6 +64,7 @@ class GetFileInfoResponse {
     required this.firstName,
     required this.lastName,
     required this.fileInfoList,
+    required this.hasExternalNid,
   });
 
   factory GetFileInfoResponse.fromJson(String str) => GetFileInfoResponse.fromMap(json.decode(str));
@@ -71,10 +72,13 @@ class GetFileInfoResponse {
   factory GetFileInfoResponse.fromMap(dynamic json) => GetFileInfoResponse(
     firstName: json["firstName"],
     lastName: json["lastName"],
+    hasExternalNid: json["hasExternalNid"] ?? false,
     fileInfoList: json["fileInfoList"] == null ? <FileInfo>[] : List<FileInfo>.from(json["fileInfoList"].map(FileInfo.fromMap)),
   );
+
   final String? firstName;
   final String? lastName;
+  final bool hasExternalNid;
   final List<FileInfo> fileInfoList;
 }
 

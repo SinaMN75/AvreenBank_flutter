@@ -9,7 +9,7 @@ class MyHttpOverrides extends HttpOverrides {
 
 Future<void> main() async {
   if (kDebugMode) HttpOverrides.global = MyHttpOverrides();
-  await initU(snackBarDuration: 6);
+  await initU(snackBarDuration: 5);
   String? locale = ULocalStorage.getString(UConstants.locale);
   if (locale == null) {
     ULocalStorage.setLocale("fa");
@@ -189,8 +189,8 @@ abstract class Core {
 }
 
 abstract class AppConstants {
-  static const String baseUrl = kIsWeb ? "api/credit/mo" : "https://oa.avreenco.com:8080/mob/api/credit/mo";
-  // static const String baseUrl = kIsWeb ? "api/credit/mo" : "https://pwa.tj724.ir/api/credit/mo";
+  // static const String baseUrl = kIsWeb ? "api/credit/mo" : "https://oa.avreenco.com:8080/mob/api/credit/mo";
+  static const String baseUrl = kIsWeb ? "api/credit/mo" : "https://pwa.tj724.ir/api/credit/mo";
   static const String personId = "personId";
 }
 
