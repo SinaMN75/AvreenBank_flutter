@@ -3,8 +3,7 @@ import "package:avreen_bank/main.dart";
 import "package:u/utilities.dart";
 
 class CreditStatementFilter {
-
-  final URx<UJalali> startDate = UJalali.now().firstDayOfMonth().obs;
+  final URx<UJalali> startDate = (UJalali.now().addDays(-180)).firstDayOfMonth().obs;
   final URx<UJalali> endDate = UJalali.now().obs;
   final URxList<CreditStatement> list = <CreditStatement>[].obs;
   final URxState state = URxState();

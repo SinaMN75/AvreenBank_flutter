@@ -209,7 +209,7 @@ class _StatusFacePageState extends UState<StatusFacePage> {
   Widget _creditDetailItem(StatementCreditDetail i) => UContainer(
     radius: 18,
     color: scheme.onSurface.withValues(alpha: 0.04),
-    padding: const EdgeInsets.all(16),
+    padding: const EdgeInsets.all(12),
     child: Column(
       children: <Widget>[
         ListTile(
@@ -224,13 +224,7 @@ class _StatusFacePageState extends UState<StatusFacePage> {
           subtitle: UTextTitleMedium(i.amount.rial(), fontWeight: FontWeight.bold),
           trailing: UTextBodySmall(i.date?.toJalaliCompactDateString() ?? "---", color: scheme.onSurfaceVariant),
         ),
-        const Divider(height: 24),
-        UKeyValue(
-          leading: UTextBodyMedium(U.s.documentNumber, color: theme.disabledColor),
-          trailing: Text(i.docId ?? "---"),
-          margin: const EdgeInsets.symmetric(vertical: 6),
-        ),
-        const SizedBox(height: 6),
+        const SizedBox(height: 4),
         if (i.description.isNotNullOrEmpty()) UTextBodySmall(i.description!, color: scheme.onSurfaceVariant, maxLines: 3, textAlign: TextAlign.center),
       ],
     ),

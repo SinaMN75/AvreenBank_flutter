@@ -4,10 +4,10 @@ import "package:u/utilities.dart";
 
 class ChargeHistoryController extends UBaseController {
   late AccountInfo accountInfo;
-  final URx<UJalali> fromDate = UJalali.now().firstDayOfMonth().obs;
+  final URx<UJalali> fromDate = (UJalali.now().addDays(-365)).firstDayOfMonth().obs;
   final URx<UJalali> toDate = UJalali.now().obs;
   final URx<bool> ascending = false.obs;
-  List<CreditChargeLog> list = <CreditChargeLog>[];
+  URxList<CreditChargeLog> list = <CreditChargeLog>[].obs;
 
   void init({required AccountInfo accountInfo}) {
     this.accountInfo = accountInfo;
@@ -25,9 +25,7 @@ class ChargeHistoryController extends UBaseController {
   }
 
   void changeOrder(bool? value) {
-    if (value == null || value == ascending.value) return;
-    ascending(value);
-    read();
+    list(list.reversed.toList());
   }
 
   DateTime _startOfDay(UJalali date) => date.toDateTime().copyWith(hour: 0, minute: 0, second: 0, millisecond: 0, microsecond: 0);
@@ -38,12 +36,11 @@ class ChargeHistoryController extends UBaseController {
       page: U.s.chargeReport,
       p: CreditChargeHistoryParams(
         accountId: accountInfo.accountId!,
-        orderBy: ascending.value,
         startDate: _startOfDay(fromDate.value).toString(),
         endDate: _startOfDay(toDate.value).add(const Duration(days: 1)).toString(),
       ),
       onOk: (CreditChargeHistoryResponse response) {
-        list = response.result;
+        list(response.result);
         if (list.isEmpty)
           state.emptying();
         else

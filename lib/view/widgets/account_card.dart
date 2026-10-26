@@ -63,7 +63,9 @@ class AccountCard extends StatelessWidget {
                         icon: Icons.receipt_long_outlined,
                         title: U.s.billingStatement,
                         onTap: () => UNavigator.push(StatusFacePage(accountInfo: account)),
-                      ),
+                      )
+                    else
+                      const Spacer(),
                     if (isCredit)
                       _action(
                         scheme: scheme,
@@ -71,7 +73,9 @@ class AccountCard extends StatelessWidget {
                         icon: Icons.bolt_rounded,
                         title: U.s.chargeReport,
                         onTap: () => UNavigator.push(ChargeHistoryPage(accountInfo: account)),
-                      ),
+                      )
+                    else
+                      const Spacer(),
                   ],
                 ),
               ],

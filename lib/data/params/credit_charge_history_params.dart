@@ -3,7 +3,7 @@ part of "../data.dart";
 class CreditChargeHistoryParams {
   CreditChargeHistoryParams({
     required this.accountId,
-    required this.orderBy,
+    this.orderBy = false,
     this.startDate,
     this.endDate,
   });

@@ -64,6 +64,7 @@ class _ChargeHistoryPageState extends UState<ChargeHistoryPage> {
         ),
         UObx(
           () {
+
             if (c.state.isLoading()) return const UProgressCircular().alignAtTopCenter().pOnly(top: 24);
             if (c.state.isEmpty()) return UEmptyState(title: U.s.noResults).alignAtTopCenter().pOnly(top: 24);
             if (c.state.isError()) return UErrorRetry(onTap: c.read).alignAtTopCenter().pOnly(top: 24);
