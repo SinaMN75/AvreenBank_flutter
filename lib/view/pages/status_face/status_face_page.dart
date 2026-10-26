@@ -150,11 +150,6 @@ class _StatusFacePageState extends UState<StatusFacePage> {
           margin: const EdgeInsets.symmetric(vertical: 6),
         ),
         UKeyValue(
-          leading: UTextBodyMedium("وضعیت", color: theme.disabledColor),
-          trailing: Text(info.statusText()),
-          margin: const EdgeInsets.symmetric(vertical: 6),
-        ),
-        UKeyValue(
           leading: UTextBodyMedium("بدهی اعتباری", color: theme.disabledColor),
           trailing: Text(info.creditDebt.rial()),
           margin: const EdgeInsets.symmetric(vertical: 6),

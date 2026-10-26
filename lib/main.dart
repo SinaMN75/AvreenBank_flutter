@@ -31,7 +31,7 @@ Future<void> main() async {
 }
 
 abstract class AppColors {
-  static const Color brand = Color(0xFF1553A0);
+  static const Color brand = Color(0xFF0963CF);
   static const Color info = Color(0xFF38EBFF);
   static const Color success = Color(0xFF16A34A);
   static const Color warning = Color(0xFFF59E0B);
