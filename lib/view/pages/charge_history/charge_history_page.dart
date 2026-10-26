@@ -3,10 +3,13 @@ import "package:avreen_bank/view/pages/charge_history/charge_history_controller.
 import "package:avreen_bank/view/widgets/gradient_header.dart";
 import "package:u/utilities.dart";
 
+enum ChargeHistoryPageType { credit, account }
+
 class ChargeHistoryPage extends StatefulWidget {
-  const ChargeHistoryPage({required this.accountInfo, super.key});
+  const ChargeHistoryPage({required this.type, required this.accountInfo, super.key});
 
   final AccountInfo accountInfo;
+  final ChargeHistoryPageType type;
 
   @override
   State<ChargeHistoryPage> createState() => _ChargeHistoryPageState();
@@ -17,7 +20,7 @@ class _ChargeHistoryPageState extends UState<ChargeHistoryPage> {
 
   @override
   void initState() {
-    c.init(accountInfo: widget.accountInfo);
+    c.init(accountInfo: widget.accountInfo, type: widget.type);
     super.initState();
   }
 
@@ -64,7 +67,6 @@ class _ChargeHistoryPageState extends UState<ChargeHistoryPage> {
         ),
         UObx(
           () {
-
             if (c.state.isLoading()) return const UProgressCircular().alignAtTopCenter().pOnly(top: 24);
             if (c.state.isEmpty()) return UEmptyState(title: U.s.noResults).alignAtTopCenter().pOnly(top: 24);
             if (c.state.isError()) return UErrorRetry(onTap: c.read).alignAtTopCenter().pOnly(top: 24);
@@ -75,7 +77,7 @@ class _ChargeHistoryPageState extends UState<ChargeHistoryPage> {
                 padding: const EdgeInsets.fromLTRB(16, 4, 16, 24),
                 itemCount: c.list.length,
                 separatorBuilder: (BuildContext _, int _) => const SizedBox(height: 14),
-                itemBuilder: (BuildContext context, int index) => _item(c.list[index]),
+                itemBuilder: (BuildContext context, int index) => widget.type == ChargeHistoryPageType.credit ? _item(c.list[index]) : _accountItem(c.list[index]),
               ),
             );
           },
@@ -94,6 +96,29 @@ class _ChargeHistoryPageState extends UState<ChargeHistoryPage> {
     child: UIconTextVertical(
       leading: UTextBodySmall(label, color: scheme.onSurfaceVariant),
       trailing: UTextTitleSmall(date.formatCompactDate(persianDigits: true), fontWeight: FontWeight.bold),
+    ),
+  );
+
+  Widget _accountItem(CreditChargeLog i) => UContainer(
+    radius: 24,
+    color: scheme.surface,
+    padding: const EdgeInsets.all(16),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: <Widget>[
+        if (i.chargeAmount != null)
+          UKeyValue(
+            leading: Text(i.chargeAmount.rial()),
+            trailing: UTextBodySmall(i.chargeDate?.toJalaliDateTime() ?? "---", color: scheme.onSurfaceVariant).ltr(),
+            margin: const EdgeInsets.symmetric(vertical: 6),
+          ),
+        if (i.periodId != null)
+          UKeyValue(
+            leading: UTextBodyMedium("کد دوره", color: theme.disabledColor),
+            trailing: Text(i.periodId ?? "---"),
+            margin: const EdgeInsets.symmetric(vertical: 6),
+          ),
+      ],
     ),
   );
 
@@ -123,26 +148,36 @@ class _ChargeHistoryPageState extends UState<ChargeHistoryPage> {
           ],
         ),
         const Divider(height: 12),
-        UKeyValue(
-          leading: UTextBodyMedium("موجودی", color: theme.disabledColor),
-          trailing: Text(i.chargeAmount.rial()),
-          margin: const EdgeInsets.symmetric(vertical: 6),
-        ),
-        UKeyValue(
-          leading: UTextBodyMedium("توان پرداخت", color: theme.disabledColor),
-          trailing: Text(i.requestChargeAmount.rial()),
-          margin: const EdgeInsets.symmetric(vertical: 6),
-        ),
-        UKeyValue(
-          leading: UTextBodyMedium("بدهی اعتباری", color: theme.disabledColor),
-          trailing: Text(i.creditDebit.rial()),
-          margin: const EdgeInsets.symmetric(vertical: 6),
-        ),
-        UKeyValue(
-          leading: UTextBodyMedium("بدهی تسهیلاتی", color: theme.disabledColor),
-          trailing: Text(i.insDebit.rial()),
-          margin: const EdgeInsets.symmetric(vertical: 6),
-        ),
+        if (i.chargeAmount != null)
+          UKeyValue(
+            leading: UTextBodyMedium("مبلغ شارژ", color: theme.disabledColor),
+            trailing: Text(i.chargeAmount.rial()),
+            margin: const EdgeInsets.symmetric(vertical: 6),
+          ),
+        if (i.requestChargeAmount != null)
+          UKeyValue(
+            leading: UTextBodyMedium("توان پرداخت", color: theme.disabledColor),
+            trailing: Text(i.requestChargeAmount.rial()),
+            margin: const EdgeInsets.symmetric(vertical: 6),
+          ),
+        if (i.creditDebit != null)
+          UKeyValue(
+            leading: UTextBodyMedium("بدهی اعتباری", color: theme.disabledColor),
+            trailing: Text(i.creditDebit.rial()),
+            margin: const EdgeInsets.symmetric(vertical: 6),
+          ),
+        if (i.insDebit != null)
+          UKeyValue(
+            leading: UTextBodyMedium("بدهی تسهیلاتی", color: theme.disabledColor),
+            trailing: Text(i.insDebit.rial()),
+            margin: const EdgeInsets.symmetric(vertical: 6),
+          ),
+        if (i.periodId != null)
+          UKeyValue(
+            leading: UTextBodyMedium("کد دوره", color: theme.disabledColor),
+            trailing: Text(i.periodId ?? "---"),
+            margin: const EdgeInsets.symmetric(vertical: 6),
+          ),
       ],
     ),
   );

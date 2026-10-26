@@ -189,8 +189,8 @@ abstract class Core {
 }
 
 abstract class AppConstants {
-  // static const String baseUrl = kIsWeb ? "api/credit/mo" : "https://oa.avreenco.com:8080/mob/api/credit/mo";
-  static const String baseUrl = kIsWeb ? "api/credit/mo" : "https://pwa.tj724.ir/api/credit/mo";
+  static const String baseUrl = kIsWeb ? "api/credit/mo" : "https://oa.avreenco.com:8080/mob/api/credit/mo";
+  // static const String baseUrl = kIsWeb ? "api/credit/mo" : "https://pwa.tj724.ir/api/credit/mo";
   static const String personId = "personId";
 }
 
