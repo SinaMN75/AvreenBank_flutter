@@ -30,7 +30,7 @@ class RemoteDataSource {
     await UHttpClient.send(
       method: method,
       endpoint: endpoint,
-      headers: headers,
+      headers: <String, String>{...?headers, "X-App-Version": UApp.version},
       body: body,
       onSuccess: onSuccess,
       timeout: const Duration(seconds: 10),
