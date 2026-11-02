@@ -39,6 +39,8 @@ class _HomePageState extends UState<HomePage> {
 
   Widget _slider() => UCarousel<Widget>(
     height: 90,
+    autoPlay: true,
+    autoPlayInterval: const Duration(seconds: 5),
     viewportFraction: 1,
     itemSpacing: 12,
     withIndicator: true,
@@ -52,9 +54,10 @@ class _HomePageState extends UState<HomePage> {
         onTap: () => Core.fileInfo.value.hasExternalNid ? UNavigator.push(const FaraBalancePage()) : UToast.errorToast(message: "کالابرگ برای کد ملی شما ثبت نشده است."),
       ),
       UListTile(
+        backgroundColor: const Color.fromRGBO(254, 198, 58, 0.3),
         icon: Icons.inventory_2_outlined,
         title: "طرح کرامت امام رضا (ع)",
-        subtitle: "مشاهده مانده اقلام و تراکنش‌ها",
+        subtitle: "تا نوروز با قیمت‌های امروز",
         trailingIcon: Icons.arrow_forward_ios_rounded,
         color: AppColors.success,
         onTap: () => UNavigator.push(const KaramatPage()),

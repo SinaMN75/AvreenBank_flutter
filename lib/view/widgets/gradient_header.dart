@@ -19,11 +19,12 @@ class GradientHeader extends StatelessWidget {
 }
 
 class PageHeader extends StatelessWidget {
-  const PageHeader({required this.title, this.subtitle, this.trailing, super.key});
+  const PageHeader({required this.title, this.subtitle, this.trailing, super.key, this.trailingWidget});
 
   final String title;
   final String? subtitle;
   final String? trailing;
+  final Widget? trailingWidget;
 
   @override
   Widget build(BuildContext context) => GradientHeader(
@@ -57,6 +58,7 @@ class PageHeader extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
             child: UTextLabelLarge(trailing!, color: AppColors.onGradient, fontWeight: FontWeight.bold),
           ),
+        if (trailingWidget != null) trailingWidget!,
       ],
     ),
   );

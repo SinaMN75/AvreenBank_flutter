@@ -28,7 +28,19 @@ class _KaramatPageState extends UState<KaramatPage> {
     body: Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
-        PageHeader(title: "طرح کرامت", subtitle: Core.currentFile.value.fileTitle),
+        PageHeader(
+          title: "طرح کرامت",
+          subtitle: Core.currentFile.value.fileTitle,
+          trailingWidget: UButton(
+            title: U.s.more,
+            onTap: () => UNavigator.push(
+              UScaffold(
+                appBar: AppBar(),
+                body: const UWebView(initialUrl: "https://pwa.tj724.ir/keramat/index.html"),
+              ),
+            ),
+          ),
+        ),
         UObx(
           () {
             if (c.state.isLoading()) return const UProgressCircular().pOnly(top: 32).alignAtTopCenter();
