@@ -85,7 +85,7 @@ class _KaramatTransactionsPageState extends UState<KaramatTransactionsPage> {
       trailing: UIconTextVertical(
         crossAxisAlignment: CrossAxisAlignment.end,
         leading: UTextLabelMedium(t.logDate.toJalaliDateTime(), color: scheme.onSurfaceVariant).ltr(),
-        trailing: UTextLabelMedium("کش‌بک: ${t.cacheBack.rial()}", color: scheme.onSurfaceVariant),
+        trailing: UTextLabelMedium("وجه‌بازگشتی: ${t.cacheBack.rial()}", color: scheme.onSurfaceVariant),
       ),
     ),
   );

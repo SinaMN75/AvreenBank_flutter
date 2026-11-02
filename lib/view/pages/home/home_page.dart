@@ -53,7 +53,7 @@ class _HomePageState extends UState<HomePage> {
       ),
       UListTile(
         icon: Icons.inventory_2_outlined,
-        title: "طرح کرامت",
+        title: "طرح کرامت امام رضا (ع)",
         subtitle: "مشاهده مانده اقلام و تراکنش‌ها",
         trailingIcon: Icons.arrow_forward_ios_rounded,
         color: AppColors.success,
