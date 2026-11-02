@@ -1,6 +1,6 @@
 import "package:avreen_bank/data/data.dart";
 import "package:avreen_bank/main.dart";
-import "package:avreen_bank/view/pages/karamat_receipt/karamat_receipt_controller.dart";
+import "package:avreen_bank/view/pages/karamat/karamat_receipt/karamat_receipt_controller.dart";
 import "package:u/utilities.dart";
 
 class KaramatReceiptPage extends StatefulWidget {

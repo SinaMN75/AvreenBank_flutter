@@ -1,7 +1,7 @@
 import "package:avreen_bank/data/data.dart";
 import "package:avreen_bank/main.dart";
 import "package:avreen_bank/view/pages/karamat/karamat_controller.dart";
-import "package:avreen_bank/view/pages/karamat_transactions/karamat_transactions_page.dart";
+import "package:avreen_bank/view/pages/karamat/karamat_transactions/karamat_transactions_page.dart";
 import "package:avreen_bank/view/widgets/good_group_icon.dart";
 import "package:avreen_bank/view/widgets/gradient_header.dart";
 import "package:u/utilities.dart";
@@ -52,7 +52,6 @@ class _KaramatPageState extends UState<KaramatPage> {
                       itemCount: c.groups.length,
                       itemBuilder: (BuildContext context, int index) => _group(c.groups[index]),
                     ),
-                    ),
                 ],
               ),
             );
@@ -79,15 +78,7 @@ class _KaramatPageState extends UState<KaramatPage> {
             UTextLabelMedium("${g.remainingPercent()}%", color: AppColors.success, fontWeight: FontWeight.bold),
           ],
         ),
-        UColumn(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          spacing: 2,
-          children: <Widget>[
-            UTextTitleSmall(g.groupName ?? "", fontWeight: FontWeight.bold, maxLines: 1, overflow: TextOverflow.ellipsis),
-            if (g.regDate.isNotNullOrEmpty()) UTextLabelSmall(g.regDate.toJalaliDateTime(), color: scheme.onSurfaceVariant, maxLines: 1).ltr(),
-          ],
-        ),
+        UTextTitleSmall(g.groupName ?? "", fontWeight: FontWeight.bold, maxLines: 1, overflow: TextOverflow.ellipsis),
         UProgressLinear(
           value: g.remainingPercent(),
           progressColor: AppColors.success,
