@@ -1,28 +1,26 @@
 part of "../data.dart";
 
 extension TransactionDetailResponseExtension on TransactionDetailResponse {
-  String receiptText() => <String>[
+  String receiptText(TransactionInfo? info) => <String>[
     U.s.transactionReceipt,
-    if (transactionAmount != null) "${U.s.amount}: ${transactionAmount.rial()}",
-    if (logDate.isNotNullOrEmpty()) "${U.s.date}: ${logDate.formatJalaliDateTime()}",
+    if (info != null) "${U.s.amount}: ${info.transactionAmount.rial()}",
+    if (info?.logDate.isNotNullOrEmpty() ?? false) "${U.s.date}: ${info!.logDate.formatJalaliDateTime()}",
     if (merchantName.isNotNullOrEmpty()) "${U.s.merchant}: $merchantName",
     if (merchantAddress.isNotNullOrEmpty()) "${U.s.address}: $merchantAddress",
-    if (terminalType.isNotNullOrEmpty()) "${U.s.terminalType}: ${terminalTypeName()}",
-    if (debitType != null || transactionType.isNotNullOrEmpty()) "${U.s.transactionType}: ${transactionTypeName()}",
-    if (rrn.isNotNullOrEmpty()) "${U.s.referenceNumber}: $rrn",
+    if (info != null) "${U.s.terminalType}: ${info.terminalTypeName()}",
+    if (transactionType.isNotNullOrEmpty()) "${U.s.transactionType}: $transactionType",
+    if (info?.rrn.isNotNullOrEmpty() ?? false) "${U.s.referenceNumber}: ${info!.rrn}",
     if (stan.isNotNullOrEmpty()) "${U.s.traceNumber}: $stan",
     if (docId.isNotNullOrEmpty()) "${U.s.documentNumber}: $docId",
     if ((discountAmount ?? 0) > 0) "${U.s.discount}: ${discountAmount.rial()}",
     if (loanId.isNotNullOrEmpty()) "${U.s.loanId}: $loanId",
     ...accountTypes.map((TransactionAccount e) => "${e.accountTypeName ?? e.accountType ?? ""}: ${e.amount.rial()}"),
     if (logMessage.isNotNullOrEmpty()) "${U.s.description}: $logMessage",
-    if (transactionStatus != null) "${U.s.status}: ${statusName()}",
+    if (info != null) "${U.s.status}: ${info.statusName()}",
   ].join("\n");
-
-  String transactionTypeName() => debitType == null ? transactionType ?? "" : debitTypeName();
 }
 
-class TransactionDetailResponse with TransactionStatusMixin {
+class TransactionDetailResponse {
   TransactionDetailResponse({
     this.logId,
     this.fileId,
@@ -34,12 +32,6 @@ class TransactionDetailResponse with TransactionStatusMixin {
     this.stan,
     this.discountAmount,
     this.loanId,
-    this.logDate,
-    this.transactionAmount,
-    this.transactionStatus,
-    this.rrn,
-    this.terminalType,
-    this.debitType,
     this.accountTypes = const <TransactionAccount>[],
   });
 
@@ -56,12 +48,6 @@ class TransactionDetailResponse with TransactionStatusMixin {
     stan: json["stan"],
     discountAmount: (json["discountAmount"] as num?)?.toInt(),
     loanId: json["loanId"],
-    logDate: json["logDate"],
-    transactionAmount: (json["transactionAmount"] as num?)?.toInt(),
-    transactionStatus: (json["transactionStatus"] as num?)?.toInt(),
-    rrn: json["rrn"],
-    terminalType: json["terminalType"],
-    debitType: (json["debitType"] as num?)?.toInt(),
     accountTypes: json["accountTypes"] == null ? <TransactionAccount>[] : List<TransactionAccount>.from(json["accountTypes"].map(TransactionAccount.fromMap)),
   );
 
@@ -75,15 +61,6 @@ class TransactionDetailResponse with TransactionStatusMixin {
   final String? stan;
   final int? discountAmount;
   final String? loanId;
-  final String? logDate;
-  final int? transactionAmount;
-  @override
-  final int? transactionStatus;
-  final String? rrn;
-  @override
-  final String? terminalType;
-  @override
-  final int? debitType;
   final List<TransactionAccount> accountTypes;
 
   String toJson() => json.encode(toMap());
@@ -99,12 +76,6 @@ class TransactionDetailResponse with TransactionStatusMixin {
     "stan": stan,
     "discountAmount": discountAmount,
     "loanId": loanId,
-    "logDate": logDate,
-    "transactionAmount": transactionAmount,
-    "transactionStatus": transactionStatus,
-    "rrn": rrn,
-    "terminalType": terminalType,
-    "debitType": debitType,
     "accountTypes": List<dynamic>.from(accountTypes.map((TransactionAccount x) => x.toMap())),
   };
 }

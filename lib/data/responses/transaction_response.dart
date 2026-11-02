@@ -1,12 +1,6 @@
 part of "../data.dart";
 
-mixin TransactionStatusMixin {
-  String? get terminalType;
-
-  int? get transactionStatus;
-
-  int? get debitType;
-
+extension TransactionResponseExtension on TransactionInfo {
   IconData terminalTypeIconData() {
     switch (terminalType) {
       case "01":
@@ -144,7 +138,7 @@ class TransactionResponse {
   };
 }
 
-class TransactionInfo with TransactionStatusMixin {
+class TransactionInfo {
   TransactionInfo({
     this.debitType,
     this.logDate,
@@ -168,13 +162,10 @@ class TransactionInfo with TransactionStatusMixin {
   );
   final String? logId;
   final String? logDate;
-  @override
   final int? transactionStatus;
   final int? transactionAmount;
   final String? rrn;
-  @override
   final String? terminalType;
-  @override
   final int? debitType;
 
   String toJson() => json.encode(toMap());
