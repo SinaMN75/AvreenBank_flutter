@@ -2,6 +2,7 @@ import "package:avreen_bank/data/data.dart";
 import "package:avreen_bank/main.dart";
 import "package:avreen_bank/view/pages/karamat_receipt/karamat_receipt_page.dart";
 import "package:avreen_bank/view/pages/karamat_transactions/karamat_transactions_controller.dart";
+import "package:avreen_bank/view/widgets/good_group_icon.dart";
 import "package:avreen_bank/view/widgets/gradient_header.dart";
 import "package:u/utilities.dart";
 
@@ -66,7 +67,7 @@ class _KaramatTransactionsPageState extends UState<KaramatTransactionsPage> {
     child: Row(
       spacing: 12,
       children: <Widget>[
-        UIconBackground(Icons.inventory_2_outlined, color: AppColors.success, backgroundColor: scheme.surface),
+        GoodGroupIcon(groupId: widget.group.groupId),
         UTextBodyMedium("مانده", color: scheme.onSurfaceVariant, expanded: 1),
         UTextTitleMedium(widget.group.remWeight.gram(), fontWeight: FontWeight.bold),
         UTextLabelMedium("از ${widget.group.limitWeight.gram()}", color: scheme.onSurfaceVariant),
@@ -79,7 +80,7 @@ class _KaramatTransactionsPageState extends UState<KaramatTransactionsPage> {
     onTap: () {},
     child: ListTile(
       onTap: () => UNavigator.push(KaramatReceiptPage(group: widget.group, transaction: t)),
-      leading: const UIconBackground(Icons.shopping_bag_outlined, color: AppColors.success),
+      leading: GoodGroupIcon(groupId: widget.group.groupId, size: 40),
       title: UTextBodyLarge(t.useWeight.gram(), color: AppColors.success),
       subtitle: UTextBodySmall("${t.oldWeight.gram()} ← ${t.newWeight.gram()}", color: scheme.onSurfaceVariant),
       trailing: UIconTextVertical(

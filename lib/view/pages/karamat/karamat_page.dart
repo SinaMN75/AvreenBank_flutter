@@ -2,6 +2,7 @@ import "package:avreen_bank/data/data.dart";
 import "package:avreen_bank/main.dart";
 import "package:avreen_bank/view/pages/karamat/karamat_controller.dart";
 import "package:avreen_bank/view/pages/karamat_transactions/karamat_transactions_page.dart";
+import "package:avreen_bank/view/widgets/good_group_icon.dart";
 import "package:avreen_bank/view/widgets/gradient_header.dart";
 import "package:u/utilities.dart";
 
@@ -74,7 +75,7 @@ class _KaramatPageState extends UState<KaramatPage> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            const UIconBackground(Icons.inventory_2_outlined, color: AppColors.success, size: 36),
+            GoodGroupIcon(groupId: g.groupId),
             UTextLabelMedium("${g.remainingPercent()}%", color: AppColors.success, fontWeight: FontWeight.bold),
           ],
         ),

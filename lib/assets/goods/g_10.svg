@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128">
+<rect width="128" height="128" rx="28" fill="#E0F2FE"/>
+<g transform="translate(64 66) scale(0.8) translate(-64 -66)"><g transform="rotate(-25 46 34)"><path d="M24 26 H74 L68 42 H18 Z" fill="#FFC94D" stroke="#E39A1C" stroke-width="2" stroke-linejoin="round"/><path d="M35 27 L29 41" stroke="#E39A1C" stroke-width="1.6" stroke-linecap="round"/><path d="M42 27 L36 41" stroke="#E39A1C" stroke-width="1.6" stroke-linecap="round"/><path d="M49 27 L43 41" stroke="#E39A1C" stroke-width="1.6" stroke-linecap="round"/><path d="M56 27 L50 41" stroke="#E39A1C" stroke-width="1.6" stroke-linecap="round"/><path d="M63 27 L57 41" stroke="#E39A1C" stroke-width="1.6" stroke-linecap="round"/><ellipse cx="71" cy="34" rx="3.2" ry="8" transform="rotate(20 71 34)" fill="#D58A10"/></g>
+<g transform="rotate(-25 82 102)"><path d="M60 94 H110 L104 110 H54 Z" fill="#FFC94D" stroke="#E39A1C" stroke-width="2" stroke-linejoin="round"/><path d="M71 95 L65 109" stroke="#E39A1C" stroke-width="1.6" stroke-linecap="round"/><path d="M78 95 L72 109" stroke="#E39A1C" stroke-width="1.6" stroke-linecap="round"/><path d="M85 95 L79 109" stroke="#E39A1C" stroke-width="1.6" stroke-linecap="round"/><path d="M92 95 L86 109" stroke="#E39A1C" stroke-width="1.6" stroke-linecap="round"/><path d="M99 95 L93 109" stroke="#E39A1C" stroke-width="1.6" stroke-linecap="round"/><ellipse cx="107" cy="102" rx="3.2" ry="8" transform="rotate(20 107 102)" fill="#D58A10"/></g>
+<g transform="rotate(-10 64 70)">
+<path d="M64 70 L36 52 Q30 50 31 57 Q34 62 30 66 Q34 70 30 74 Q34 78 31 83 Q30 90 36 88 Z" fill="#FFD25E" stroke="#E39A1C" stroke-width="2" stroke-linejoin="round"/>
+<path d="M64 70 L92 52 Q98 50 97 57 Q94 62 98 66 Q94 70 98 74 Q94 78 97 83 Q98 90 92 88 Z" fill="#FFD25E" stroke="#E39A1C" stroke-width="2" stroke-linejoin="round"/>
+<path d="M42 60 L54 68 M42 80 L54 72 M86 60 L74 68 M86 80 L74 72" stroke="#E39A1C" stroke-width="1.6" stroke-linecap="round"/>
+<ellipse cx="64" cy="70" rx="7" ry="9" fill="#F5B731" stroke="#E39A1C" stroke-width="2"/>
+</g></g>
+</svg>

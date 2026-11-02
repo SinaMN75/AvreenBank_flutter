@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128">
+<rect width="128" height="128" rx="28" fill="#FDE7EF"/>
+<path d="M84 46 L110 18" stroke="#B87333" stroke-width="7" stroke-linecap="round"/>
+<ellipse cx="64" cy="66" rx="44" ry="10" fill="#C2185B"/>
+<path d="M30 68 Q34 34 64 34 Q94 34 98 68 Z" fill="#FFFFFF"/>
+<rect x="70.9" y="60.9" width="2.6" height="2.6" rx="0.6" transform="rotate(88 70.9 60.9)" fill="#F2B3C9"/>
+<rect x="72.5" y="55.5" width="2.6" height="2.6" rx="0.6" transform="rotate(59 72.5 55.5)" fill="#F7C6D7"/>
+<rect x="72.3" y="65.4" width="2.6" height="2.6" rx="0.6" transform="rotate(14 72.3 65.4)" fill="#E6E9EF"/>
+<rect x="62.3" y="46.2" width="2.6" height="2.6" rx="0.6" transform="rotate(69 62.3 46.2)" fill="#F7C6D7"/>
+<rect x="68.1" y="39.9" width="2.6" height="2.6" rx="0.6" transform="rotate(27 68.1 39.9)" fill="#E6E9EF"/>
+<rect x="51.7" y="66.0" width="2.6" height="2.6" rx="0.6" transform="rotate(49 51.7 66.0)" fill="#F7C6D7"/>
+<rect x="78.7" y="47.7" width="2.6" height="2.6" rx="0.6" transform="rotate(79 78.7 47.7)" fill="#F2B3C9"/>
+<rect x="60.9" y="43.1" width="2.6" height="2.6" rx="0.6" transform="rotate(0 60.9 43.1)" fill="#F7C6D7"/>
+<rect x="79.3" y="67.2" width="2.6" height="2.6" rx="0.6" transform="rotate(21 79.3 67.2)" fill="#F7C6D7"/>
+<rect x="52.2" y="67.1" width="2.6" height="2.6" rx="0.6" transform="rotate(69 52.2 67.1)" fill="#F2B3C9"/>
+<rect x="71.0" y="45.6" width="2.6" height="2.6" rx="0.6" transform="rotate(88 71.0 45.6)" fill="#F7C6D7"/>
+<rect x="90.1" y="67.3" width="2.6" height="2.6" rx="0.6" transform="rotate(38 90.1 67.3)" fill="#F7C6D7"/>
+<rect x="56.2" y="45.5" width="2.6" height="2.6" rx="0.6" transform="rotate(18 56.2 45.5)" fill="#E6E9EF"/>
+<rect x="39.6" y="61.5" width="2.6" height="2.6" rx="0.6" transform="rotate(77 39.6 61.5)" fill="#F2B3C9"/>
+<rect x="36.2" y="67.0" width="2.6" height="2.6" rx="0.6" transform="rotate(43 36.2 67.0)" fill="#F7C6D7"/>
+<rect x="53.4" y="63.4" width="2.6" height="2.6" rx="0.6" transform="rotate(61 53.4 63.4)" fill="#F2B3C9"/>
+<rect x="53.7" y="54.8" width="2.6" height="2.6" rx="0.6" transform="rotate(90 53.7 54.8)" fill="#F7C6D7"/>
+<rect x="39.2" y="67.8" width="2.6" height="2.6" rx="0.6" transform="rotate(2 39.2 67.8)" fill="#F2B3C9"/>
+<rect x="56.0" y="52.0" width="2.6" height="2.6" rx="0.6" transform="rotate(70 56.0 52.0)" fill="#E6E9EF"/>
+<rect x="56.5" y="56.6" width="2.6" height="2.6" rx="0.6" transform="rotate(1 56.5 56.6)" fill="#E6E9EF"/>
+<rect x="38.6" y="61.8" width="2.6" height="2.6" rx="0.6" transform="rotate(25 38.6 61.8)" fill="#F7C6D7"/>
+<rect x="78.3" y="66.4" width="2.6" height="2.6" rx="0.6" transform="rotate(59 78.3 66.4)" fill="#E6E9EF"/>
+<rect x="64.7" y="64.9" width="2.6" height="2.6" rx="0.6" transform="rotate(32 64.7 64.9)" fill="#E6E9EF"/>
+<rect x="42.1" y="64.7" width="2.6" height="2.6" rx="0.6" transform="rotate(47 42.1 64.7)" fill="#E6E9EF"/>
+<rect x="38.1" y="67.6" width="2.6" height="2.6" rx="0.6" transform="rotate(11 38.1 67.6)" fill="#F7C6D7"/>
+<rect x="55.1" y="57.7" width="2.6" height="2.6" rx="0.6" transform="rotate(18 55.1 57.7)" fill="#E6E9EF"/>
+<ellipse cx="82" cy="46" rx="11" ry="7" transform="rotate(-48 82 46)" fill="#D08A4A"/>
+<path d="M20 66 Q22 108 64 108 Q106 108 108 66 Q86 76 64 76 Q42 76 20 66 Z" fill="#EC407A"/>
+<path d="M20 66 Q42 76 64 76 Q86 76 108 66" fill="none" stroke="#F48FB1" stroke-width="4" stroke-linecap="round"/>
+<path d="M30 80 Q34 98 50 103" fill="none" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round" opacity="0.35"/>
+</svg>

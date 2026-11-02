@@ -203,3 +203,10 @@ abstract class AppIcons {
   static const String _base = "lib/assets/icons";
   static const String home = "$_base/home.svg";
 }
+
+abstract class AppGoods {
+  static const String _base = "lib/assets/goods";
+  static const List<String> _ids = <String>["01", "02", "03", "04", "05", "06", "07", "08", "09", "10"];
+
+  static String? of(String? groupId) => _ids.contains(groupId) ? "$_base/g_$groupId.svg" : null;
+}
