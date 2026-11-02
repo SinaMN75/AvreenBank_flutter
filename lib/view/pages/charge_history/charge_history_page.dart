@@ -114,7 +114,7 @@ class _ChargeHistoryPageState extends UState<ChargeHistoryPage> {
         if (i.periodId != null)
           UKeyValue(
             leading: UTextBodyMedium("کد دوره", color: theme.disabledColor),
-            trailing: Text(i.periodId ?? "---", style: const TextStyle(fontFamily: "", fontSize: 12)),
+            trailing: Text(i.periodId ?? "---", style: const TextStyle(fontFamily: "", fontSize: 12), textDirection: TextDirection.ltr),
             margin: const EdgeInsets.symmetric(vertical: 6),
           ),
         UTextBodySmall("اعتبار از ${i.periodStartDate.toJalaliDate()}${i.periodEndDate == null ? "" : " تا ${i.periodEndDate.toJalaliDate()}"}"),
