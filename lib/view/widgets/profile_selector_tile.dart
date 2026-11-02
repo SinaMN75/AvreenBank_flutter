@@ -9,6 +9,7 @@ class ProfileSelectorTile extends StatelessWidget {
   final VoidCallback? onProfileChange;
 
   void _changeProfile() => UNavigator.bottomSheet<void>(
+    showDragHandle: false,
     ProfileSheet(
       profiles: Core.fileInfo.value.fileInfoList,
       activeId: Core.currentFile.value.fileId,

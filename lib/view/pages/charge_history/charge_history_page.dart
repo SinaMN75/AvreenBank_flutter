@@ -117,7 +117,7 @@ class _ChargeHistoryPageState extends UState<ChargeHistoryPage> {
             trailing: Text(i.periodId ?? "---", style: const TextStyle(fontFamily: "", fontSize: 12), textDirection: TextDirection.ltr),
             margin: const EdgeInsets.symmetric(vertical: 6),
           ),
-        UTextBodySmall("اعتبار از ${i.periodStartDate.toJalaliDate()}${i.periodEndDate == null ? "" : " تا ${i.periodEndDate.toJalaliDate()}"}"),
+        UTextBodySmall("قابل استفاده از ${i.periodStartDate.toJalaliDate()}${i.periodEndDate == null ? "" : " تا ${i.periodEndDate.toJalaliDate()}"}"),
       ],
     ),
   );
