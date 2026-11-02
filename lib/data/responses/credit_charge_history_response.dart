@@ -28,6 +28,8 @@ class CreditChargeLog {
     this.eventId,
     this.eventName,
     this.periodId,
+    this.periodStartDate,
+    this.periodEndDate,
   });
 
   factory CreditChargeLog.fromJson(String str) => CreditChargeLog.fromMap(json.decode(str));
@@ -42,6 +44,8 @@ class CreditChargeLog {
     eventId: json["eventId"],
     eventName: json["eventName"],
     periodId: json["periodId"],
+    periodStartDate: json["periodStartDate"],
+    periodEndDate: json["periodEndDate"],
   );
   final String? chargeLogId;
   final String? chargeDate;
@@ -52,6 +56,8 @@ class CreditChargeLog {
   final int? eventId;
   final String? eventName;
   final String? periodId;
+  final String? periodStartDate;
+  final String? periodEndDate;
 
   String toJson() => json.encode(toMap());
 
@@ -65,5 +71,7 @@ class CreditChargeLog {
     "eventId": eventId,
     "eventName": eventName,
     "periodId": periodId,
+    "periodStartDate": periodStartDate,
+    "periodEndDate": periodEndDate,
   };
 }
