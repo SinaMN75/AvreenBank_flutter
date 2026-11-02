@@ -3,11 +3,11 @@ import "package:avreen_bank/main.dart";
 import "package:u/utilities.dart";
 
 class ReceiptController extends UBaseController {
-  late String logId;
+  late TransactionInfo info;
   TransactionDetailResponse? detail;
 
-  void init({required String logId}) {
-    this.logId = logId;
+  void init({required TransactionInfo info}) {
+    this.info = info;
     read();
   }
 
@@ -15,7 +15,7 @@ class ReceiptController extends UBaseController {
     state.loading();
     Core.dataSource.viewTransactionDetail(
       page: U.s.transactionReceipt,
-      p: TransactionDetailParams(fileId: Core.currentFile.value.fileId, logId: logId),
+      p: TransactionDetailParams(fileId: Core.currentFile.value.fileId, logId: info.logId ?? ""),
       onOk: (TransactionDetailResponse response) {
         detail = response;
         state.loaded();

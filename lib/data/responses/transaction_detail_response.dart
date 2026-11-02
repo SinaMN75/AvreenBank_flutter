@@ -1,22 +1,22 @@
 part of "../data.dart";
 
 extension TransactionDetailResponseExtension on TransactionDetailResponse {
-  String receiptText(TransactionInfo? info) => <String>[
+  String receiptText(TransactionInfo info) => <String>[
     U.s.transactionReceipt,
-    if (info != null) "${U.s.amount}: ${info.transactionAmount.rial()}",
-    if (info?.logDate.isNotNullOrEmpty() ?? false) "${U.s.date}: ${info!.logDate.formatJalaliDateTime()}",
+    "${U.s.amount}: ${info.transactionAmount.rial()}",
+    if (info.logDate.isNotNullOrEmpty()) "${U.s.date}: ${info.logDate.formatJalaliDateTime()}",
     if (merchantName.isNotNullOrEmpty()) "${U.s.merchant}: $merchantName",
     if (merchantAddress.isNotNullOrEmpty()) "${U.s.address}: $merchantAddress",
-    if (info != null) "${U.s.terminalType}: ${info.terminalTypeName()}",
+    "${U.s.terminalType}: ${info.terminalTypeName()}",
     if (transactionType.isNotNullOrEmpty()) "${U.s.transactionType}: $transactionType",
-    if (info?.rrn.isNotNullOrEmpty() ?? false) "${U.s.referenceNumber}: ${info!.rrn}",
+    if (info.rrn.isNotNullOrEmpty()) "${U.s.referenceNumber}: ${info.rrn}",
     if (stan.isNotNullOrEmpty()) "${U.s.traceNumber}: $stan",
     if (docId.isNotNullOrEmpty()) "${U.s.documentNumber}: $docId",
     if ((discountAmount ?? 0) > 0) "${U.s.discount}: ${discountAmount.rial()}",
     if (loanId.isNotNullOrEmpty()) "${U.s.loanId}: $loanId",
     ...accountTypes.map((TransactionAccount e) => "${e.accountTypeName ?? e.accountType ?? ""}: ${e.amount.rial()}"),
     if (logMessage.isNotNullOrEmpty()) "${U.s.description}: $logMessage",
-    if (info != null) "${U.s.status}: ${info.statusName()}",
+    "${U.s.status}: ${info.statusName()}",
   ].join("\n");
 }
 

@@ -4,10 +4,9 @@ import "package:avreen_bank/view/pages/receipt/receipt_controller.dart";
 import "package:u/utilities.dart";
 
 class ReceiptPage extends StatefulWidget {
-  const ReceiptPage(this.logId, {this.info, super.key});
+  const ReceiptPage(this.info, {super.key});
 
-  final String logId;
-  final TransactionInfo? info;
+  final TransactionInfo info;
 
   @override
   State<ReceiptPage> createState() => _ReceiptPageState();
@@ -17,11 +16,11 @@ class _ReceiptPageState extends UState<ReceiptPage> {
   final UWidgetToImageController controller = UWidgetToImageController();
   final ReceiptController c = ReceiptController();
 
-  TransactionInfo? get info => widget.info;
+  TransactionInfo get info => widget.info;
 
   @override
   void initState() {
-    c.init(logId: widget.logId);
+    c.init(info: widget.info);
     super.initState();
   }
 
@@ -67,30 +66,25 @@ class _ReceiptPageState extends UState<ReceiptPage> {
     ),
   );
 
-  Widget _header(ColorScheme scheme) {
-    final TransactionInfo? info = this.info;
-    if (info == null) return UIconBackground(Icons.receipt_long_rounded, color: scheme.primary, size: 58);
-    return UColumn(
-      mainAxisSize: MainAxisSize.min,
-      spacing: 6,
-      children: <Widget>[
-        UIconBackground(info.isSuccessful() ? Icons.check_rounded : Icons.close_rounded, color: info.color(), size: 58),
-        UTextTitleMedium(info.statusName(), color: info.color()),
-        UTextHeadlineSmall(info.transactionAmount.rial(), color: info.isSuccessful() ? AppColors.success : scheme.onSurface),
-        UTextLabelSmall(info.logDate?.formatJalaliDateTime() ?? "", color: scheme.onSurfaceVariant).ltr(),
-      ],
-    );
-  }
+  Widget _header(ColorScheme scheme) => UColumn(
+    mainAxisSize: MainAxisSize.min,
+    spacing: 6,
+    children: <Widget>[
+      UIconBackground(info.isSuccessful() ? Icons.check_rounded : Icons.close_rounded, color: info.color(), size: 58),
+      UTextTitleMedium(info.statusName(), color: info.color()),
+      UTextHeadlineSmall(info.transactionAmount.rial(), color: info.isSuccessful() ? AppColors.success : scheme.onSurface),
+      UTextLabelSmall(info.logDate?.formatJalaliDateTime() ?? "", color: scheme.onSurfaceVariant).ltr(),
+    ],
+  );
 
   List<Widget> _rows(ColorScheme scheme) {
     final TransactionDetailResponse? d = c.detail;
-    final TransactionInfo? info = this.info;
     return <Widget>[
       if (d?.merchantName.isNotNullOrEmpty() ?? false) _row(scheme, U.s.merchant, d!.merchantName!),
       if (d?.merchantAddress.isNotNullOrEmpty() ?? false) _row(scheme, U.s.address, d!.merchantAddress!),
-      if (info != null) _row(scheme, U.s.terminalType, info.terminalTypeName()),
-      if (d?.transactionType.isNotNullOrEmpty() ?? false) _row(scheme, U.s.transactionType, info?.debitTypeName() ?? d!.transactionType!),
-      if (info?.rrn.isNotNullOrEmpty() ?? false) _row(scheme, U.s.referenceNumber, info!.rrn!),
+      _row(scheme, U.s.terminalType, info.terminalTypeName()),
+      if (d?.transactionType.isNotNullOrEmpty() ?? false) _row(scheme, U.s.transactionType, info.debitTypeName()),
+      if (info.rrn.isNotNullOrEmpty()) _row(scheme, U.s.referenceNumber, info.rrn!),
       if (d?.stan.isNotNullOrEmpty() ?? false) _row(scheme, U.s.traceNumber, d!.stan!),
       if ((d?.discountAmount ?? 0) > 0) _row(scheme, U.s.discount, d!.discountAmount.rial()),
       if (d?.loanId.isNotNullOrEmpty() ?? false) _row(scheme, U.s.loanId, d!.loanId!),
@@ -132,7 +126,7 @@ class _ReceiptPageState extends UState<ReceiptPage> {
   Future<void> _share() async {
     final UShareResult? result = await UShare.widgetImage(
       controller,
-      name: "receipt_${c.detail?.stan ?? info?.rrn ?? widget.logId}.png",
+      name: "receipt_${c.detail?.stan ?? info.rrn ?? ""}.png",
       text: _receiptText(),
     );
     if (result == null) UToast.errorToast(message: U.s.somethingWentWrong);
@@ -150,16 +144,12 @@ class _ReceiptPageState extends UState<ReceiptPage> {
 
   void _copy() => UClipboard.set(_receiptText(), snackBar: true);
 
-  String _receiptText() {
-    final TransactionInfo? info = this.info;
-    return c.detail?.receiptText(info) ??
-        <String>[
-          U.s.transactionReceipt,
-          if (info != null) ...<String>[
-            "${U.s.amount}: ${info.transactionAmount.rial()}",
-            if (info.logDate.isNotNullOrEmpty()) "${U.s.date}: ${info.logDate.formatJalaliDateTime()}",
-            "${U.s.status}: ${info.statusName()}",
-          ],
-        ].join("\n");
-  }
+  String _receiptText() =>
+      c.detail?.receiptText(info) ??
+      <String>[
+        U.s.transactionReceipt,
+        "${U.s.amount}: ${info.transactionAmount.rial()}",
+        if (info.logDate.isNotNullOrEmpty()) "${U.s.date}: ${info.logDate.formatJalaliDateTime()}",
+        "${U.s.status}: ${info.statusName()}",
+      ].join("\n");
 }
