@@ -4,9 +4,9 @@ import "package:avreen_bank/view/pages/receipt/receipt_controller.dart";
 import "package:u/utilities.dart";
 
 class ReceiptPage extends StatefulWidget {
-  const ReceiptPage(this.info, {super.key});
+  const ReceiptPage(this.logId, {super.key});
 
-  final TransactionInfo info;
+  final String logId;
 
   @override
   State<ReceiptPage> createState() => _ReceiptPageState();
@@ -16,11 +16,9 @@ class _ReceiptPageState extends UState<ReceiptPage> {
   final UWidgetToImageController controller = UWidgetToImageController();
   final ReceiptController c = ReceiptController();
 
-  TransactionInfo get info => widget.info;
-
   @override
   void initState() {
-    c.init(info: widget.info);
+    c.init(logId: widget.logId);
     super.initState();
   }
 
@@ -45,54 +43,51 @@ class _ReceiptPageState extends UState<ReceiptPage> {
     radius: 20,
     border: Border.all(color: scheme.outlineVariant),
     padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 22),
-    child: UColumn(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      mainAxisSize: MainAxisSize.min,
-      spacing: 12,
-      children: <Widget>[
-        _header(scheme),
-        Divider(color: scheme.outlineVariant),
-        UObx(() {
-          if (c.state.isLoading()) return const UProgressCircular().pSymmetric(vertical: 16);
-          if (c.state.isError()) return UErrorRetry(onTap: c.read);
-          return UColumn(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            mainAxisSize: MainAxisSize.min,
-            spacing: 12,
-            children: _rows(scheme),
-          );
-        }),
-      ],
-    ),
+    child: UObx(() {
+      if (c.state.isLoading()) return const UProgressCircular().pSymmetric(vertical: 16);
+      if (c.state.isError() || c.detail == null) return UErrorRetry(onTap: c.read);
+      return UColumn(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisSize: MainAxisSize.min,
+        spacing: 12,
+        children: <Widget>[
+          _header(scheme, c.detail!),
+          Divider(color: scheme.outlineVariant),
+          ..._rows(scheme, c.detail!),
+        ],
+      );
+    }),
   );
 
-  Widget _header(ColorScheme scheme) => UColumn(
+  Widget _header(ColorScheme scheme, TransactionDetailResponse d) => UColumn(
     mainAxisSize: MainAxisSize.min,
     spacing: 6,
     children: <Widget>[
-      UIconBackground(info.isSuccessful() ? Icons.check_rounded : Icons.close_rounded, color: info.color(), size: 58),
-      UTextTitleMedium(info.statusName(), color: info.color()),
-      UTextHeadlineSmall(info.transactionAmount.rial(), color: info.isSuccessful() ? AppColors.success : scheme.onSurface),
-      UTextLabelSmall(info.logDate?.formatJalaliDateTime() ?? "", color: scheme.onSurfaceVariant).ltr(),
+      if (d.transactionStatus == null)
+        UIconBackground(Icons.receipt_long_rounded, color: scheme.primary, size: 58)
+      else ...<Widget>[
+        UIconBackground(d.isSuccessful() ? Icons.check_rounded : Icons.close_rounded, color: d.color(), size: 58),
+        UTextTitleMedium(d.statusName(), color: d.color()),
+      ],
+      if (d.transactionAmount != null) UTextHeadlineSmall(d.transactionAmount.rial(), color: d.isSuccessful() ? AppColors.success : scheme.onSurface),
+      if (d.logDate.isNotNullOrEmpty()) UTextLabelSmall(d.logDate.formatJalaliDateTime(), color: scheme.onSurfaceVariant).ltr(),
     ],
   );
 
-  List<Widget> _rows(ColorScheme scheme) {
-    final TransactionDetailResponse? d = c.detail;
-    return <Widget>[
-      if (d?.merchantName.isNotNullOrEmpty() ?? false) _row(scheme, U.s.merchant, d!.merchantName!),
-      if (d?.merchantAddress.isNotNullOrEmpty() ?? false) _row(scheme, U.s.address, d!.merchantAddress!),
-      _row(scheme, U.s.terminalType, info.terminalTypeName()),
-      if (d?.transactionType.isNotNullOrEmpty() ?? false) _row(scheme, U.s.transactionType, info.debitTypeName()),
-      if (info.rrn.isNotNullOrEmpty()) _row(scheme, U.s.referenceNumber, info.rrn!),
-      if (d?.stan.isNotNullOrEmpty() ?? false) _row(scheme, U.s.traceNumber, d!.stan!),
-      if ((d?.discountAmount ?? 0) > 0) _row(scheme, U.s.discount, d!.discountAmount.rial()),
-      if (d?.loanId.isNotNullOrEmpty() ?? false) _row(scheme, U.s.loanId, d!.loanId!),
-      const Divider(),
-      ...?d?.accountTypes.map((TransactionAccount e) => _row(scheme, e.accountTypeName ?? e.accountType ?? "", e.amount.rial())),
-      if (d?.logMessage.isNotNullOrEmpty() ?? false) _row(scheme, U.s.description, d!.logMessage!),
-    ];
-  }
+  List<Widget> _rows(ColorScheme scheme, TransactionDetailResponse d) => <Widget>[
+    if (d.merchantName.isNotNullOrEmpty()) _row(scheme, U.s.merchant, d.merchantName!),
+    if (d.merchantAddress.isNotNullOrEmpty()) _row(scheme, U.s.address, d.merchantAddress!),
+    if (d.terminalType.isNotNullOrEmpty()) _row(scheme, U.s.terminalType, d.terminalTypeName()),
+    if (d.debitType != null || d.transactionType.isNotNullOrEmpty()) _row(scheme, U.s.transactionType, d.transactionTypeName()),
+    if (d.rrn.isNotNullOrEmpty()) _row(scheme, U.s.referenceNumber, d.rrn!),
+    if (d.stan.isNotNullOrEmpty()) _row(scheme, U.s.traceNumber, d.stan!),
+    if (d.docId.isNotNullOrEmpty()) _row(scheme, U.s.documentNumber, d.docId!),
+    if ((d.discountAmount ?? 0) > 0) _row(scheme, U.s.discount, d.discountAmount.rial()),
+    if (d.loanId.isNotNullOrEmpty()) _row(scheme, U.s.loanId, d.loanId!),
+    if (d.accountTypes.isNotEmpty) const Divider(),
+    ...d.accountTypes.map((TransactionAccount e) => _row(scheme, e.accountTypeName ?? e.accountType ?? "", e.amount.rial())),
+    if (d.logMessage.isNotNullOrEmpty()) _row(scheme, U.s.description, d.logMessage!),
+  ];
 
   Widget _row(ColorScheme scheme, String key, String value) => UKeyValue(
     leading: UTextBodySmall(key, color: scheme.onSurfaceVariant),
@@ -126,7 +121,7 @@ class _ReceiptPageState extends UState<ReceiptPage> {
   Future<void> _share() async {
     final UShareResult? result = await UShare.widgetImage(
       controller,
-      name: "receipt_${c.detail?.stan ?? info.rrn ?? ""}.png",
+      name: "receipt_${c.detail?.stan ?? c.detail?.rrn ?? widget.logId}.png",
       text: _receiptText(),
     );
     if (result == null) UToast.errorToast(message: U.s.somethingWentWrong);
@@ -144,12 +139,5 @@ class _ReceiptPageState extends UState<ReceiptPage> {
 
   void _copy() => UClipboard.set(_receiptText(), snackBar: true);
 
-  String _receiptText() =>
-      c.detail?.receiptText(info) ??
-      <String>[
-        U.s.transactionReceipt,
-        "${U.s.amount}: ${info.transactionAmount.rial()}",
-        if (info.logDate.isNotNullOrEmpty()) "${U.s.date}: ${info.logDate.formatJalaliDateTime()}",
-        "${U.s.status}: ${info.statusName()}",
-      ].join("\n");
+  String _receiptText() => c.detail?.receiptText() ?? U.s.transactionReceipt;
 }

@@ -1,7 +1,7 @@
 import "package:avreen_bank/data/data.dart";
 import "package:avreen_bank/main.dart";
-import "package:avreen_bank/view/pages/karamat/karamat_receipt/karamat_receipt_page.dart";
 import "package:avreen_bank/view/pages/karamat/karamat_transactions/karamat_transactions_controller.dart";
+import "package:avreen_bank/view/pages/receipt/receipt_page.dart";
 import "package:avreen_bank/view/widgets/good_group_icon.dart";
 import "package:avreen_bank/view/widgets/gradient_header.dart";
 import "package:u/utilities.dart";
@@ -79,7 +79,7 @@ class _KaramatTransactionsPageState extends UState<KaramatTransactionsPage> {
     color: scheme.surface,
     onTap: () {},
     child: ListTile(
-      onTap: () => UNavigator.push(KaramatReceiptPage(group: widget.group, transaction: t)),
+      onTap: () => UNavigator.push(ReceiptPage(t.transactionId ?? "")),
       title: UTextBodyLarge(t.useWeight.gram(), color: AppColors.success),
       subtitle: UTextBodySmall("${t.oldWeight.gram()} ← ${t.newWeight.gram()}", color: scheme.onSurfaceVariant),
       trailing: UIconTextVertical(

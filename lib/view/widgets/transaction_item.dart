@@ -14,7 +14,7 @@ class TransactionItem extends StatelessWidget {
       color: scheme.surface,
       onTap: () {},
       child: ListTile(
-        onTap: () => UNavigator.push(ReceiptPage(i)),
+        onTap: () => UNavigator.push(ReceiptPage(i.logId ?? "")),
         leading: _icon(scheme, i),
         title: UTextBodyLarge(i.transactionAmount.rial(), color: i.color()),
         subtitle: UTextBodySmall(i.debitTypeName(), color: i.color()),
