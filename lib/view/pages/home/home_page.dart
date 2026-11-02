@@ -2,6 +2,7 @@ import "package:avreen_bank/data/data.dart";
 import "package:avreen_bank/main.dart";
 import "package:avreen_bank/view/pages/fara_balance/fara_balance_page.dart";
 import "package:avreen_bank/view/pages/home/home_controller.dart";
+import "package:avreen_bank/view/pages/karamat/karamat_page.dart";
 import "package:avreen_bank/view/widgets/account_card.dart";
 import "package:avreen_bank/view/widgets/profile_selector_header.dart";
 import "package:u/utilities.dart";
@@ -28,24 +29,43 @@ class _HomePageState extends UState<HomePage> {
           padding: EdgeInsets.zero,
           children: <Widget>[
             ProfileSelectorHeader(onProfileChanged: () {}),
-            _accountsSection(context).pSymmetric(horizontal: 16, vertical: 20),
+            _slider().pOnly(left: 10, right: 10, top: 20),
+            _accountsSection(context).pOnly(left: 16, right: 16, bottom: 20),
           ],
         ),
       );
     }),
   );
 
-  Widget _accountsSection(BuildContext context) => Column(
-    crossAxisAlignment: CrossAxisAlignment.stretch,
-    children: <Widget>[
+  Widget _slider() => UCarousel<Widget>(
+    height: 90,
+    viewportFraction: 1,
+    itemSpacing: 12,
+    withIndicator: true,
+    items: <Widget>[
       UListTile(
         icon: Icons.shopping_basket_outlined,
         title: U.s.kalabargBalanceInquiry,
+        subtitle: "مشاهده موجودی و تعداد اعضای خانوار",
         trailingIcon: Icons.arrow_forward_ios_rounded,
         color: scheme.primary,
         onTap: () => Core.fileInfo.value.hasExternalNid ? UNavigator.push(const FaraBalancePage()) : UToast.errorToast(message: "کالابرگ برای کد ملی شما ثبت نشده است."),
       ),
-      const SizedBox(height: 16),
+      UListTile(
+        icon: Icons.inventory_2_outlined,
+        title: "طرح کرامت",
+        subtitle: "مشاهده مانده اقلام و تراکنش‌ها",
+        trailingIcon: Icons.arrow_forward_ios_rounded,
+        color: AppColors.success,
+        onTap: () => UNavigator.push(const KaramatPage()),
+      ),
+    ],
+    itemBuilder: (BuildContext context, Widget item, int index) => item,
+  );
+
+  Widget _accountsSection(BuildContext context) => Column(
+    crossAxisAlignment: CrossAxisAlignment.stretch,
+    children: <Widget>[
       if (c.accounts.isEmpty)
         UEmptyState(title: U.s.noAccountsInThisProfile)
       else
