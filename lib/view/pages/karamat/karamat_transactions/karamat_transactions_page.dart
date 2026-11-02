@@ -79,7 +79,7 @@ class _KaramatTransactionsPageState extends UState<KaramatTransactionsPage> {
     color: scheme.surface,
     onTap: () {},
     child: ListTile(
-      onTap: () => UNavigator.push(KaramatReceiptPage(group: widget.group, transaction: t)),
+      onTap: () => UNavigator.push(KaramatReceiptPage(transaction: t)),
       title: UTextBodyLarge(t.useWeight.gram(), color: AppColors.success),
       subtitle: UTextBodySmall("${t.oldWeight.gram()} ← ${t.newWeight.gram()}", color: scheme.onSurfaceVariant),
       trailing: UIconTextVertical(

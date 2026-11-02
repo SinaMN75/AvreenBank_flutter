@@ -4,9 +4,8 @@ import "package:avreen_bank/view/pages/karamat/karamat_receipt/karamat_receipt_c
 import "package:u/utilities.dart";
 
 class KaramatReceiptPage extends StatefulWidget {
-  const KaramatReceiptPage({required this.group, required this.transaction, super.key});
+  const KaramatReceiptPage({required this.transaction, super.key});
 
-  final GoodGroup group;
   final GoodGroupTransaction transaction;
 
   @override
@@ -76,7 +75,6 @@ class _KaramatReceiptPageState extends UState<KaramatReceiptPage> {
     spacing: 6,
     children: <Widget>[
       const UIconBackground(Icons.check_rounded, color: AppColors.success, size: 58),
-      UTextTitleMedium(widget.group.groupName ?? "طرح کرامت", color: AppColors.success),
       UTextHeadlineSmall(t.useWeight.gram(), color: AppColors.success),
       UTextLabelSmall(t.logDate?.formatJalaliDateTime() ?? "", color: scheme.onSurfaceVariant).ltr(),
     ],
@@ -87,10 +85,9 @@ class _KaramatReceiptPageState extends UState<KaramatReceiptPage> {
     return <Widget>[
       if (d?.merchantName.isNotNullOrEmpty() ?? false) _row(U.s.merchant, d!.merchantName!),
       if (d?.merchantAddress.isNotNullOrEmpty() ?? false) _row(U.s.address, d!.merchantAddress!),
-      if (d?.transactionType.isNotNullOrEmpty() ?? false) _row(U.s.transactionType, d!.transactionType!),
       if (d?.stan.isNotNullOrEmpty() ?? false) _row(U.s.traceNumber, d!.stan!),
-      if (d?.docId.isNotNullOrEmpty() ?? false) _row(U.s.documentNumber, d!.docId!),
       if ((d?.discountAmount ?? 0) > 0) _row(U.s.discount, d!.discountAmount.rial()),
+      if (d?.loanId.isNotNullOrEmpty() ?? false) _row(U.s.loanId, d!.loanId!),
       if (d?.loanId.isNotNullOrEmpty() ?? false) _row(U.s.loanId, d!.loanId!),
       if (d?.accountTypes.isNotEmpty ?? false) const Divider(),
       ...?d?.accountTypes.map((TransactionAccount e) => _row(e.accountTypeName ?? e.accountType ?? "", e.amount.rial())),
@@ -152,7 +149,6 @@ class _KaramatReceiptPageState extends UState<KaramatReceiptPage> {
     final TransactionDetailResponse? d = c.detail;
     return <String>[
       U.s.transactionReceipt,
-      "طرح کرامت - ${widget.group.groupName ?? ""}",
       "مقدار مصرف: ${t.useWeight.gram()}",
       if (t.logDate.isNotNullOrEmpty()) "${U.s.date}: ${t.logDate.formatJalaliDateTime()}",
       "مقدار قبلی: ${t.oldWeight.gram()}",

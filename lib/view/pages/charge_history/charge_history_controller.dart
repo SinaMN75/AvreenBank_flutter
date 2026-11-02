@@ -14,7 +14,6 @@ class ChargeHistoryController extends UBaseController {
   void init({required AccountInfo accountInfo, required ChargeHistoryPageType type}) {
     this.accountInfo = accountInfo;
     this.type = type;
-    read();
   }
 
   Future<void> pickStartDate() async {
