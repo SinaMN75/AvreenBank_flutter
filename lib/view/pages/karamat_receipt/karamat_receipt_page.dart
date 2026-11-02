@@ -55,7 +55,7 @@ class _KaramatReceiptPageState extends UState<KaramatReceiptPage> {
         Divider(color: scheme.outlineVariant),
         _row("مقدار قبلی", t.oldWeight.gram()),
         _row("مقدار جدید", t.newWeight.gram()),
-        _row("کش‌بک", t.cacheBack.rial()),
+        _row("وجه‌بازگشتی", t.cacheBack.rial()),
         if (t.transactionId.isNotNullOrEmpty()) _row("شناسه تراکنش", t.transactionId!),
         UObx(() {
           if (c.state.isLoading()) return const UProgressCircular().pSymmetric(vertical: 16);
@@ -157,7 +157,7 @@ class _KaramatReceiptPageState extends UState<KaramatReceiptPage> {
       if (t.logDate.isNotNullOrEmpty()) "${U.s.date}: ${t.logDate.formatJalaliDateTime()}",
       "مقدار قبلی: ${t.oldWeight.gram()}",
       "مقدار جدید: ${t.newWeight.gram()}",
-      "کش‌بک: ${t.cacheBack.rial()}",
+      "وجه‌بازگشتی: ${t.cacheBack.rial()}",
       if (t.transactionId.isNotNullOrEmpty()) "شناسه تراکنش: ${t.transactionId}",
       if (d?.merchantName.isNotNullOrEmpty() ?? false) "${U.s.merchant}: ${d!.merchantName}",
       if (d?.merchantAddress.isNotNullOrEmpty() ?? false) "${U.s.address}: ${d!.merchantAddress}",

@@ -41,9 +41,16 @@ class _KaramatPageState extends UState<KaramatPage> {
                   if (c.state.isEmpty())
                     UEmptyState(title: U.s.noResults).pOnly(top: 24)
                   else
-                    UColumn(
-                      spacing: 14,
-                      children: c.groups.map(_group).toList(),
+                    UGridView(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      maxCrossAxisExtent: 220,
+                      mainAxisSpacing: 12,
+                      crossAxisSpacing: 12,
+                      childAspectRatio: 0.85,
+                      itemCount: c.groups.length,
+                      itemBuilder: (BuildContext context, int index) => _group(c.groups[index]),
+                    ),
                     ),
                 ],
               ),
@@ -58,28 +65,26 @@ class _KaramatPageState extends UState<KaramatPage> {
     radius: 20,
     color: scheme.surface,
     border: Border.all(color: scheme.outlineVariant),
-    padding: const EdgeInsets.all(16),
+    padding: const EdgeInsets.all(14),
     onTap: () => UNavigator.push(KaramatTransactionsPage(group: g)),
     child: UColumn(
       crossAxisAlignment: CrossAxisAlignment.stretch,
-      mainAxisSize: MainAxisSize.min,
-      spacing: 14,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
         Row(
-          spacing: 12,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            const UIconBackground(Icons.inventory_2_outlined, color: AppColors.success),
-            UColumn(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              spacing: 4,
-              expanded: 1,
-              children: <Widget>[
-                UTextTitleMedium(g.groupName ?? "", fontWeight: FontWeight.bold, maxLines: 1, overflow: TextOverflow.ellipsis),
-                if (g.regDate.isNotNullOrEmpty()) UTextLabelSmall(g.regDate.toJalaliDateTime(), color: scheme.onSurfaceVariant).ltr(),
-              ],
-            ),
-            Icon(Icons.arrow_forward_ios_rounded, color: Theme.of(context).disabledColor, size: 16),
+            const UIconBackground(Icons.inventory_2_outlined, color: AppColors.success, size: 36),
+            UTextLabelMedium("${g.remainingPercent()}%", color: AppColors.success, fontWeight: FontWeight.bold),
+          ],
+        ),
+        UColumn(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          spacing: 2,
+          children: <Widget>[
+            UTextTitleSmall(g.groupName ?? "", fontWeight: FontWeight.bold, maxLines: 1, overflow: TextOverflow.ellipsis),
+            if (g.regDate.isNotNullOrEmpty()) UTextLabelSmall(g.regDate.toJalaliDateTime(), color: scheme.onSurfaceVariant, maxLines: 1).ltr(),
           ],
         ),
         UProgressLinear(
@@ -88,10 +93,13 @@ class _KaramatPageState extends UState<KaramatPage> {
           backgroundColor: AppColors.success.withValues(alpha: 0.12),
           borderRadius: BorderRadius.circular(8),
         ),
-        Row(
+        UColumn(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          spacing: 2,
           children: <Widget>[
-            UTextBodySmall("مانده: ${g.remWeight.gram()}", color: scheme.onSurface, fontWeight: FontWeight.w600, expanded: 1),
-            UTextBodySmall("سقف: ${g.limitWeight.gram()}", color: scheme.onSurfaceVariant),
+            UTextBodyMedium("مانده: ${g.remWeight.gram()}", fontWeight: FontWeight.w600, maxLines: 1, overflow: TextOverflow.ellipsis),
+            UTextLabelSmall("سقف: ${g.limitWeight.gram()}", color: scheme.onSurfaceVariant, maxLines: 1, overflow: TextOverflow.ellipsis),
           ],
         ),
       ],
