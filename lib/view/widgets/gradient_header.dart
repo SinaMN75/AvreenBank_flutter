@@ -58,7 +58,7 @@ class PageHeader extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
             child: UTextLabelLarge(trailing!, color: AppColors.onGradient, fontWeight: FontWeight.bold),
           ),
-        if (trailingWidget != null) trailingWidget!,
+        ?trailingWidget,
       ],
     ),
   );

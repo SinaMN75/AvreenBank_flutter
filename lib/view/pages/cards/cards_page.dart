@@ -6,7 +6,6 @@ import "package:avreen_bank/view/pages/transactions/transactions_page.dart";
 import "package:avreen_bank/view/widgets/app_sheet.dart";
 import "package:avreen_bank/view/widgets/bank_card_view.dart";
 import "package:avreen_bank/view/widgets/profile_selector_header.dart";
-import "package:flutter/cupertino.dart";
 import "package:u/utilities.dart";
 
 class CardsPage extends StatefulWidget {
