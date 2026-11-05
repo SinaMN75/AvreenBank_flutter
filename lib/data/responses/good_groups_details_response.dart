@@ -1,7 +1,7 @@
 part of "../data.dart";
 
 extension GramExtension on int? {
-  String gram() => "${(this ?? 0).separate3By3()} گرم";
+  String gram() => "${(this ?? 0).separate3By3()} ${U.s.gram}";
 }
 
 extension GoodGroupExtension on GoodGroup {

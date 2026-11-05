@@ -22,7 +22,7 @@ class _ProfilePageState extends UState<ProfilePage> {
         const SizedBox(height: 24),
         UListTile(
           icon: Icons.edit_outlined,
-          title: U.s.editItem(U.s.userInformation),
+          title: U.s.editItem(U.s.itemInformation(U.s.user)),
           color: AppColors.brand,
           onTap: () => UToast.toast(message: U.s.comingSoon),
         ).pSymmetric(vertical: 4, horizontal: 16),

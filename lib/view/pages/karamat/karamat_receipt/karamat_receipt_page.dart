@@ -52,10 +52,10 @@ class _KaramatReceiptPageState extends UState<KaramatReceiptPage> {
       children: <Widget>[
         _header(),
         Divider(color: scheme.outlineVariant),
-        _row("مقدار قبلی", t.oldWeight.gram()),
-        _row("مقدار جدید", t.newWeight.gram()),
-        _row("وجه‌بازگشتی", t.cacheBack.rial()),
-        if (t.transactionId.isNotNullOrEmpty()) _row("شناسه تراکنش", t.transactionId!),
+        _row(U.s.previousQuantity, t.oldWeight.gram()),
+        _row(U.s.newQuantity, t.newWeight.gram()),
+        _row(U.s.cashback, t.cacheBack.rial()),
+        if (t.transactionId.isNotNullOrEmpty()) _row(U.s.transactionId, t.transactionId!),
         UObx(() {
           if (c.state.isLoading()) return const UProgressCircular().pSymmetric(vertical: 16);
           if (c.state.isError()) return UErrorRetry(onTap: c.read);
@@ -117,7 +117,7 @@ class _KaramatReceiptPageState extends UState<KaramatReceiptPage> {
       Row(
         spacing: 8,
         children: <Widget>[
-          UButton(title: U.s.saveImage, icon: const Icon(Icons.image_outlined), type: UButtonType.outlined, onTap: _save, expanded: 1),
+          UButton(title: U.s.saveItem(U.s.image), icon: const Icon(Icons.image_outlined), type: UButtonType.outlined, onTap: _save, expanded: 1),
           UButton(title: U.s.copy, icon: const Icon(Icons.copy_rounded), type: UButtonType.outlined, onTap: _copy, expanded: 1),
         ],
       ),
@@ -149,12 +149,12 @@ class _KaramatReceiptPageState extends UState<KaramatReceiptPage> {
     final TransactionDetailResponse? d = c.detail;
     return <String>[
       U.s.transactionReceipt,
-      "مقدار مصرف: ${t.useWeight.gram()}",
+      "${U.s.usedQuantity}: ${t.useWeight.gram()}",
       if (t.logDate.isNotNullOrEmpty()) "${U.s.date}: ${t.logDate.formatJalaliDateTime()}",
-      "مقدار قبلی: ${t.oldWeight.gram()}",
-      "مقدار جدید: ${t.newWeight.gram()}",
-      "وجه‌بازگشتی: ${t.cacheBack.rial()}",
-      if (t.transactionId.isNotNullOrEmpty()) "شناسه تراکنش: ${t.transactionId}",
+      "${U.s.previousQuantity}: ${t.oldWeight.gram()}",
+      "${U.s.newQuantity}: ${t.newWeight.gram()}",
+      "${U.s.cashback}: ${t.cacheBack.rial()}",
+      if (t.transactionId.isNotNullOrEmpty()) "${U.s.transactionId}: ${t.transactionId}",
       if (d?.merchantName.isNotNullOrEmpty() ?? false) "${U.s.merchant}: ${d!.merchantName}",
       if (d?.merchantAddress.isNotNullOrEmpty() ?? false) "${U.s.address}: ${d!.merchantAddress}",
       if (d?.transactionType.isNotNullOrEmpty() ?? false) "${U.s.transactionType}: ${d!.transactionType}",

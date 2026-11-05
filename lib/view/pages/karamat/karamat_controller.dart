@@ -12,7 +12,7 @@ class KaramatController extends UBaseController {
 
   Future<void> read() async {
     await Core.dataSource.getGoodGroupsDetails(
-      page: "طرح کرامت",
+      page: U.s.karamatPlan,
       p: GoodGroupsDetailsParams(fileId: Core.currentFile.value.fileId),
       onOk: (GoodGroupsDetailsResponse response) {
         groups = response.result;

@@ -44,14 +44,14 @@ class ProfileSelectorTile extends StatelessWidget {
   }
 
   void _fileDetailsSheet(FileDetail i) => AppSheet.show<void>(
-    title: "جزئیات پرونده",
+    title: U.s.profileDetails,
     children: <Widget>[
-      SheetInfoBox(vertical: false, label: "کد سازمان", value: i.organId ?? "---"),
-      SheetInfoBox(vertical: false, label: "کد پرونده", value: (i.fileCode ?? "---")),
-      SheetInfoBox(vertical: false, label: "کد بخش", value: (i.sectionCode ?? "---")),
-      SheetInfoBox(vertical: false, label: "کد پرسنلی", value: (i.personnelCode ?? "---")),
-      SheetInfoBox(vertical: false, label: "تعداد خانوار", value: (i.familyCount ?? 0).toString()),
-      SheetInfoBox(vertical: false, label: "تعداد افراد خانواده (یارانه دولت)", value: (i.personFamilyCount ?? 0).toString()),
+      SheetInfoBox(vertical: false, label: U.s.organizationCode, value: i.organId ?? "---"),
+      SheetInfoBox(vertical: false, label: U.s.profileCode, value: (i.fileCode ?? "---")),
+      SheetInfoBox(vertical: false, label: U.s.sectionCode, value: (i.sectionCode ?? "---")),
+      SheetInfoBox(vertical: false, label: U.s.personnelCode, value: (i.personnelCode ?? "---")),
+      SheetInfoBox(vertical: false, label: U.s.householdSize, value: (i.familyCount ?? 0).toString()),
+      SheetInfoBox(vertical: false, label: U.s.numberOfFamilyMembersGovernmentSubsidy, value: (i.personFamilyCount ?? 0).toString()),
       SheetInfoBox(vertical: false, label: U.s.createdAt, value: i.createDate?.toJalaliCompactDateString() ?? "---"),
     ],
   );
@@ -129,7 +129,7 @@ class ProfileSheet extends StatelessWidget {
                   leading: ULetterBadge(profile.organizationName, background: scheme.primary.withValues(alpha: 0.12), foreground: scheme.primary),
                   title: UTextBodyMedium(profile.organizationName, fontWeight: FontWeight.w600, maxLines: 1, overflow: TextOverflow.ellipsis),
                   subtitle: UTextLabelSmall(profile.fileTitle, color: scheme.onSurfaceVariant),
-                  trailing: UTextLabelSmall(selected ? "در حال استفاده" : "انتخاب", color: scheme.primary),
+                  trailing: UTextLabelSmall(selected ? U.s.inUse : U.s.select, color: scheme.primary),
                   onTap: () => onSelect(profile),
                 ),
               );

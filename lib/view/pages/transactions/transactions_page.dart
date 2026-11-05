@@ -16,8 +16,8 @@ class TransactionsPage extends StatefulWidget {
 class _TransactionsPageState extends UState<TransactionsPage> {
   final TransactionsController c = TransactionsController();
   static final List<Tab> _tabs = <Tab>[
-    const Tab(text: "براساس تعداد"),
-    const Tab(text: "براساس تاریخ"),
+    Tab(text: U.s.byCount),
+    Tab(text: U.s.byDate),
   ];
 
   @override
@@ -34,8 +34,8 @@ class _TransactionsPageState extends UState<TransactionsPage> {
       body: Column(
         children: <Widget>[
           PageHeader(
-            title: "تراکنش‌های کارت",
-            subtitle: widget.card == null ? null : "کارت اعتباری — ${widget.card!.lastFour().toPersianNumber()}",
+            title: U.s.cardTransactions,
+            subtitle: widget.card == null ? null : "${U.s.creditCard} — ${widget.card!.lastFour().toPersianNumber()}",
           ),
           TabBar(tabs: _tabs, indicatorWeight: 3).pSymmetric(horizontal: 16, vertical: 8),
           TabBarView(children: <Widget>[byCount(), byDate()]).expanded(),
@@ -54,7 +54,7 @@ class _TransactionsPageState extends UState<TransactionsPage> {
         Form(
           key: c.byCountKey,
           child: UTextField(
-            labelText: "تعداد تراکنش",
+            labelText: U.s.numberOfTransactions,
             controller: c.controllerCount,
             keyboardType: TextInputType.number,
             maxLength: 3,
@@ -120,7 +120,7 @@ class _TransactionsPageState extends UState<TransactionsPage> {
   );
 
   Widget _submit(VoidCallback onTap) => UButton(
-    title: "دریافت",
+    title: U.s.retrieve,
     onTap: onTap,
     height: 54,
     elevation: 0,

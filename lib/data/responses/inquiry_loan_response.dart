@@ -2,9 +2,9 @@ part of "../data.dart";
 
 extension InstallmentsStatusExtension on InstallmentsStatus {
   String statusString() {
-    if (status == "N") return "پرداخت نشده";
-    if (status == "P") return "پرداخت شده";
-    if (status == "D") return "پرداخت نشده سررسیدشده";
+    if (status == "N") return U.s.unpaid;
+    if (status == "P") return U.s.paid;
+    if (status == "D") return U.s.unpaidOverdue;
     return "";
   }
 

@@ -47,7 +47,7 @@ class _ChargeHistoryPageState extends UState<ChargeHistoryPage> {
                 ],
               ).pOnly(top: 16),
               UButton(
-                title: "دریافت",
+                title: U.s.retrieve,
                 onTap: c.read,
                 height: 54,
                 elevation: 0,
@@ -113,11 +113,11 @@ class _ChargeHistoryPageState extends UState<ChargeHistoryPage> {
           ),
         if (i.periodId != null)
           UKeyValue(
-            leading: UTextBodyMedium("کد دوره", color: theme.disabledColor),
+            leading: UTextBodyMedium(U.s.periodCode, color: theme.disabledColor),
             trailing: Text(i.periodId ?? "---", style: const TextStyle(fontFamily: "", fontSize: 12), textDirection: TextDirection.ltr),
             margin: const EdgeInsets.symmetric(vertical: 6),
           ),
-        UTextBodySmall("قابل استفاده از ${i.periodStartDate.toJalaliDate()}${i.periodEndDate == null ? "" : " تا ${i.periodEndDate.toJalaliDate()}"}"),
+        UTextBodySmall(i.periodEndDate == null ? U.s.usableFromDate(i.periodStartDate.toJalaliDate()) : U.s.usableFromStartToEnd(i.periodStartDate.toJalaliDate(), i.periodEndDate.toJalaliDate())),
       ],
     ),
   );
@@ -150,31 +150,31 @@ class _ChargeHistoryPageState extends UState<ChargeHistoryPage> {
         const Divider(height: 12),
         if (i.chargeAmount != null)
           UKeyValue(
-            leading: UTextBodyMedium("مبلغ شارژ", color: theme.disabledColor),
+            leading: UTextBodyMedium(U.s.itemAmount(U.s.charge), color: theme.disabledColor),
             trailing: Text(i.chargeAmount.rial()),
             margin: const EdgeInsets.symmetric(vertical: 6),
           ),
         if (i.requestChargeAmount != null)
           UKeyValue(
-            leading: UTextBodyMedium("توان پرداخت", color: theme.disabledColor),
+            leading: UTextBodyMedium(U.s.paymentCapacity, color: theme.disabledColor),
             trailing: Text(i.requestChargeAmount.rial()),
             margin: const EdgeInsets.symmetric(vertical: 6),
           ),
         if (i.creditDebit != null)
           UKeyValue(
-            leading: UTextBodyMedium("بدهی اعتباری", color: theme.disabledColor),
+            leading: UTextBodyMedium(U.s.creditDebt, color: theme.disabledColor),
             trailing: Text(i.creditDebit.rial()),
             margin: const EdgeInsets.symmetric(vertical: 6),
           ),
         if (i.insDebit != null)
           UKeyValue(
-            leading: UTextBodyMedium("بدهی تسهیلاتی", color: theme.disabledColor),
+            leading: UTextBodyMedium(U.s.loanDebt, color: theme.disabledColor),
             trailing: Text(i.insDebit.rial()),
             margin: const EdgeInsets.symmetric(vertical: 6),
           ),
         if (i.periodId != null)
           UKeyValue(
-            leading: UTextBodyMedium("کد دوره", color: theme.disabledColor),
+            leading: UTextBodyMedium(U.s.periodCode, color: theme.disabledColor),
             trailing: Text(i.periodId ?? "---"),
             margin: const EdgeInsets.symmetric(vertical: 6),
           ),

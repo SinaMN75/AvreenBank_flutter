@@ -8,7 +8,7 @@ class BankCardView extends StatelessWidget {
     required this.selected,
     this.height = 200,
     this.colors = AppColors.card,
-    this.label = "کارت اعتباری",
+    this.label,
     super.key,
   });
 
@@ -16,7 +16,7 @@ class BankCardView extends StatelessWidget {
   final bool selected;
   final double height;
   final List<Color> colors;
-  final String label;
+  final String? label;
 
   @override
   Widget build(BuildContext context) => AnimatedScale(
@@ -45,14 +45,14 @@ class BankCardView extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.end,
             spacing: 4,
             children: <Widget>[
-              const Text("حکمت نو", style: TextStyle(color: AppColors.onGradient, fontSize: 16, fontWeight: FontWeight.bold)),
-              Text(label, style: const TextStyle(color: AppColors.onGradient, fontSize: 12)),
+              const Text(AppConstants.appName, style: TextStyle(color: AppColors.onGradient, fontSize: 16, fontWeight: FontWeight.bold)),
+              Text(label ?? U.s.creditCard, style: const TextStyle(color: AppColors.onGradient, fontSize: 12)),
             ],
           ),
           spreadNumberGroups: true,
           numberStyle: const TextStyle(color: AppColors.onGradient, fontSize: 22, fontWeight: FontWeight.bold, letterSpacing: 1),
           showCvvOnFront: true,
-          cardHolderLabel: "دارنده کارت",
+          cardHolderLabel: U.s.cardHolder,
           expiryLabel: U.s.expires,
           cvvLabel: "CVV2",
           labelStyle: TextStyle(color: AppColors.onGradient.withValues(alpha: 0.75), fontSize: 11),

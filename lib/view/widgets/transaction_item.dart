@@ -21,7 +21,7 @@ class TransactionItem extends StatelessWidget {
         trailing: UIconTextVertical(
           crossAxisAlignment: CrossAxisAlignment.end,
           leading: UTextLabelMedium(i.logDate.toJalaliDateTime(), color: scheme.onSurfaceVariant).ltr(),
-          trailing: UTextLabelMedium("کد رهگیری: ${i.rrn ?? "---"}", color: scheme.onSurfaceVariant),
+          trailing: UTextLabelMedium("${U.s.trackingNumber}: ${i.rrn ?? "---"}", color: scheme.onSurfaceVariant),
         ),
       ),
     );

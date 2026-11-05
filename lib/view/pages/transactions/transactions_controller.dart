@@ -3,13 +3,17 @@ import "package:avreen_bank/main.dart";
 import "package:u/utilities.dart";
 
 enum TransactionDatePreset {
-  today("امروز", 0, 0),
-  yesterday("دیروز", 1, 1),
-  last3Days("۳ روز گذشته", 2, 0);
+  today(0, 0),
+  yesterday(1, 1),
+  last3Days(2, 0);
 
-  const TransactionDatePreset(this.title, this.fromDaysAgo, this.toDaysAgo);
+  const TransactionDatePreset(this.fromDaysAgo, this.toDaysAgo);
 
-  final String title;
+  String get title => switch (this) {
+    TransactionDatePreset.today => U.s.today,
+    TransactionDatePreset.yesterday => U.s.yesterday,
+    TransactionDatePreset.last3Days => U.s.last3Days,
+  };
   final int fromDaysAgo;
   final int toDaysAgo;
 }

@@ -28,9 +28,9 @@ class _LoginOtpPageState extends UState<LoginOtpPage> {
     key: c.formKey,
     child: AuthLayout(
       children: <Widget>[
-        const UTextHeadlineSmall("کد تایید را وارد کنید", textAlign: TextAlign.center, margin: EdgeInsets.only(top: 20)),
+        UTextHeadlineSmall(U.s.enterTheVerificationCode, textAlign: TextAlign.center, margin: const EdgeInsets.only(top: 20)),
         UTextBodyMedium(
-          "کد فعال‌سازی به شماره زیر ارسال شد.",
+          U.s.theActivationCodeWasSentToTheNumberBelow,
           textAlign: TextAlign.center,
           color: scheme.onSurfaceVariant,
           maxLines: 2,
@@ -109,7 +109,7 @@ class _LoginOtpPageState extends UState<LoginOtpPage> {
           margin: const EdgeInsets.only(top: 12),
         ),
         UTextBodyMedium(
-          "شرایط استفاده از حکمت نو",
+          U.s.termsOfUseOfApp(AppConstants.appName),
           textAlign: TextAlign.center,
           color: scheme.primary,
           fontWeight: FontWeight.w600,

@@ -14,7 +14,7 @@ class KaramatTransactionsController extends UBaseController {
 
   Future<void> read() async {
     await Core.dataSource.getGoodGroupsTransactions(
-      page: "تراکنش‌های طرح کرامت",
+      page: U.s.karamatPlanTransactions,
       p: GoodGroupsTransactionsParams(fileId: Core.currentFile.value.fileId, groupId: group.groupId ?? ""),
       onOk: (GoodGroupsTransactionsResponse response) {
         transactions = response.result;

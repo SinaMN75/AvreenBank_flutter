@@ -18,7 +18,7 @@ class _StatusFacePageState extends UState<StatusFacePage> {
   final StatusFaceController c = StatusFaceController();
 
   List<Tab> get _tabs => <Tab>[
-    const Tab(text: "جاری"),
+    Tab(text: U.s.current),
     Tab(text: U.s.past),
     Tab(text: U.s.settled),
   ];
@@ -38,7 +38,7 @@ class _StatusFacePageState extends UState<StatusFacePage> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
           PageHeader(
-            title: "صورت وضعیت",
+            title: U.s.accountStatement,
             subtitle: widget.accountInfo.accountTypeName,
             trailing: "${(widget.accountInfo.availableBalance ?? 0).separate3By3().toPersianNumber()} ${U.s.rial}",
           ),
@@ -64,7 +64,7 @@ class _StatusFacePageState extends UState<StatusFacePage> {
           margin: const EdgeInsets.symmetric(horizontal: 16),
           padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 24),
           child: UTextBodyMedium(
-            "برای این پرونده صورت وضعیت جاری وجود ندارد",
+            U.s.thereIsNoCurrentAccountStatementForThisProfile,
             color: scheme.onSurfaceVariant,
             height: 2,
             maxLines: 4,
@@ -119,7 +119,7 @@ class _StatusFacePageState extends UState<StatusFacePage> {
   );
 
   Widget _submit(VoidCallback onTap) => UButton(
-    title: "دریافت",
+    title: U.s.retrieve,
     onTap: onTap,
     height: 54,
     elevation: 0,
@@ -145,27 +145,27 @@ class _StatusFacePageState extends UState<StatusFacePage> {
       padding: const EdgeInsets.all(16),
       children: <Widget>[
         UKeyValue(
-          leading: UTextBodyMedium("تاریخ سررسید", color: theme.disabledColor),
+          leading: UTextBodyMedium(U.s.dueDate, color: theme.disabledColor),
           trailing: Text(info.dueDate?.toJalaliDateTime() ?? "---").ltr(),
           margin: const EdgeInsets.symmetric(vertical: 6),
         ),
         UKeyValue(
-          leading: UTextBodyMedium("بدهی اعتباری", color: theme.disabledColor),
+          leading: UTextBodyMedium(U.s.creditDebt, color: theme.disabledColor),
           trailing: Text(info.creditDebt.rial()),
           margin: const EdgeInsets.symmetric(vertical: 6),
         ),
         UKeyValue(
-          leading: UTextBodyMedium("مانده بدهی اعتباری", color: theme.disabledColor),
+          leading: UTextBodyMedium(U.s.remainingCreditDebt, color: theme.disabledColor),
           trailing: Text(info.remainCreditDebt.rial()),
           margin: const EdgeInsets.symmetric(vertical: 6),
         ),
         UKeyValue(
-          leading: UTextBodyMedium("بدهی تسهیلاتی", color: theme.disabledColor),
+          leading: UTextBodyMedium(U.s.loanDebt, color: theme.disabledColor),
           trailing: Text(info.loanDebt.rial()),
           margin: const EdgeInsets.symmetric(vertical: 6),
         ),
         UKeyValue(
-          leading: UTextBodyMedium("مانده بدهی تسهیلاتی", color: theme.disabledColor),
+          leading: UTextBodyMedium(U.s.remainingLoanDebt, color: theme.disabledColor),
           trailing: Text(info.remainLoanDebt.rial()),
           margin: const EdgeInsets.symmetric(vertical: 6),
         ),
@@ -215,7 +215,7 @@ class _StatusFacePageState extends UState<StatusFacePage> {
             color: scheme.primary,
             backgroundColor: scheme.primary.withValues(alpha: 0.12),
           ),
-          title: UTextBodySmall(U.s.totalAmount, color: scheme.onSurfaceVariant),
+          title: UTextBodySmall(U.s.totalItem(U.s.amount), color: scheme.onSurfaceVariant),
           subtitle: UTextTitleMedium(i.amount.rial(), fontWeight: FontWeight.bold),
           trailing: UTextBodySmall(i.date?.toJalaliCompactDateString() ?? "---", color: scheme.onSurfaceVariant),
         ),
@@ -244,14 +244,14 @@ class _StatusFacePageState extends UState<StatusFacePage> {
             color: scheme.primary,
             backgroundColor: scheme.primary.withValues(alpha: 0.12),
           ),
-          title: UTextBodySmall(U.s.totalAmount, color: scheme.onSurfaceVariant),
+          title: UTextBodySmall(U.s.totalItem(U.s.amount), color: scheme.onSurfaceVariant),
           subtitle: UTextTitleMedium(i.totalAmount.rial(), fontWeight: FontWeight.bold),
           trailing: UTextBodySmall(i.date?.toJalaliDateTime() ?? "---", color: scheme.onSurfaceVariant, textDirection: TextDirection.ltr),
         ),
         const Divider(height: 24),
         UKeyValue(
           leading: UTextBodyMedium(U.s.installments, color: theme.disabledColor),
-          trailing: Text("${i.instalmentCount ?? 0} قسط "),
+          trailing: Text(U.s.countInstallments(i.instalmentCount ?? 0)),
           margin: const EdgeInsets.symmetric(vertical: 6),
         ),
         UKeyValue(
@@ -261,7 +261,7 @@ class _StatusFacePageState extends UState<StatusFacePage> {
         ),
         UKeyValue(
           leading: UTextBodyMedium(U.s.status, color: theme.disabledColor),
-          trailing: UTextBodyMedium(i.payStatus == 1 ? "پرداخت نشده" : U.s.paid, color: i.payStatus == 1 ? AppColors.orange : AppColors.success, fontWeight: FontWeight.w600),
+          trailing: UTextBodyMedium(i.payStatus == 1 ? U.s.unpaid : U.s.paid, color: i.payStatus == 1 ? AppColors.orange : AppColors.success, fontWeight: FontWeight.w600),
           margin: const EdgeInsets.symmetric(vertical: 6),
         ),
         const SizedBox(height: 6),

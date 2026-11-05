@@ -84,7 +84,7 @@ class _ReceiptPageState extends UState<ReceiptPage> {
       if (d?.merchantAddress.isNotNullOrEmpty() ?? false) _row(scheme, U.s.address, d!.merchantAddress!),
       _row(scheme, U.s.terminalType, info.terminalTypeName()),
       if (d?.transactionType.isNotNullOrEmpty() ?? false) _row(scheme, U.s.transactionType, info.debitTypeName()),
-      if (info.rrn.isNotNullOrEmpty()) _row(scheme, U.s.referenceNumber, info.rrn!),
+      if (info.rrn.isNotNullOrEmpty()) _row(scheme, U.s.itemNumber(U.s.reference), info.rrn!),
       if (d?.stan.isNotNullOrEmpty() ?? false) _row(scheme, U.s.traceNumber, d!.stan!),
       if ((d?.discountAmount ?? 0) > 0) _row(scheme, U.s.discount, d!.discountAmount.rial()),
       if (d?.loanId.isNotNullOrEmpty() ?? false) _row(scheme, U.s.loanId, d!.loanId!),
@@ -116,7 +116,7 @@ class _ReceiptPageState extends UState<ReceiptPage> {
       Row(
         spacing: 8,
         children: <Widget>[
-          UButton(title: U.s.saveImage, icon: const Icon(Icons.image_outlined), type: UButtonType.outlined, onTap: _save, expanded: 1),
+          UButton(title: U.s.saveItem(U.s.image), icon: const Icon(Icons.image_outlined), type: UButtonType.outlined, onTap: _save, expanded: 1),
           UButton(title: U.s.copy, icon: const Icon(Icons.copy_rounded), type: UButtonType.outlined, onTap: _copy, expanded: 1),
         ],
       ),

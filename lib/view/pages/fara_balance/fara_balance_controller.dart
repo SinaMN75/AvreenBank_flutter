@@ -12,7 +12,7 @@ class FaraBalanceController extends UBaseController {
 
   Future<void> read() async {
     await Core.dataSource.faraBalance(
-      page: "موجودی کالابرگ",
+      page: U.s.itemBalance(U.s.kalabarg),
       onOk: (FaraBalanceResponse response) {
         faraBalance = response;
         state.loaded();

@@ -81,7 +81,7 @@ class CardsController extends UBaseController {
     );
     ULoading.dismiss();
     UNavigator.back();
-    UToast.success(message: "کارت هدیه با موفقیت ثبت شد");
+    UToast.success(message: U.s.giftCardRegisteredSuccessfully);
   }
 
   void _applyProfile(FileInfo? profile) {

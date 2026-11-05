@@ -23,9 +23,9 @@ class _LoginNationalCodePageState extends UState<LoginNationalCodePage> {
     key: c.formKey,
     child: AuthLayout(
       children: <Widget>[
-        const UTextHeadlineSmall("ورود به حساب کاربری", textAlign: TextAlign.center, margin: EdgeInsets.only(top: 12)),
+        UTextHeadlineSmall(U.s.logInToYourAccount, textAlign: TextAlign.center, margin: const EdgeInsets.only(top: 12)),
         UTextBodyMedium(
-          "کد ملی و شماره موبایل خود را وارد کنید. رمز یک‌بارمصرف با پیامک ارسال می‌شود.",
+          U.s.enterYourNationalCodeAndMobileNumberAOneTimePasswordWillBeSentBySms,
           textAlign: TextAlign.center,
           color: scheme.onSurfaceVariant,
           maxLines: 3,

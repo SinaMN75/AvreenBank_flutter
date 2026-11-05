@@ -33,7 +33,7 @@ class _SplashPageState extends State<SplashPage> {
         const Spacer(),
         UTextBodyMedium("${U.s.version} ${UApp.version}", fontWeight: FontWeight.bold),
         const SizedBox(height: 12),
-        const UTextBodyMedium("توسعه یافته توسط شرکت دانش بنیان آورین", fontWeight: FontWeight.bold),
+        UTextBodyMedium(U.s.developedByAvreenKnowledgeBasedCompany, fontWeight: FontWeight.bold),
         const Spacer(),
       ],
     ),

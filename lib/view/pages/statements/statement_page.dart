@@ -16,7 +16,7 @@ class StatementPage extends StatefulWidget {
 
 class _StatementPageState extends UState<StatementPage> {
   final StatementController c = StatementController();
-  static final List<Tab> _tabs = <Tab>[const Tab(text: "براساس تعداد"), const Tab(text: "براساس تاریخ")];
+  static final List<Tab> _tabs = <Tab>[Tab(text: U.s.byCount), Tab(text: U.s.byDate)];
 
   @override
   void initState() {
@@ -53,7 +53,7 @@ class _StatementPageState extends UState<StatementPage> {
         Form(
           key: c.byCountKey,
           child: UTextField(
-            labelText: "تعداد تراکنش",
+            labelText: U.s.numberOfTransactions,
             controller: c.controllerCount,
             keyboardType: TextInputType.number,
             maxLength: 3,
@@ -119,7 +119,7 @@ class _StatementPageState extends UState<StatementPage> {
   );
 
   Widget _submit(VoidCallback onTap) => UButton(
-    title: "دریافت",
+    title: U.s.retrieve,
     onTap: onTap,
     height: 54,
     elevation: 0,

@@ -30,7 +30,7 @@ class _KaramatTransactionsPageState extends UState<KaramatTransactionsPage> {
     body: Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
-        PageHeader(title: widget.group.groupName ?? "طرح کرامت", subtitle: "تراکنش‌های طرح کرامت"),
+        PageHeader(title: widget.group.groupName ?? U.s.karamatPlan, subtitle: U.s.karamatPlanTransactions),
         UObx(
           () {
             if (c.state.isLoading()) return const UProgressCircular().pOnly(top: 32).alignAtTopCenter();
@@ -68,9 +68,9 @@ class _KaramatTransactionsPageState extends UState<KaramatTransactionsPage> {
       spacing: 12,
       children: <Widget>[
         GoodGroupIcon(groupId: widget.group.groupId),
-        UTextBodyMedium("مانده", color: scheme.onSurfaceVariant, expanded: 1),
+        UTextBodyMedium(U.s.remaining, color: scheme.onSurfaceVariant, expanded: 1),
         UTextTitleMedium(widget.group.remWeight.gram(), fontWeight: FontWeight.bold),
-        UTextLabelMedium("از ${widget.group.limitWeight.gram()}", color: scheme.onSurfaceVariant),
+        UTextLabelMedium(U.s.outOfTotal(widget.group.limitWeight.gram()), color: scheme.onSurfaceVariant),
       ],
     ),
   );
@@ -85,7 +85,7 @@ class _KaramatTransactionsPageState extends UState<KaramatTransactionsPage> {
       trailing: UIconTextVertical(
         crossAxisAlignment: CrossAxisAlignment.end,
         leading: UTextLabelMedium(t.logDate.toJalaliDateTime(), color: scheme.onSurfaceVariant).ltr(),
-        trailing: UTextLabelMedium("وجه‌بازگشتی: ${t.cacheBack.rial()}", color: scheme.onSurfaceVariant),
+        trailing: UTextLabelMedium("${U.s.cashback}: ${t.cacheBack.rial()}", color: scheme.onSurfaceVariant),
       ),
     ),
   );

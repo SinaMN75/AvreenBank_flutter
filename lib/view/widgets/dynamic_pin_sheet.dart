@@ -40,7 +40,7 @@ class _DynamicPinSheetState extends State<DynamicPinSheet> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       spacing: 16,
       children: <Widget>[
-        UTextBodySmall("این رمز فقط برای همین کارت و تا پایان زمان اعلام‌شده معتبر است.", color: scheme.onSurfaceVariant, textAlign: TextAlign.center, maxLines: 2),
+        UTextBodySmall(U.s.thisPasswordIsOnlyValidForThisCardUntilTheAnnouncedTime, color: scheme.onSurfaceVariant, textAlign: TextAlign.center, maxLines: 2),
         UOtpField(
           length: widget.code.length,
           controller: _controller,
@@ -52,8 +52,8 @@ class _DynamicPinSheetState extends State<DynamicPinSheet> {
           filledBorderColor: _seconds == 0 ? scheme.outlineVariant : scheme.primary,
           textStyle: context.textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold, fontStyle: FontStyle.italic),
         ),
-        UTextBodySmall("$_seconds ${U.s.seconds} تا پایان اعتبار رمز", color: scheme.onSurfaceVariant, textAlign: TextAlign.center),
-        UButton(title: "گرفتن رمز تازه", onTap: widget.onRefresh, height: 54, elevation: 0, borderRadius: 16, fullWidth: true),
+        UTextBodySmall(U.s.secondsUntilThePasswordExpires(_seconds), color: scheme.onSurfaceVariant, textAlign: TextAlign.center),
+        UButton(title: U.s.getANewPassword, onTap: widget.onRefresh, height: 54, elevation: 0, borderRadius: 16, fullWidth: true),
       ],
     );
   }

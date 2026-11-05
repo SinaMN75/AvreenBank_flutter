@@ -25,7 +25,7 @@ class _FaraBalancePageState extends UState<FaraBalancePage> {
     body: Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
-        PageHeader(title: "موجودی کالابرگ", subtitle: Core.currentFile.value.fileTitle),
+        PageHeader(title: U.s.itemBalance(U.s.kalabarg), subtitle: Core.currentFile.value.fileTitle),
         UObx(
           () {
             if (c.state.isLoading()) return const UProgressCircular().pOnly(top: 32).alignAtTopCenter();
@@ -63,7 +63,7 @@ class _FaraBalancePageState extends UState<FaraBalancePage> {
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
         UIconBackground(Icons.shopping_basket_outlined, color: AppColors.success, backgroundColor: scheme.surface, size: 56, radius: 16),
-        UTextBodyMedium("موجودی کالابرگ", color: scheme.onSurfaceVariant),
+        UTextBodyMedium(U.s.itemBalance(U.s.kalabarg), color: scheme.onSurfaceVariant),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.baseline,
@@ -87,7 +87,7 @@ class _FaraBalancePageState extends UState<FaraBalancePage> {
       spacing: 12,
       children: <Widget>[
         UIconBackground(Icons.groups_outlined, color: scheme.primary),
-        const UTextBodyMedium("تعداد اعضای خانوار", expanded: 1),
+        UTextBodyMedium(U.s.numberOfHouseholdMembers, expanded: 1),
         UTextTitleMedium((c.faraBalance?.familyCount ?? 0).toString(), fontWeight: FontWeight.bold),
       ],
     ),
@@ -113,7 +113,7 @@ class _FaraBalancePageState extends UState<FaraBalancePage> {
       spacing: 12,
       children: <Widget>[
         UIconBackground(Icons.groups_outlined, color: scheme.primary),
-        const UTextBodyMedium("شناسه کالابرگ", expanded: 1),
+        UTextBodyMedium(U.s.itemId(U.s.kalabarg), expanded: 1),
         UTextTitleMedium((c.faraBalance?.nationalCode ?? 0).toString(), fontWeight: FontWeight.bold).ltr(),
       ],
     ),

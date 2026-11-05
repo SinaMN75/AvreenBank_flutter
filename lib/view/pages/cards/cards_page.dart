@@ -33,7 +33,7 @@ class _CardsPageState extends UState<CardsPage> {
               const Spacer(),
               UEmptyState(
                 title: U.s.noCardIssuedForThisProfile,
-                action: UButton(title: "افزودن کارت هدیه", height: 48, elevation: 0, borderRadius: 16, onTap: _giftCardSheet),
+                action: UButton(title: U.s.addItem(U.s.giftCard), height: 48, elevation: 0, borderRadius: 16, onTap: _giftCardSheet),
               ).alignAtCenter(),
               const Spacer(),
             ],
@@ -75,7 +75,7 @@ class _CardsPageState extends UState<CardsPage> {
         card,
         selected: card.panId == c.selectedCard.value?.panId,
         colors: card.isGift ? AppColors.gradient : AppColors.card,
-        label: card.isGift ? "کارت هدیه" : "کارت اعتباری",
+        label: card.isGift ? U.s.giftCard : U.s.creditCard,
       ).pSymmetric(vertical: 8),
     ),
   );
@@ -86,13 +86,13 @@ class _CardsPageState extends UState<CardsPage> {
       Row(
         spacing: 12,
         children: <Widget>[
-          _actionTile(icon: Icons.ios_share_rounded, title: "شماره کارت و شبا", onTap: _cardInfoSheet),
+          _actionTile(icon: Icons.ios_share_rounded, title: U.s.cardNumberAndIban, onTap: _cardInfoSheet),
           _actionTile(
             icon: Icons.vpn_key_outlined,
             title: U.s.dynamicPin,
             onTap: () => UToast.toast(message: U.s.comingSoon),
           ),
-          // _actionTile(icon: Icons.card_giftcard_rounded, title: "افزودن کارت هدیه", onTap: _giftCardSheet),
+          // _actionTile(icon: Icons.card_giftcard_rounded, title: U.s.addItem(U.s.giftCard), onTap: _giftCardSheet),
         ],
       ),
       const SizedBox(height: 12),
@@ -102,22 +102,22 @@ class _CardsPageState extends UState<CardsPage> {
           _settingTile(
             icon: Icons.bookmark_border_rounded,
             color: AppColors.orange,
-            title: "تراکنش‌های کارت",
-            subtitle: "گزارش خریدها و عملیات کارت",
+            title: U.s.cardTransactions,
+            subtitle: U.s.purchasesAndCardOperationsReport,
             onTap: () => UNavigator.push(TransactionsPage(card: c.selectedCard.value)),
           ),
           _settingTile(
             icon: Icons.credit_card_outlined,
             color: AppColors.purple,
-            title: "پرداخت با QR",
-            subtitle: "نمایش بارکد پرداخت فروشگاهی",
+            title: U.s.payWithQr,
+            subtitle: U.s.showTheStorePaymentBarcode,
             onTap: _cardQrSheet,
           ),
           _settingTile(
             icon: Icons.credit_card_outlined,
             color: AppColors.purple,
-            title: "پرداخت با NFC",
-            subtitle: "پرداخت با کارت دیجیتال",
+            title: U.s.payWithNfc,
+            subtitle: U.s.payWithDigitalCard,
             onTap: () {
               if (c.selectedCard.value?.tokenizePanInfo?.track2 == null) {
                 UToast.errorToast(message: U.s.errorReadingData);
@@ -126,22 +126,22 @@ class _CardsPageState extends UState<CardsPage> {
               if (UApp.isAndroid)
                 UNavigator.push(NfcPage(valueToSend: c.selectedCard.value!.tokenizePanInfo!.track2!));
               else
-                UToast.errorToast(message: "پرداخت با NFC فقط در نسخه نصبی اندروید امکان پذیر است");
+                UToast.errorToast(message: U.s.nfcPaymentIsOnlyAvailableInTheInstalledAndroidApp);
             },
           ),
           _settingTile(
             icon: Icons.add_card_outlined,
             color: AppColors.sky,
-            title: "درخواست صدور کارت المثنی",
-            subtitle: "درخواست صدور المثنی در صورت مفقودی",
+            title: U.s.requestADuplicateCard,
+            subtitle: U.s.requestADuplicateIfLost,
             onTap: () => UToast.toast(message: U.s.comingSoon),
           ),
           _settingTile(
             icon: Icons.block_rounded,
             color: scheme.error,
             titleColor: scheme.error,
-            title: "غیر فعال سازی",
-            subtitle: "مسدودسازی در صورت مفقودی یا سرقت",
+            title: U.s.deactivate,
+            subtitle: U.s.blockIfLostOrStolen,
             onTap: () => UToast.toast(message: U.s.comingSoon),
           ),
         ],
@@ -216,11 +216,11 @@ class _CardsPageState extends UState<CardsPage> {
     if (card == null) return;
     final String pan = card.pan.separateCharacters(4, " ");
     AppSheet.show<void>(
-      title: "شماره کارت و شبا",
+      title: U.s.cardNumberAndIban,
       scrollable: false,
       children: <Widget>[
         SheetInfoBox(label: U.s.cardNumber, value: pan, ltr: true, onTap: () => UClipboard.set(card.pan, snackBar: true)),
-        SheetInfoBox(label: "دارنده", value: "${Core.fileInfo.value.firstName ?? ""} ${Core.fileInfo.value.lastName ?? ""}"),
+        SheetInfoBox(label: U.s.cardHolder, value: "${Core.fileInfo.value.firstName ?? ""} ${Core.fileInfo.value.lastName ?? ""}"),
         SheetInfoBox(label: "${U.s.expires} / CVV2", value: "${card.expiry() ?? "**/**"} — ${card.cvv2 ?? "***"}".toPersianNumber(), ltr: true),
       ],
     );
@@ -234,7 +234,7 @@ class _CardsPageState extends UState<CardsPage> {
       return;
     }
     AppSheet.show<void>(
-      title: "پرداخت با QR",
+      title: U.s.payWithQr,
       children: <Widget>[
         UContainer(
           radius: 22,
@@ -245,7 +245,7 @@ class _CardsPageState extends UState<CardsPage> {
             children: <Widget>[
               UBarcode(value: track2, barColor: AppColors.qr, backgroundColor: AppColors.onGradient, width: 200, height: 200),
               UTextTitleLarge(card.pan.separateCharacters(4, " "), fontWeight: FontWeight.bold, textDirection: TextDirection.ltr),
-              UTextBodySmall("بارکد را روبه‌روی دوربین کارتخوان بگیرید", color: scheme.onSurfaceVariant, textAlign: TextAlign.center, maxLines: 2),
+              UTextBodySmall(U.s.holdTheBarcodeInFrontOfTheCardReaderCamera, color: scheme.onSurfaceVariant, textAlign: TextAlign.center, maxLines: 2),
             ],
           ),
         ),
@@ -256,11 +256,11 @@ class _CardsPageState extends UState<CardsPage> {
   void _giftCardSheet() {
     c.clearGiftCardForm();
     AppSheet.show<void>(
-      title: "افزودن کارت هدیه",
+      title: U.s.addItem(U.s.giftCard),
       children: <Widget>[
         ListenableBuilder(
           listenable: Listenable.merge(<Listenable>[c.giftPanController, c.giftExpiryController, c.giftCvvController]),
-          builder: (BuildContext context, Widget? child) => BankCardView(c.giftCardPreview, selected: true, height: 190, colors: AppColors.gradient, label: "کارت هدیه"),
+          builder: (BuildContext context, Widget? child) => BankCardView(c.giftCardPreview, selected: true, height: 190, colors: AppColors.gradient, label: U.s.giftCard),
         ),
         Form(
           key: c.formKey,

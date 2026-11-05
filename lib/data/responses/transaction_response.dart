@@ -47,7 +47,7 @@ extension TransactionResponseExtension on TransactionInfo {
       case "09":
         return U.s.landline;
       case "12":
-        return U.s.internetPayment;
+        return U.s.onlinePayment;
       case "14":
         return U.s.merchantSystem;
       case "16":
@@ -81,7 +81,7 @@ extension TransactionResponseExtension on TransactionInfo {
       case 1:
         return U.s.request;
       case 2:
-        return "موفق";
+        return U.s.successful;
       case 3:
         return U.s.insufficientAmount;
       case 4:
@@ -89,11 +89,11 @@ extension TransactionResponseExtension on TransactionInfo {
       case 5:
         return U.s.failed;
       case 6:
-        return "برگشت سیستمی";
+        return U.s.systemReversal;
       case 7:
-        return "تایید شده";
+        return U.s.approved;
       case 8:
-        return "برگشت ستادی";
+        return U.s.headquartersReversal;
       default:
         return U.s.other;
     }
@@ -102,15 +102,15 @@ extension TransactionResponseExtension on TransactionInfo {
   String debitTypeName() {
     switch (debitType) {
       case 1:
-        return "خرید";
+        return U.s.purchase;
       case 2:
-        return "خرید اقساطی";
+        return U.s.installmentPurchase;
       case 3:
-        return "بن کارت";
+        return U.s.voucherCard;
       case 4:
-        return "برگشت از خرید";
+        return U.s.purchaseReturn;
       case 5:
-        return "لیزینگ";
+        return U.s.leasing;
       default:
         return debitType.toString();
     }

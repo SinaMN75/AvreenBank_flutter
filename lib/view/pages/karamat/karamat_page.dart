@@ -29,7 +29,7 @@ class _KaramatPageState extends UState<KaramatPage> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
         PageHeader(
-          title: "طرح کرامت",
+          title: U.s.karamatPlan,
           subtitle: Core.currentFile.value.fileTitle,
           trailingWidget: UButton(
             title: U.s.more,
@@ -101,8 +101,8 @@ class _KaramatPageState extends UState<KaramatPage> {
           mainAxisSize: MainAxisSize.min,
           spacing: 2,
           children: <Widget>[
-            UTextBodyMedium("مانده: ${g.remWeight.gram()}", fontWeight: FontWeight.w600, maxLines: 1, overflow: TextOverflow.ellipsis),
-            UTextLabelSmall("سقف: ${g.limitWeight.gram()}", color: scheme.onSurfaceVariant, maxLines: 1, overflow: TextOverflow.ellipsis),
+            UTextBodyMedium("${U.s.remaining}: ${g.remWeight.gram()}", fontWeight: FontWeight.w600, maxLines: 1, overflow: TextOverflow.ellipsis),
+            UTextLabelSmall("${U.s.limit}: ${g.limitWeight.gram()}", color: scheme.onSurfaceVariant, maxLines: 1, overflow: TextOverflow.ellipsis),
           ],
         ),
       ],

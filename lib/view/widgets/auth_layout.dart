@@ -44,7 +44,7 @@ class AuthLayout extends StatelessWidget {
                       const UImage(AppImages.logo, width: 80, height: 80),
                       ...children,
                       UTextBodyMedium(
-                        "حکمت نو",
+                        AppConstants.appName,
                         textAlign: TextAlign.center,
                         color: scheme.onSurfaceVariant,
                         margin: const EdgeInsets.only(top: 16),

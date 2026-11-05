@@ -37,7 +37,7 @@ class _LoansPageState extends UState<LoansPage> {
                 margin: const EdgeInsets.symmetric(horizontal: 16),
                 padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 24),
                 child: UTextBodyMedium(
-                  "برای این پرونده هنوز قسط فعالی ثبت نشده است. وقتی خرید اقساطی انجام شود، اینجا دیده می‌شود.",
+                  U.s.noActiveInstallmentHasBeenRegisteredForThisProfileYetItWillAppearHereOnceAnInstallmentPurchaseIsMade,
                   color: scheme.onSurfaceVariant,
                   height: 2,
                   maxLines: 4,
@@ -68,17 +68,17 @@ class _LoansPageState extends UState<LoansPage> {
       padding: const EdgeInsets.all(16),
       children: <Widget>[
         UKeyValue(
-          leading: UTextBodyMedium("مبلغ کل اقساط", color: theme.disabledColor),
+          leading: UTextBodyMedium(U.s.totalInstallmentAmount, color: theme.disabledColor),
           trailing: Text(info.amount.rial()),
           margin: const EdgeInsets.symmetric(vertical: 6),
         ),
         UKeyValue(
-          leading: UTextBodyMedium("تعداد اقساط", color: theme.disabledColor),
+          leading: UTextBodyMedium(U.s.installments, color: theme.disabledColor),
           trailing: Text(info.installmentCount.toString()),
           margin: const EdgeInsets.symmetric(vertical: 6),
         ),
         UKeyValue(
-          leading: UTextBodyMedium("پرداخت شده", color: theme.disabledColor),
+          leading: UTextBodyMedium(U.s.paid, color: theme.disabledColor),
           trailing: Text(info.payedAmount.rial()),
           margin: const EdgeInsets.symmetric(vertical: 6),
         ),
@@ -138,8 +138,8 @@ class _LoansPageState extends UState<LoansPage> {
                     subtitle: Text(i.dueDate.toJalaliDateString()),
                     trailing: UIconTextVertical(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      leading: Text("مبلغ کل اقساط${i.amount.rial()}"),
-                      trailing: Text("پرداخت شده${i.payAmount.rial()}"),
+                      leading: Text("${U.s.totalInstallmentAmount}${i.amount.rial()}"),
+                      trailing: Text("${U.s.paid}${i.payAmount.rial()}"),
                     ),
                   ),
                 );

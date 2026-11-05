@@ -30,9 +30,9 @@ class CreditStatement {
   final int? remainLoanDebt;
 
   String statusText() {
-    if (status == 1) return "باز";
-    if (status == 2) return "بسته";
-    if (status == 3) return "تسویه شده";
+    if (status == 1) return U.s.openStatus;
+    if (status == 2) return U.s.closedStatus;
+    if (status == 3) return U.s.settled;
     return "---";
   }
 

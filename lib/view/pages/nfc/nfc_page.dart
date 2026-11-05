@@ -17,7 +17,7 @@ class _NfcPageState extends UState<NfcPage> {
 
   bool ready = false;
   bool sent = false;
-  String status = "در حال آماده‌سازی NFC...";
+  String status = U.s.preparingNfc;
 
   @override
   void initState() {
@@ -33,9 +33,9 @@ class _NfcPageState extends UState<NfcPage> {
 
   Future<void> _start() async {
     final UNfcStatus nfc = await UNfc.status();
-    if (!nfc.cardEmulation) return _setStatus("این گوشی از پرداخت NFC پشتیبانی نمی‌کند.");
+    if (!nfc.cardEmulation) return _setStatus(U.s.thisPhoneDoesNotSupportNfcPayment);
     if (!nfc.isEnabled) {
-      _setStatus("لطفاً NFC گوشی را روشن کنید و دوباره وارد شوید.");
+      _setStatus(U.s.pleaseTurnOnYourPhonesNfcAndEnterAgain);
       await UNfc.openSettings();
       return;
     }
@@ -44,10 +44,10 @@ class _NfcPageState extends UState<NfcPage> {
       if (mounted)
         setState(() {
           ready = true;
-          status = "گوشی را پشت دستگاه کارتخوان نگه دارید";
+          status = U.s.holdThePhoneBehindTheCardReader;
         });
     } on UNfcException catch (e) {
-      _setStatus("خطا در راه‌اندازی NFC: ${e.message}");
+      _setStatus(U.s.errorStartingNfcMessage(e.message));
     }
   }
 
@@ -55,7 +55,7 @@ class _NfcPageState extends UState<NfcPage> {
     if (event.type == UNfcCardEventType.read && mounted)
       setState(() {
         sent = true;
-        status = "اطلاعات کارت با موفقیت ارسال شد";
+        status = U.s.cardInformationWasSentSuccessfully;
         delay(1000, () => UNavigator.back());
       });
   }
@@ -71,7 +71,7 @@ class _NfcPageState extends UState<NfcPage> {
       safeArea: false,
       body: Column(
         children: <Widget>[
-          const PageHeader(title: "پرداخت با NFC", subtitle: "پرداخت با کارت دیجیتال"),
+          PageHeader(title: U.s.payWithNfc, subtitle: U.s.payWithDigitalCard),
           Expanded(
             child: UColumn(
               mainAxisAlignment: MainAxisAlignment.center,

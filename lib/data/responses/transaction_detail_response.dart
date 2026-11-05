@@ -9,7 +9,7 @@ extension TransactionDetailResponseExtension on TransactionDetailResponse {
     if (merchantAddress.isNotNullOrEmpty()) "${U.s.address}: $merchantAddress",
     "${U.s.terminalType}: ${info.terminalTypeName()}",
     if (transactionType.isNotNullOrEmpty()) "${U.s.transactionType}: $transactionType",
-    if (info.rrn.isNotNullOrEmpty()) "${U.s.referenceNumber}: ${info.rrn}",
+    if (info.rrn.isNotNullOrEmpty()) "${U.s.itemNumber(U.s.reference)}: ${info.rrn}",
     if (stan.isNotNullOrEmpty()) "${U.s.traceNumber}: $stan",
     if (docId.isNotNullOrEmpty()) "${U.s.documentNumber}: $docId",
     if ((discountAmount ?? 0) > 0) "${U.s.discount}: ${discountAmount.rial()}",
